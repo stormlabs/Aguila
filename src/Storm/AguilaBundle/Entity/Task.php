@@ -45,7 +45,7 @@ class Task
     /**
      * @var string $assignee
      *
-     * @ORM\Column(name="assignee", type="string", length=255)
+     * @ORM\Column(name="assignee", type="string", length=255, nullable=true)
      */
     private $assignee;
 
@@ -76,6 +76,11 @@ class Task
      * @ORM\ManyToOne(targetEntity="Feature", inversedBy="tasks")
      */
     private $feature;
+
+    public function __construct()
+    {
+        $this->comments = array();
+    }
 
     public function __toString()
     {

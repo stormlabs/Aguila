@@ -60,6 +60,7 @@ class Feature
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->dependencies = array();
     }
 
     public function __toString()
