@@ -1,0 +1,6 @@
+
+{% block field_label %}
+{% spaceless %}
+    <label for="{{ id }}">{{ id|replace({'_':'.'})|trans([], 'form') }}</label>
+{% endspaceless %}
+{% endblock field_label %}
