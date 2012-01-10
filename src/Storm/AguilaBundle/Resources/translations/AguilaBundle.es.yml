@@ -1,0 +1,19 @@
+project:
+    list:
+        title:                  Proyectos
+        new:                    Nuevo Proyecto
+    new:
+        title:                  Crear un nuevo Proyecto
+        cancel:                 Cancelar
+        submit:                 Crear
+    show:
+        edit:                   Editar
+        feature:
+            new:                Nueva Funcionalidad
+            tasks:              Tareas
+            priority:           Prioridad
+            involvedUsers:      Involucrados
+    edit:
+        title:                  Editar Proyecto
+        cancel:                 Cancelar
+        submit:                 Guardar

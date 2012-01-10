@@ -150,4 +150,24 @@ class Feature
     {
         return $this->tasks;
     }
+
+    public function getPriority()
+    {
+        $priority = 0;
+        foreach($this->tasks as $task)
+        {
+            $priority += $task->getPriority();
+        }
+        return $priority;
+    }
+
+    public function getInvolvedUsers()
+    {
+        $users = array();
+        foreach($this->tasks as $task)
+        {
+            $users[] = $task->getAssignee();
+        }
+        return $users;
+    }
 }

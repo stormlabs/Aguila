@@ -1,33 +1,39 @@
-<h1>Project</h1>
+{% extends 'AguilaBundle::layout.html.twig' %}
 
-<table class="record_properties">
-    <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ entity.id }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ entity.name }}</td>
-        </tr>
-    </tbody>
-</table>
+{% block title project.name %}
 
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('project') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('project_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('project_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+{% block content %}
+
+<section>
+    <header>
+        <h2>{{ project.name }}</h2>
+        <a href="{{ path('project_edit', {'id': project.id}) }}">{{ 'project.show.edit'|trans([], 'AguilaBundle') }}</a>
+    </header>
+
+    <div>
+    {% render 'AguilaBundle:Feature:new' %}
+    </div>
+
+    {% for feature in project.features %}
+    <div>
+        <h3><a href="{{ path('feature_show', {'id': feature.id}) }}">{{ feature.name }}</a></h3>
+        <div>
+            <h4>{{ 'project.show.feature.involvedUsers'|trans([], 'AguilaBundle') }}</h4>
+            <ul>
+                {% for user in feature.involvedUsers %}
+                <li>{{ user }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <dl>
+            <dt>{{ 'project.show.feature.tasks'|trans([], 'AguilaBundle') }}</dt>
+            <dd>{{ feature.tasks|length }}</dd>
+            <dt>{{ 'project.show.feature.priority'|trans([], 'AguilaBundle') }}</dt>
+            <dd>{{ feature.priority }}</dd>
+        </dl>
+    </div>
+    {% endfor %}
+
+</section>
+
+{% endblock %}

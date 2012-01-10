@@ -1,37 +1,26 @@
-<h1>Project list</h1>
+{% extends 'AguilaBundle::layout.html.twig' %}
 
-<table class="records_list">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for entity in entities %}
-        <tr>
-            <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.name }}</td>
-            <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('project_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('project_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+{% block title 'project.list.title'|trans([], 'AguilaBundle') %}
 
-<ul>
-    <li>
-        <a href="{{ path('project_new') }}">
-            Create a new entry
-        </a>
-    </li>
-</ul>
+{% block content %}
+
+<h2>
+    {{ 'project.list.title'|trans([], 'AguilaBundle') }}
+    <em>({{ projects|length }})</em>
+    <a href="{{ path('project_new') }}">{{ 'project.list.new'|trans([], 'AguilaBundle') }}</a>
+</h2>
+
+<section>
+    <ul>
+        {% for project in projects %}
+        <li>
+            <h3>
+                <a href="{{ path('project_show', {'id': project.id}) }}">{{ project.name }}</a>
+                <a href="{{ path('project_edit', {'id': project.id}) }}">edit</a>
+            </h3>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}
