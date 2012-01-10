@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
+    static $difficulty_choices = array('easy', 'medium', 'hard', 'nightmare');
+    static $priority_choices = array('para ayer', 'ahora mismo', 'puede esperar', 'cuando se pueda');
     /**
      * @var integer $id
      *
@@ -85,7 +87,7 @@ class Task
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -105,7 +107,7 @@ class Task
     /**
      * Get description
      *
-     * @return text 
+     * @return text
      */
     public function getDescription()
     {
@@ -125,7 +127,7 @@ class Task
     /**
      * Get difficulty
      *
-     * @return integer 
+     * @return integer
      */
     public function getDifficulty()
     {
@@ -145,7 +147,7 @@ class Task
     /**
      * Get priority
      *
-     * @return integer 
+     * @return integer
      */
     public function getPriority()
     {
@@ -165,7 +167,7 @@ class Task
     /**
      * Get assignee
      *
-     * @return string 
+     * @return string
      */
     public function getAssignee()
     {
@@ -185,7 +187,7 @@ class Task
     /**
      * Get reporter
      *
-     * @return string 
+     * @return string
      */
     public function getReporter()
     {
@@ -205,7 +207,7 @@ class Task
     /**
      * Get comments
      *
-     * @return array 
+     * @return array
      */
     public function getComments()
     {

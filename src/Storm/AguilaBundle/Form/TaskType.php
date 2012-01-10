@@ -4,6 +4,7 @@ namespace Storm\AguilaBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Storm\AguilaBundle\Entity\Task;
 
 class TaskType extends AbstractType
 {
@@ -11,12 +12,22 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('description')
-            ->add('difficulty')
-            ->add('priority')
-            ->add('assignee')
+            ->add('difficulty', 'choice', array(
+                'choices' => Task::$difficulty_choices,
+            ))
+            ->add('priority', 'choice', array(
+                'choices' => Task::$priority_choices,
+            ))
+            ->add('assignee', array(
+                'required' => false,
+            ))
             ->add('reporter')
-            ->add('comments')
-            ->add('issues')
+            ->add('comments', array(
+                'required' => false,
+            ))
+            ->add('issues', array(
+                'required' => false,
+            ))
             ->add('feature')
         ;
     }
