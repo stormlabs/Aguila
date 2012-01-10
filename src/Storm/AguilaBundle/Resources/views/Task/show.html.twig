@@ -1,0 +1,57 @@
+<h1>Task</h1>
+
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ entity.id }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ entity.description }}</td>
+        </tr>
+        <tr>
+            <th>Difficulty</th>
+            <td>{{ entity.difficulty }}</td>
+        </tr>
+        <tr>
+            <th>Priority</th>
+            <td>{{ entity.priority }}</td>
+        </tr>
+        <tr>
+            <th>Assignee</th>
+            <td>{{ entity.assignee }}</td>
+        </tr>
+        <tr>
+            <th>Reporter</th>
+            <td>{{ entity.reporter }}</td>
+        </tr>
+        <tr>
+            <th>Comments</th>
+            <td>{{ entity.comments }}</td>
+        </tr>
+        <tr>
+            <th>Issues</th>
+            <td>{{ entity.issues }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('task') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('task_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('task_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
