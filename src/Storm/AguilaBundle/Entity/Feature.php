@@ -57,9 +57,14 @@ class Feature
      */
     private $tasks;
     
-    function __construct()
+    public function __construct()
     {
         $this->tasks = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     /**

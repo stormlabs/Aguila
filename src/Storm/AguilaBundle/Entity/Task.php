@@ -77,6 +77,11 @@ class Task
      */
     private $feature;
 
+    public function __toString()
+    {
+        return $this->description;
+    }
+
     /**
      * Get id
      *

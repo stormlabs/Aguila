@@ -36,9 +36,14 @@ class Project
      */
     private $features;
 
-    function __construct()
+    public function __construct()
     {
         $this->features = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     /**
