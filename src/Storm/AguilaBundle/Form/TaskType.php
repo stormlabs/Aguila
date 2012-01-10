@@ -18,14 +18,14 @@ class TaskType extends AbstractType
             ->add('priority', 'choice', array(
                 'choices' => Task::$priority_choices,
             ))
-            ->add('assignee', array(
+            ->add('assignee', null, array(
                 'required' => false,
             ))
             ->add('reporter')
-            ->add('comments', array(
+            ->add('comments', null, array(
                 'required' => false,
             ))
-            ->add('issues', array(
+            ->add('issues', null, array(
                 'required' => false,
             ))
             ->add('feature')
