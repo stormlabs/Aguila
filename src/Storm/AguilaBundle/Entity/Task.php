@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Task
 {
     static $difficulty_choices = array('easy', 'medium', 'hard', 'nightmare');
-    static $priority_choices = array('para ayer', 'ahora mismo', 'puede esperar', 'cuando se pueda');
+    static $priority_choices = array('cuando se pueda', 'puede esperar', 'ahora mismo', 'para ayer');
     /**
      * @var integer $id
      *
