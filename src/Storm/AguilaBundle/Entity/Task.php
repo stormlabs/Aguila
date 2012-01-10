@@ -14,6 +14,8 @@ class Task
 {
     static $difficulty_choices = array('easy', 'medium', 'hard', 'nightmare');
     static $priority_choices = array('cuando se pueda', 'puede esperar', 'ahora mismo', 'para ayer');
+    static $status_choices = array('esta en nada', 'trabajando en ello', 'terminado');
+
     /**
      * @var integer $id
      *
@@ -43,6 +45,13 @@ class Task
      * @ORM\Column(name="priority", type="integer")
      */
     private $priority;
+
+    /**
+     * @var integer $status
+     *
+     * @ORM\Column(name="status", type="integer")
+     */
+    private $status;
 
     /**
      * @var string $assignee
@@ -157,6 +166,26 @@ class Task
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
