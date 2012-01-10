@@ -166,7 +166,9 @@ class Feature
         $users = array();
         foreach($this->tasks as $task)
         {
-            $users[] = $task->getAssignee();
+            if ($task->getAssignee() !== null) {
+                $users[] = $task->getAssignee();
+            }
         }
         return $users;
     }
