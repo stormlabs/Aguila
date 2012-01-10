@@ -37,13 +37,6 @@ class Feature
     private $description;
 
     /**
-     * @var array $dependencies
-     *
-     * @ORM\Column(name="dependencies", type="array")
-     */
-    private $dependencies;
-
-    /**
      * @var Project $project
      * 
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="features")
@@ -116,26 +109,6 @@ class Feature
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set dependencies
-     *
-     * @param array $dependencies
-     */
-    public function setDependencies($dependencies)
-    {
-        $this->dependencies = $dependencies;
-    }
-
-    /**
-     * Get dependencies
-     *
-     * @return array 
-     */
-    public function getDependencies()
-    {
-        return $this->dependencies;
     }
 
     /**
