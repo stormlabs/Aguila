@@ -23,8 +23,6 @@ database:
 	php app/console doctrine:database:drop --force --env=$(ENV)
 	php app/console doctrine:database:create --env=$(ENV)
 	php app/console doctrine:schema:create --env=$(ENV)
-	make fulltext
-	make fixtures
 
 assets:
 	app/console assets:install --symlink web
