@@ -1,0 +1,13 @@
+storm.aguilabundle:
+    projecttype:
+        name:           Nombre
+
+    tasktype:
+        description:    Descripción
+        difficulty:     Dificultad
+        priority:       Prioridad
+        assignee:       Asignado a
+        reporter:       Reportada por
+        comments:       Comentarios
+        issues:         Issues
+        feature:        Funcionalidad
