@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+<link href="" rel="stylesheet" type="text/css" media="all"/>
+{% endblock %}
+
+{% block body %}
+<header>
+    <h1>Aguila</h1>
+    <nav>
+        <a href="{{ path('project') }}">Proyectos</a>
+    </nav>
+</header>
+
+<div id="content">
+    {% block content %}
+    {% endblock content %}
+</div>
+{% endblock body %}
