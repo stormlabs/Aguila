@@ -12,9 +12,6 @@ class FeatureType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('dependencies', array(
-                'required' => false,
-            ))
             ->add('project')
         ;
     }
