@@ -18,6 +18,9 @@ class TaskType extends AbstractType
             ->add('priority', 'choice', array(
                 'choices' => Task::$priority_choices,
             ))
+            ->add('status', 'choice', array(
+                'choices' => Task::$status_choices,
+            ))
             ->add('assignee', array(
                 'required' => false,
             ))
