@@ -62,3 +62,9 @@ swiftmailer:
 jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
+
+# FOSUserBundle Configuration
+fos_user:
+    db_driver:     orm
+    firewall_name: secured_area
+    user_class:    Storm\AguilaBundle\Entity\User
