@@ -13,7 +13,41 @@ project:
             tasks:              Tareas
             priority:           Prioridad
             involvedUsers:      Involucrados
+        no_features:            Este proyecto no sirve para nada
     edit:
         title:                  Editar Proyecto
         cancel:                 Cancelar
         submit:                 Guardar
+feature:
+    new:
+        title:                  Nueva Funcionalidad
+        submit:                 Crear
+    show:
+        edit:                   Editar
+        task:
+            difficulty:         Dificultad
+            priority:           Prioridad
+            status:             Estado
+        no_tasks:               Que facil, no hay tareas
+        task:
+            by:                 reportado por
+            and.assignee:       y asignado a
+
+task:
+    new:
+        title:                  Nueva Tarea
+        submit:                 Crear
+    difficulty:
+        - Facil
+        - Media
+        - Difícil
+        - Pesadilla
+    priority:
+        - Cuando se pueda
+        - Puede esperar
+        - ¡Ahora mismo!
+        - ¡¡Para ayer!!
+    status:
+        - Esta en nada
+        - Trabajando en ello
+        - Ya fue

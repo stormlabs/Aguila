@@ -31,7 +31,7 @@ class TaskType extends AbstractType
             ->add('issues', null, array(
                 'required' => false,
             ))
-            ->add('feature')
+            ->add('feature', 'hidden')
         ;
     }
 

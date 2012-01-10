@@ -12,9 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
-    static $difficulty_choices = array('easy', 'medium', 'hard', 'nightmare');
-    static $priority_choices = array('cuando se pueda', 'puede esperar', 'ahora mismo', 'para ayer');
-    static $status_choices = array('esta en nada', 'trabajando en ello', 'terminado');
+    static $difficulty_choices = array('task.difficulty.0', 'task.difficulty.1', 'task.difficulty.2', 'task.difficulty.3');
+    static $priority_choices = array('task.priority.0', 'task.priority.1', 'task.priority.2', 'task.priority.3');
+    static $status_choices = array('task.status.0', 'task.priority.1', 'task.priority.2');
 
     /**
      * @var integer $id

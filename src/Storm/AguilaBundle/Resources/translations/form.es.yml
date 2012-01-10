@@ -2,6 +2,10 @@ storm.aguilabundle:
     projecttype:
         name:           Nombre
 
+    featuretype:
+        name:           Nombre
+        description:    Description
+
     tasktype:
         description:    Descripción
         difficulty:     Dificultad
@@ -11,3 +15,4 @@ storm.aguilabundle:
         comments:       Comentarios
         issues:         Issues
         feature:        Funcionalidad
+        status:         Estado

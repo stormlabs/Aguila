@@ -11,7 +11,7 @@
     </header>
 
     <div>
-    {% render 'AguilaBundle:Feature:new' %}
+    {% render 'AguilaBundle:Feature:new' with {'project_id': project.id} %}
     </div>
 
     {% for feature in project.features %}
@@ -31,6 +31,10 @@
             <dt>{{ 'project.show.feature.priority'|trans([], 'AguilaBundle') }}</dt>
             <dd>{{ feature.priority }}</dd>
         </dl>
+    </div>
+    {% else %}
+    <div>
+        {{ "project.show.no_features"|trans([], 'AguilaBundle') }}
     </div>
     {% endfor %}
 

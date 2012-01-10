@@ -17,7 +17,7 @@ use Storm\AguilaBundle\Form\FeatureType;
 class FeatureController extends Controller
 {
     /**
-     * Lists all Feature entities.
+     * Lists all Feature features.
      *
      * @Route("/", name="feature")
      * @Template()
@@ -26,13 +26,13 @@ class FeatureController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entities = $em->getRepository('AguilaBundle:Feature')->findAll();
+        $features = $em->getRepository('AguilaBundle:Feature')->findAll();
 
-        return array('entities' => $entities);
+        return array('features' => $features);
     }
 
     /**
-     * Finds and displays a Feature entity.
+     * Finds and displays a Feature feature.
      *
      * @Route("/{id}/show", name="feature_show")
      * @Template()
@@ -41,38 +41,40 @@ class FeatureController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('AguilaBundle:Feature')->find($id);
+        $feature = $em->getRepository('AguilaBundle:Feature')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Feature entity.');
+        if (!$feature) {
+            throw $this->createNotFoundException('Unable to find Feature feature.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        );
-    }
-
-    /**
-     * Displays a form to create a new Feature entity.
-     *
-     * @Route("/new", name="feature_new")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Feature();
-        $form   = $this->createForm(new FeatureType(), $entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView()
+            'feature'      => $feature,
+            'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Creates a new Feature entity.
+     * Displays a form to create a new Feature feature.
+     *
+     * @Route("/new/{project_id}", name="feature_new")
+     * @Template()
+     */
+    public function newAction($project_id)
+    {
+        $feature = new Feature();
+        $feature->setProject($project_id);
+        $form   = $this->createForm(new FeatureType(), $feature);
+
+        return array(
+            'feature' => $feature,
+            'form'   => $form->createView(),
+        );
+    }
+
+    /**
+     * Creates a new Feature feature.
      *
      * @Route("/create", name="feature_create")
      * @Method("post")
@@ -80,28 +82,30 @@ class FeatureController extends Controller
      */
     public function createAction()
     {
-        $entity  = new Feature();
+        $feature  = new Feature();
         $request = $this->getRequest();
-        $form    = $this->createForm(new FeatureType(), $entity);
+        $form    = $this->createForm(new FeatureType(), $feature);
         $form->bindRequest($request);
 
         if ($form->isValid()) {
+            $project = $this->getDoctrine()->getEntityManager()->getReference('AguilaBundle:Project', $feature->getProject());
+            $feature->setProject($project);
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($entity);
+            $em->persist($feature);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('feature_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('feature_show', array('id' => $feature->getId())));
             
         }
 
         return array(
-            'entity' => $entity,
+            'feature' => $feature,
             'form'   => $form->createView()
         );
     }
 
     /**
-     * Displays a form to edit an existing Feature entity.
+     * Displays a form to edit an existing Feature feature.
      *
      * @Route("/{id}/edit", name="feature_edit")
      * @Template()
@@ -110,24 +114,24 @@ class FeatureController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('AguilaBundle:Feature')->find($id);
+        $feature = $em->getRepository('AguilaBundle:Feature')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Feature entity.');
+        if (!$feature) {
+            throw $this->createNotFoundException('Unable to find Feature feature.');
         }
 
-        $editForm = $this->createForm(new FeatureType(), $entity);
+        $editForm = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'feature'      => $feature,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Edits an existing Feature entity.
+     * Edits an existing Feature feature.
      *
      * @Route("/{id}/update", name="feature_update")
      * @Method("post")
@@ -137,13 +141,13 @@ class FeatureController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('AguilaBundle:Feature')->find($id);
+        $feature = $em->getRepository('AguilaBundle:Feature')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Feature entity.');
+        if (!$feature) {
+            throw $this->createNotFoundException('Unable to find Feature feature.');
         }
 
-        $editForm   = $this->createForm(new FeatureType(), $entity);
+        $editForm   = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($id);
 
         $request = $this->getRequest();
@@ -151,21 +155,21 @@ class FeatureController extends Controller
         $editForm->bindRequest($request);
 
         if ($editForm->isValid()) {
-            $em->persist($entity);
+            $em->persist($feature);
             $em->flush();
 
             return $this->redirect($this->generateUrl('feature_edit', array('id' => $id)));
         }
 
         return array(
-            'entity'      => $entity,
+            'feature'      => $feature,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Deletes a Feature entity.
+     * Deletes a Feature feature.
      *
      * @Route("/{id}/delete", name="feature_delete")
      * @Method("post")
@@ -179,13 +183,13 @@ class FeatureController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $entity = $em->getRepository('AguilaBundle:Feature')->find($id);
+            $feature = $em->getRepository('AguilaBundle:Feature')->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Feature entity.');
+            if (!$feature) {
+                throw $this->createNotFoundException('Unable to find Feature feature.');
             }
 
-            $em->remove($entity);
+            $em->remove($feature);
             $em->flush();
         }
 

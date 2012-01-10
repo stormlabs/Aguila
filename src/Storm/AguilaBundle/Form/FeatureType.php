@@ -12,7 +12,7 @@ class FeatureType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('project')
+            ->add('project', 'hidden')
         ;
     }
 

@@ -15,23 +15,23 @@
         </tr>
     </thead>
     <tbody>
-    {% for entity in entities %}
+    {% for task in tasks %}
         <tr>
-            <td><a href="{{ path('task_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-            <td>{{ entity.description }}</td>
-            <td>{{ entity.difficulty }}</td>
-            <td>{{ entity.priority }}</td>
-            <td>{{ entity.assignee }}</td>
-            <td>{{ entity.reporter }}</td>
-            <td>{{ entity.comments }}</td>
-            <td>{{ entity.issues }}</td>
+            <td><a href="{{ path('task_show', { 'id': task.id }) }}">{{ task.id }}</a></td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.difficulty }}</td>
+            <td>{{ task.priority }}</td>
+            <td>{{ task.assignee }}</td>
+            <td>{{ task.reporter }}</td>
+            <td>{{ task.comments }}</td>
+            <td>{{ task.issues }}</td>
             <td>
                 <ul>
                     <li>
-                        <a href="{{ path('task_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('task_show', { 'id': task.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('task_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('task_edit', { 'id': task.id }) }}">edit</a>
                     </li>
                 </ul>
             </td>
