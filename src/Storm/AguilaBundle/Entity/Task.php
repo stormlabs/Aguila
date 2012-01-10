@@ -77,7 +77,7 @@ class Task
     /**
      * @var string $issues
      *
-     * @ORM\Column(name="issues", type="string", length=255)
+     * @ORM\Column(name="issues", type="string", length=255, nullable=true)
      */
     private $issues;
 
@@ -90,6 +90,7 @@ class Task
 
     public function __construct()
     {
+        $this->status = 0;
         $this->comments = array();
     }
 
