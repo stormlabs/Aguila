@@ -91,12 +91,20 @@ class TaskController extends Controller
         $form->bindRequest($request);
 
         if ($form->isValid()) {
+            /** @var $em \Doctrine\ORM\EntityManager */
             $em = $this->getDoctrine()->getEntityManager();
-            $feature = $em->getReference('AguilaBundle:Feature', $task->getFeature());
+            $feature = $em->getRepository('AguilaBundle:Feature')->find((int) $task->getFeature());
             $task->setFeature($feature);
+
+            $project = $feature->getProject();
+
+            $task->setNumber($number = $project->getTaskCounter());
+            $project->setTaskCounter(++$number);
+
             $user = $this->get('security.context')->getToken()->getUser();
             $task->setReporter($user);
             $em->persist($task);
+            $em->persist($project);
             $em->flush();
 
             return $this->redirect($this->generateUrl('feature_show', array('id' => $task->getFeature()->getId())));
