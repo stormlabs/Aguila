@@ -36,9 +36,17 @@ class Project
      */
     private $features;
 
+    /**
+     * @var integer $taskCounter
+     *
+     * @ORM\Column(name="task_counter", type="integer")
+     */
+    private $taskCounter;
+
     public function __construct()
     {
         $this->features = new ArrayCollection();
+        $this->taskCounter = 1;
     }
 
     public function __toString()
@@ -94,5 +102,25 @@ class Project
     public function getFeatures()
     {
         return $this->features;
+    }
+
+    /**
+     * Set task counter
+     *
+     * @param integer $taskCounter
+     */
+    public function setTaskCounter($taskCounter)
+    {
+        $this->taskCounter = $taskCounter;
+    }
+
+    /**
+     * Get task counter
+     *
+     * @return integer
+     */
+    public function getTaskCounter()
+    {
+        return $this->taskCounter;
     }
 }

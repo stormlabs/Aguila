@@ -19,10 +19,10 @@ class TaskController extends Controller
     /**
      * Lists all Task tasks.
      *
-     * @Route("/", name="task")
+     * @Route("/", name="task_list")
      * @Template()
      */
-    public function indexAction()
+    public function listAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
 
@@ -47,11 +47,8 @@ class TaskController extends Controller
             throw $this->createNotFoundException('Unable to find Task task.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'task'      => $task,
-            'delete_form' => $deleteForm->createView(),
             'task_difficulty_choices' => Task::$difficulty_choices,
             'task_priority_choices' => Task::$priority_choices,
             'task_status_choices' => Task::$status_choices,
@@ -91,12 +88,20 @@ class TaskController extends Controller
         $form->bindRequest($request);
 
         if ($form->isValid()) {
+            /** @var $em \Doctrine\ORM\EntityManager */
             $em = $this->getDoctrine()->getEntityManager();
-            $feature = $em->getReference('AguilaBundle:Feature', $task->getFeature());
+            $feature = $em->getRepository('AguilaBundle:Feature')->find((int) $task->getFeature());
             $task->setFeature($feature);
+
+            $project = $feature->getProject();
+
+            $task->setNumber($number = $project->getTaskCounter());
+            $project->setTaskCounter(++$number);
+
             $user = $this->get('security.context')->getToken()->getUser();
             $task->setReporter($user);
             $em->persist($task);
+            $em->persist($project);
             $em->flush();
 
             return $this->redirect($this->generateUrl('feature_show', array('id' => $task->getFeature()->getId())));
@@ -126,12 +131,10 @@ class TaskController extends Controller
         }
 
         $editForm = $this->createForm(new TaskType(), $task);
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'task'      => $task,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -153,7 +156,6 @@ class TaskController extends Controller
         }
 
         $editForm   = $this->createForm(new TaskType(), $task);
-        $deleteForm = $this->createDeleteForm($id);
 
         $request = $this->getRequest();
 
@@ -169,43 +171,6 @@ class TaskController extends Controller
         return array(
             'task'      => $task,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
-    }
-
-    /**
-     * Deletes a Task task.
-     *
-     * @Route("/{id}/delete", name="task_delete")
-     * @Method("post")
-     */
-    public function deleteAction($id)
-    {
-        $form = $this->createDeleteForm($id);
-        $request = $this->getRequest();
-
-        $form->bindRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
-            $task = $em->getRepository('AguilaBundle:Task')->find($id);
-
-            if (!$task) {
-                throw $this->createNotFoundException('Unable to find Task task.');
-            }
-
-            $em->remove($task);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('task'));
-    }
-
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
     }
 }

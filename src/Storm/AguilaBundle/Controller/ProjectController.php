@@ -19,10 +19,10 @@ class ProjectController extends Controller
     /**
      * Lists all Projects.
      *
-     * @Route("/", name="project")
+     * @Route("/", name="project_list")
      * @Template()
      */
-    public function indexAction()
+    public function listAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
 

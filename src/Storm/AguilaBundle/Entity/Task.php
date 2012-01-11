@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Storm\AguilaBundle\Entity\TaskRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Task
 {
@@ -24,6 +25,13 @@ class Task
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var integer $number
+     *
+     * @ORM\Column(name="number", type="integer")
+     */
+    private $number;
 
     /**
      * @var text $description
@@ -107,6 +115,26 @@ class Task
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get number
+     *
+     * @param integer $number
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+    }
+
+    /**
+     * Set number
+     *
+     * @return integer
+     */
+    public function getNumber()
+    {
+        return $this->number;
     }
 
     /**
