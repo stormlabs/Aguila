@@ -3,6 +3,7 @@
 namespace Storm\AguilaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -30,6 +31,14 @@ class Feature
     private $name;
 
     /**
+     * @var string $slug
+     *
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
+
+    /**
      * @var text $description
      *
      * @ORM\Column(name="description", type="text")
@@ -38,22 +47,21 @@ class Feature
 
     /**
      * @var Project $project
-     * 
+     *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="features")
      */
     private $project;
-    
+
     /**
      * @var ArrayCollection $tasks
      *
      * @ORM\OneToMany(targetEntity="Task", mappedBy="feature")
      */
     private $tasks;
-    
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
-        $this->dependencies = array();
     }
 
     public function __toString()
@@ -64,7 +72,7 @@ class Feature
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -84,11 +92,27 @@ class Feature
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -104,7 +128,7 @@ class Feature
     /**
      * Get description
      *
-     * @return text 
+     * @return text
      */
     public function getDescription()
     {
@@ -124,7 +148,7 @@ class Feature
     /**
      * Get project
      *
-     * @return Project 
+     * @return Project
      */
     public function getProject()
     {
@@ -144,7 +168,7 @@ class Feature
     /**
      * Get tasks
      *
-     * @return ArrayCollection 
+     * @return ArrayCollection
      */
     public function getTasks()
     {
@@ -154,7 +178,7 @@ class Feature
     public function getPriority()
     {
         $priority = 0;
-        foreach($this->tasks as $task)
+        foreach ($this->tasks as $task)
         {
             $priority += $task->getPriority();
         }
@@ -164,7 +188,7 @@ class Feature
     public function getInvolvedUsers()
     {
         $users = array();
-        foreach($this->tasks as $task)
+        foreach ($this->tasks as $task)
         {
             if ($task->getAssignee() !== null) {
                 $users[] = $task->getAssignee();
