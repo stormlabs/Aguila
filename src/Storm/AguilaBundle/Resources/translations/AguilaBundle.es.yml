@@ -35,11 +35,19 @@ feature:
 task:
     index:
         no_tasks:               Que facil, no hay tareas
-        reported_by:            reportado por
+        reported_by:            reportada por
         and_assignee:           y asignado a
     new:
         title:                  Nueva Tarea
         submit:                 Crear
+    show:
+        edit:                   Editar
+        reported_by:            reportada por
+        and_assignee:           y asignado a
+    edit:
+        cancel:                 Cancelar
+        submit:                 Guardar
+
     difficulty:
         - Facil
         - Media

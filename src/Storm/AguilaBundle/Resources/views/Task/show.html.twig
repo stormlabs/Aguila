@@ -1,66 +1,31 @@
-<h1>Task</h1>
+{% extends 'AguilaBundle::layout.html.twig' %}
 
-<table class="record_properties">
-    <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ task.id }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ task.description }}</td>
-        </tr>
-        <tr>
-            <th>Difficulty</th>
-            <td>{{ task.difficulty }}</td>
-        </tr>
-        <tr>
-            <th>Priority</th>
-            <td>{{ task.priority }}</td>
-        </tr>
-        <tr>
-            <th>Assignee</th>
-            <td>{{ task.assignee }}</td>
-        </tr>
-        <tr>
-            <th>Reporter</th>
-            <td>{{ task.reporter }}</td>
-        </tr>
-        <tr>
-            <th>Comments</th>
-            <td>{{ task.comments }}</td>
-        </tr>
-        <tr>
-            <th>Issues</th>
-            <td>{{ task.issues }}</td>
-        </tr>
-    </tbody>
-</table>
+{% block title "#" ~ task.id ~ ": " ~ task.description %}
 
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('task') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('task_edit', { 'id': task.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('task_delete', { 'id': task.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+{% block content %}
 
-<dl>
-    <dt>{{ 'feature.show.task.difficulty'|trans([], 'AguilaBundle') }}</dt>
-    <dd>{{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}</dd>
-    <dt>{{ 'feature.show.task.priority'|trans([], 'AguilaBundle') }}</dt>
-    <dd>{{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}</dd>
-    <dt>{{ 'feature.show.task.status'|trans([], 'AguilaBundle') }}</dt>
-    <dd>{{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}</dd>
-</dl>
+<section>
+
+    <header>
+        <h2>{{ task.description }}</h2>
+        <a href="{{ path('task_edit', {'id': task.id}) }}">{{ 'task.show.edit'|trans([], 'AguilaBundle') }}</a>
+        <p>
+            {{ 'task.show.reported_by'|trans([], 'AguilaBundle') }} <strong>{{ task.reporter }}</strong>
+            {% if task.assignee %}
+            {{ 'task.show.and_assignee'|trans([], 'AguilaBundle') }} <strong>{{ task.assignee }}</strong>
+            {% endif %}
+        </p>
+    </header>
+
+    <dl>
+        <dt>{{ 'feature.show.task.difficulty'|trans([], 'AguilaBundle') }}</dt>
+        <dd>{{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}</dd>
+        <dt>{{ 'feature.show.task.priority'|trans([], 'AguilaBundle') }}</dt>
+        <dd>{{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}</dd>
+        <dt>{{ 'feature.show.task.status'|trans([], 'AguilaBundle') }}</dt>
+        <dd>{{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}</dd>
+    </dl>
+
+</section>
+
+{% endblock %}

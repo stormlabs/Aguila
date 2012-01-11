@@ -1,22 +1,15 @@
-<h1>Task edit</h1>
+{% extends 'AguilaBundle::layout.html.twig' %}
 
-<form action="{{ path('task_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-    {{ form_widget(edit_form) }}
-    <p>
-        <button type="submit">Edit</button>
-    </p>
-</form>
+{% block title "#" ~ task.id ~ ": " ~ task.description %}
 
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('task') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('task_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+{% block content %}
+
+<section>
+    <form action="{{ path('task_update', { 'id': task.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+        {{ form_widget(edit_form) }}
+        <a href="{{ path('task_show', {'id': task.id}) }}">{{ 'task.edit.cancel'|trans([], 'AguilaBundle') }}</a>
+        <button type="submit">{{ 'task.edit.submit'|trans([], 'AguilaBundle') }}</button>
+    </form>
+</section>
+
+{% endblock %}
