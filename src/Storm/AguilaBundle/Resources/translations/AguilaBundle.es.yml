@@ -9,31 +9,34 @@ project:
     show:
         edit:                   Editar
         feature:
-            new:                Nueva Funcionalidad
-            tasks:              Tareas
-            priority:           Prioridad
-            involvedUsers:      Involucrados
-        no_features:            Este proyecto no sirve para nada
     edit:
         title:                  Editar Proyecto
         cancel:                 Cancelar
         submit:                 Guardar
 feature:
+    index:
+        tasks:                  Tareas
+        priority:               Prioridad
+        involvedUsers:          Involucrados
+        no_features:            Este proyecto no sirve para nada
     new:
         title:                  Nueva Funcionalidad
         submit:                 Crear
+    edit:
+        cancel:                 Cancelar
+        submit:                 Guardar
     show:
         edit:                   Editar
         task:
             difficulty:         Dificultad
             priority:           Prioridad
             status:             Estado
-        no_tasks:               Que facil, no hay tareas
-        task:
-            by:                 reportado por
-            and.assignee:       y asignado a
 
 task:
+    index:
+        no_tasks:               Que facil, no hay tareas
+        reported_by:            reportado por
+        and_assignee:           y asignado a
     new:
         title:                  Nueva Tarea
         submit:                 Crear
