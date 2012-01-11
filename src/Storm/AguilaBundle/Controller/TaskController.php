@@ -97,7 +97,7 @@ class TaskController extends Controller
             $em->persist($task);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('task_show', array('id' => $task->getId())));
+            return $this->redirect($this->generateUrl('feature_show', array('id' => $task->getFeature()->getId())));
             
         }
 
