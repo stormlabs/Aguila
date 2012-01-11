@@ -63,7 +63,7 @@ task:
         - Trabajando en ello
         - Ya fue
 
-site:
+layout:
     nav:
         projects: Proyectos
         login:    Ingresar
