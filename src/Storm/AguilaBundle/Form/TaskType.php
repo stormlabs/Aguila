@@ -21,10 +21,10 @@ class TaskType extends AbstractType
 //            ->add('status', 'choice', array(
 //                'choices' => Task::$status_choices,
 //            ))
-            ->add('assignee', null, array(
+            ->add('assignee', 'entity', array(
+                'class' => 'AguilaBundle:User',
                 'required' => false,
             ))
-            ->add('reporter')
 //            ->add('comments', null, array(
 //                'required' => false,
 //            ))

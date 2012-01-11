@@ -54,16 +54,16 @@ class Task
     private $status;
 
     /**
-     * @var string $assignee
+     * @var User $assignee
      *
-     * @ORM\Column(name="assignee", type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity="User")
      */
     private $assignee;
 
     /**
-     * @var string $reporter
+     * @var User $reporter
      *
-     * @ORM\Column(name="reporter", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="User")
      */
     private $reporter;
 
@@ -192,9 +192,9 @@ class Task
     /**
      * Set assignee
      *
-     * @param string $assignee
+     * @param User $assignee
      */
-    public function setAssignee($assignee)
+    public function setAssignee(User $assignee)
     {
         $this->assignee = $assignee;
     }
@@ -202,7 +202,7 @@ class Task
     /**
      * Get assignee
      *
-     * @return string
+     * @return User
      */
     public function getAssignee()
     {
@@ -212,9 +212,9 @@ class Task
     /**
      * Set reporter
      *
-     * @param string $reporter
+     * @param User $reporter
      */
-    public function setReporter($reporter)
+    public function setReporter(User $reporter)
     {
         $this->reporter = $reporter;
     }
@@ -222,7 +222,7 @@ class Task
     /**
      * Get reporter
      *
-     * @return string
+     * @return User
      */
     public function getReporter()
     {
