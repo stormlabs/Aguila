@@ -11,10 +11,10 @@
         <ul>
             <li><a href="{{ path('project') }}">{{'proyectos'|trans([], 'AguilaBundle')}}</a></li>
         {% if app.security.token and app.security.isGranted('ROLE_USER')  %}
-            <li><a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a></li>
+            <li><a href="{{ path('fos_user_profile_show') }}">{{ app.user }}</a></li>
             <li><a href="{{ path('fos_user_security_logout') }}">{{ 'logout'|trans([], 'AguilaBundle') }}</a></li>
         {% else %}
-            <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
+            <li><a href="{{ path('fos_user_security_login') }}">{{ 'login'|trans([], 'AguilaBundle') }}</a></li>
             <li><a href="{{ path('fos_user_registration_register') }}">{{'register'|trans([], 'AguilaBundle')}}</a></li>
         {% endif %}
         </ul>
