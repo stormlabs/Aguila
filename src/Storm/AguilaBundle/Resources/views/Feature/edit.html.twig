@@ -1,22 +1,15 @@
-<h1>Feature edit</h1>
+{% extends 'AguilaBundle::layout.html.twig' %}
 
-<form action="{{ path('feature_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-    {{ form_widget(edit_form) }}
-    <p>
-        <button type="submit">Edit</button>
-    </p>
-</form>
+{% block title feature.name %}
 
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('feature') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('feature_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+{% block content %}
+
+<section>
+    <form action="{{ path('feature_update', { 'id': feature.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+        {{ form_widget(edit_form) }}
+        <a href="{{ path('feature_show', {'id': feature.id}) }}">{{ 'feature.edit.cancel'|trans([], 'AguilaBundle') }}</a>
+        <button type="submit">{{ 'feature.edit.submit'|trans([], 'AguilaBundle') }}</button>
+    </form>
+</section>
+
+{% endblock %}
