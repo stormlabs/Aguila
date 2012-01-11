@@ -1,6 +1,6 @@
 {% extends 'AguilaBundle::layout.html.twig' %}
 
-{% block title feature.name %}
+{% block title feature.project ~ " | " ~ feature.name %}
 
 {% block content %}
 
@@ -14,19 +14,7 @@
     {% render 'AguilaBundle:Task:new' with {'feature_id': feature.id} %}
     </div>
 
-    {% for task in feature.tasks %}
-    <div>
-        <h3><a href="{{ path('task_show', {'id': task.id}) }}">{{ task.description }}</a></h3>
-        <p>
-            {{ 'feature.show.task.by'|trans([], 'AguilaBundle') }} {{ task.reporter }}
-            {{ 'feature.show.task.and.assignee'|trans([], 'AguilaBundle') }} {{ task.assignee }}
-        </p>
-    </div>
-    {% else %}
-    <div>
-        {{ "feature.show.no_tasks"|trans([], 'AguilaBundle') }}
-    </div>
-    {% endfor %}
+    {% include 'AguilaBundle:Task:index.html.twig' with {'tasks': feature.tasks} %}
 
 </section>
 

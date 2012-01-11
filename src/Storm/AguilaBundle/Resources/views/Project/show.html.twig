@@ -14,29 +14,7 @@
     {% render 'AguilaBundle:Feature:new' with {'project_id': project.id} %}
     </div>
 
-    {% for feature in project.features %}
-    <div>
-        <h3><a href="{{ path('feature_show', {'id': feature.id}) }}">{{ feature.name }}</a></h3>
-        <div>
-            <h4>{{ 'project.show.feature.involvedUsers'|trans([], 'AguilaBundle') }}</h4>
-            <ul>
-                {% for user in feature.involvedUsers %}
-                <li>{{ user }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <dl>
-            <dt>{{ 'project.show.feature.tasks'|trans([], 'AguilaBundle') }}</dt>
-            <dd>{{ feature.tasks|length }}</dd>
-            <dt>{{ 'project.show.feature.priority'|trans([], 'AguilaBundle') }}</dt>
-            <dd>{{ feature.priority }}</dd>
-        </dl>
-    </div>
-    {% else %}
-    <div>
-        {{ "project.show.no_features"|trans([], 'AguilaBundle') }}
-    </div>
-    {% endfor %}
+    {% include 'AguilaBundle:Feature:index.html.twig' with {'features': project.features} %}
 
 </section>
 
