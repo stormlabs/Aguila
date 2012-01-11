@@ -9,7 +9,7 @@
     <h1>Aguila</h1>
     <nav>
         <ul>
-            <li><a href="{{ path('project') }}">{{'layout.nav.projects'|trans([], 'AguilaBundle')}}</a></li>
+            <li><a href="{{ path('project_list') }}">{{'layout.nav.projects'|trans([], 'AguilaBundle')}}</a></li>
         {% if app.security.token and app.security.isGranted('ROLE_USER')  %}
             <li><a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a></li>
             <li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.nav.logout'|trans([], 'AguilaBundle') }}</a></li>
