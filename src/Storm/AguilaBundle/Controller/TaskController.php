@@ -47,11 +47,8 @@ class TaskController extends Controller
             throw $this->createNotFoundException('Unable to find Task task.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'task'      => $task,
-            'delete_form' => $deleteForm->createView(),
             'task_difficulty_choices' => Task::$difficulty_choices,
             'task_priority_choices' => Task::$priority_choices,
             'task_status_choices' => Task::$status_choices,
@@ -134,12 +131,10 @@ class TaskController extends Controller
         }
 
         $editForm = $this->createForm(new TaskType(), $task);
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'task'      => $task,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -161,7 +156,6 @@ class TaskController extends Controller
         }
 
         $editForm   = $this->createForm(new TaskType(), $task);
-        $deleteForm = $this->createDeleteForm($id);
 
         $request = $this->getRequest();
 
@@ -177,43 +171,6 @@ class TaskController extends Controller
         return array(
             'task'      => $task,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
-    }
-
-    /**
-     * Deletes a Task task.
-     *
-     * @Route("/{id}/delete", name="task_delete")
-     * @Method("post")
-     */
-    public function deleteAction($id)
-    {
-        $form = $this->createDeleteForm($id);
-        $request = $this->getRequest();
-
-        $form->bindRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
-            $task = $em->getRepository('AguilaBundle:Task')->find($id);
-
-            if (!$task) {
-                throw $this->createNotFoundException('Unable to find Task task.');
-            }
-
-            $em->remove($task);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('task'));
-    }
-
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
     }
 }
