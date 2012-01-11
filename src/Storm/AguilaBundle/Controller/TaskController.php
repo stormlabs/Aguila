@@ -19,10 +19,10 @@ class TaskController extends Controller
     /**
      * Lists all Task tasks.
      *
-     * @Route("/", name="task")
+     * @Route("/", name="task_list")
      * @Template()
      */
-    public function indexAction()
+    public function listAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
 

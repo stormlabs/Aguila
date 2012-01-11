@@ -14,7 +14,7 @@ project:
         cancel:                 Cancelar
         submit:                 Guardar
 feature:
-    index:
+    list:
         tasks:                  Tareas
         priority:               Prioridad
         involvedUsers:          Involucrados
@@ -33,7 +33,7 @@ feature:
             status:             Estado
 
 task:
-    index:
+    list:
         no_tasks:               Que facil, no hay tareas
         reported_by:            reportada por
         and_assignee:           y asignado a

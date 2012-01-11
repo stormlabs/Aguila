@@ -19,10 +19,10 @@ class FeatureController extends Controller
     /**
      * Lists all Feature features.
      *
-     * @Route("/", name="feature")
+     * @Route("/", name="feature_list")
      * @Template()
      */
-    public function indexAction()
+    public function listAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
 
