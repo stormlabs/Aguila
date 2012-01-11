@@ -24,6 +24,9 @@ database:
 	php app/console doctrine:database:create --env=$(ENV)
 	php app/console doctrine:schema:create --env=$(ENV)
 
+fixtures:
+	php app/console doctrine:fixtures:load --env=$(ENV)
+
 assets:
 	app/console assets:install --symlink web
 	app/console assetic:dump
