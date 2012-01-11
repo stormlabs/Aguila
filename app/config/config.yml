@@ -70,3 +70,9 @@ fos_user:
     db_driver:     orm
     firewall_name: secured_area
     user_class:    Storm\AguilaBundle\Entity\User
+
+# StofDoctrineExtensionsBundle Configuration
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable:  true
