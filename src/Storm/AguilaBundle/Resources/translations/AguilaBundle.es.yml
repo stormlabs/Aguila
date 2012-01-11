@@ -51,3 +51,10 @@ task:
         - Esta en nada
         - Trabajando en ello
         - Ya fue
+
+site:
+    nav:
+        projects: Proyectos
+        login:    Ingresar
+        logout:   Salir
+        register: Registrarse
