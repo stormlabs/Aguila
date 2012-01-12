@@ -108,11 +108,11 @@ class TaskController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('task_show', array(
+            return $this->redirect($this->generateUrl('aguila_task_show', array(
                 'project_slug' => $project_slug,
                 'number' => $task->getNumber(),
             )));
-            
+
         }
 
         return array(
@@ -174,7 +174,7 @@ class TaskController extends Controller
             $em->persist($task);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('task_show', array(
+            return $this->redirect($this->generateUrl('aguila_task_show', array(
                 'project_slug' => $project_slug,
                 'number' => $number,
             )));
@@ -185,7 +185,7 @@ class TaskController extends Controller
             'edit_form'   => $editForm->createView(),
         );
     }
-    
+
     /**
      * Adds a comment to a Task.
      *
@@ -212,7 +212,7 @@ class TaskController extends Controller
                 ->addValidator()
                 ->getForm();
         $request = $this->getRequest();
-        
+
         $commentForm->bindRequest($request);
         if ($commentForm->isValid()) {
             $comment = $commentForm->getData();

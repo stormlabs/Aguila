@@ -92,7 +92,7 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_show', array('slug' => $project->getSlug())));
+            return $this->redirect($this->generateUrl('aguila_project_show', array('slug' => $project->getSlug())));
 
         }
 
@@ -156,7 +156,7 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_edit', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('aguila_project_edit', array('slug' => $slug)));
         }
 
         return array(
@@ -191,7 +191,7 @@ class ProjectController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('project'));
+        return $this->redirect($this->generateUrl('aguila_project_list'));
     }
 
     private function createDeleteForm($slug)

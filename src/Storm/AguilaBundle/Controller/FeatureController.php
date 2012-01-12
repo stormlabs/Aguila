@@ -96,7 +96,7 @@ class FeatureController extends Controller
             $em->persist($feature);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('feature_show', array(
+            return $this->redirect($this->generateUrl('aguila_feature_show', array(
                 'project_slug' => $project_slug,
                 'slug' => $feature->getSlug()
             )));
@@ -162,7 +162,7 @@ class FeatureController extends Controller
             $em->persist($feature);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('feature_show', array(
+            return $this->redirect($this->generateUrl('aguila_feature_show', array(
                 'project_slug' => $project_slug,
                 'slug' => $slug,
             )));
@@ -181,7 +181,7 @@ class FeatureController extends Controller
      * @Route("/feature/{slug}/delete", name="aguila_feature_delete")
      * @Method("post")
      */
-    public function deleteAction($slug)
+    public function deleteAction($project_slug, $slug)
     {
         $form = $this->createDeleteForm($slug);
         $request = $this->getRequest();
@@ -200,7 +200,10 @@ class FeatureController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('feature'));
+        return $this->redirect($this->generateUrl('aguila_feature_show', array(
+            'project_slug' => $project_slug,
+            'slug' => $slug,
+        )));
     }
 
     private function createDeleteForm($slug)
