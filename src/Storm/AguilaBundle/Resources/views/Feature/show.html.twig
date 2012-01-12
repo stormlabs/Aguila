@@ -7,7 +7,7 @@
 <section>
     <header>
         <h2>{{ feature.name }}</h2>
-        <a href="{{ path('feature_edit', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">{{ 'feature.show.edit'|trans([], 'AguilaBundle') }}</a>
+        <a href="{{ path('aguila_feature_edit', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">{{ 'feature.show.edit'|trans([], 'AguilaBundle') }}</a>
     </header>
 
     <div>

@@ -1,6 +1,6 @@
 {% for feature in features %}
 <div>
-    <h3><a href="{{ path('feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">{{ feature.name }}</a></h3>
+    <h3><a href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">{{ feature.name }}</a></h3>
     <div>
         {% if feature.involvedUsers %}
         <h4>{{ 'feature.list.involvedUsers'|trans([], 'AguilaBundle') }}</h4>

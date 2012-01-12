@@ -33,7 +33,7 @@ class FeatureController extends Controller
     /**
      * Finds and displays a Feature feature.
      *
-     * @Route("/{slug}", name="feature_show")
+     * @Route("/{slug}", name="aguila_feature_show")
      * @Method("get")
      * @Template()
      */
@@ -75,7 +75,7 @@ class FeatureController extends Controller
     /**
      * Creates a new Feature feature.
      *
-     * @Route("/feature/create", name="feature_create")
+     * @Route("/feature/create", name="aguila_feature_create")
      * @Method("post")
      * @Template("AguilaBundle:Feature:new.html.twig")
      */
@@ -111,7 +111,7 @@ class FeatureController extends Controller
     /**
      * Displays a form to edit an existing Feature feature.
      *
-     * @Route("/feature/{slug}/edit", name="feature_edit")
+     * @Route("/feature/{slug}/edit", name="aguila_feature_edit")
      * @Template()
      */
     public function editAction($slug)
@@ -137,7 +137,7 @@ class FeatureController extends Controller
     /**
      * Edits an existing Feature feature.
      *
-     * @Route("/feature/{slug}/update", name="feature_update")
+     * @Route("/feature/{slug}/update", name="aguila_feature_update")
      * @Method("post")
      * @Template("AguilaBundle:Feature:edit.html.twig")
      */
@@ -178,7 +178,7 @@ class FeatureController extends Controller
     /**
      * Deletes a Feature feature.
      *
-     * @Route("/feature/{slug}/delete", name="feature_delete")
+     * @Route("/feature/{slug}/delete", name="aguila_feature_delete")
      * @Method("post")
      */
     public function deleteAction($slug)

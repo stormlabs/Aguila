@@ -6,9 +6,9 @@
 
 <h2>{{ 'project.new.title'|trans([], 'AguilaBundle') }}</h2>
 
-<form action="{{ path('project_create') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('aguila_project_create') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-    <a href="{{ path('project_list') }}">{{ 'project.new.cancel'|trans([], 'AguilaBundle') }}</a>
+    <a href="{{ path('aguila_project_list') }}">{{ 'project.new.cancel'|trans([], 'AguilaBundle') }}</a>
     <button type="submit">{{ 'project.new.submit'|trans([], 'AguilaBundle') }}</button>
 </form>
 

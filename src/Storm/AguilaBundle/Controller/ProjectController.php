@@ -19,7 +19,7 @@ class ProjectController extends Controller
     /**
      * Lists all Projects.
      *
-     * @Route("/", name="project_list")
+     * @Route("/", name="aguila_project_list")
      * @Template()
      */
     public function listAction()
@@ -34,7 +34,7 @@ class ProjectController extends Controller
     /**
      * Finds and displays a Project.
      *
-     * @Route("/{slug}", name="project_show")
+     * @Route("/{slug}", name="aguila_project_show")
      * @Template()
      */
     public function showAction($slug)
@@ -59,7 +59,7 @@ class ProjectController extends Controller
     /**
      * Displays a form to create a new Project.
      *
-     * @Route("/project/new", name="project_new")
+     * @Route("/project/new", name="aguila_project_new")
      * @Template()
      */
     public function newAction()
@@ -76,7 +76,7 @@ class ProjectController extends Controller
     /**
      * Creates a new Project.
      *
-     * @Route("/project/create", name="project_create")
+     * @Route("/project/create", name="aguila_project_create")
      * @Method("post")
      * @Template("AguilaBundle:Project:new.html.twig")
      */
@@ -105,7 +105,7 @@ class ProjectController extends Controller
     /**
      * Displays a form to edit an existing Project.
      *
-     * @Route("/{slug}/admin/edit", name="project_edit")
+     * @Route("/{slug}/admin/edit", name="aguila_project_edit")
      * @Template()
      */
     public function editAction($slug)
@@ -131,7 +131,7 @@ class ProjectController extends Controller
     /**
      * Edits an existing Project.
      *
-     * @Route("/{slug}/admin/update", name="project_update")
+     * @Route("/{slug}/admin/update", name="aguila_project_update")
      * @Method("post")
      * @Template("AguilaBundle:Project:edit.html.twig")
      */
@@ -169,7 +169,7 @@ class ProjectController extends Controller
     /**
      * Deletes a Project.
      *
-     * @Route("/{slug}/admin/delete", name="project_delete")
+     * @Route("/{slug}/admin/delete", name="aguila_project_delete")
      * @Method("post")
      */
     public function deleteAction($slug)

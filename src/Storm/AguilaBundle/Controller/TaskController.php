@@ -34,7 +34,7 @@ class TaskController extends Controller
     /**
      * Finds and displays a Task task.
      *
-     * @Route("/{number}", name="task_show", requirements={"number" = "\d+"})
+     * @Route("/{number}", name="aguila_task_show", requirements={"number" = "\d+"})
      * @Template()
      */
     public function showAction($project_slug, $number)
@@ -78,7 +78,7 @@ class TaskController extends Controller
     /**
      * Creates a new Task task.
      *
-     * @Route("/create/{feature_slug}", name="task_create")
+     * @Route("/create/{feature_slug}", name="aguila_task_create")
      * @Method("post")
      * @Template("AguilaBundle:Task:new.html.twig")
      */
@@ -122,7 +122,7 @@ class TaskController extends Controller
     /**
      * Displays a form to edit an existing Task task.
      *
-     * @Route("/{number}/edit", name="task_edit", requirements={"number" = "\d+"})
+     * @Route("/{number}/edit", name="aguila_task_edit", requirements={"number" = "\d+"})
      * @Template()
      */
     public function editAction($project_slug, $number)
@@ -147,7 +147,7 @@ class TaskController extends Controller
     /**
      * Edits an existing Task task.
      *
-     * @Route("/{number}/update", name="task_update", requirements={"number" = "\d+"})
+     * @Route("/{number}/update", name="aguila_task_update", requirements={"number" = "\d+"})
      * @Method("post")
      * @Template("AguilaBundle:Task:edit.html.twig")
      */

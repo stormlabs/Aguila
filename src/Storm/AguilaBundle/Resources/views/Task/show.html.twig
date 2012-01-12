@@ -8,7 +8,7 @@
 
     <header>
         <h2>{{ task.description }}</h2>
-        <a href="{{ path('task_edit', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ 'task.show.edit'|trans([], 'AguilaBundle') }}</a>
+        <a href="{{ path('aguila_task_edit', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ 'task.show.edit'|trans([], 'AguilaBundle') }}</a>
         <p>
             {{ 'task.show.reported_by'|trans([], 'AguilaBundle') }} <strong>{{ task.reporter }}</strong>
             {% if task.assignee %}
