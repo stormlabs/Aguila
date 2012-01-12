@@ -25,7 +25,22 @@
         <dt>{{ 'feature.show.task.status'|trans([], 'AguilaBundle') }}</dt>
         <dd>{{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}</dd>
     </dl>
-
+    <section>
+        <h2>{{ 'Comments'|trans([], 'AguilaBundle') }}</h2>
+        <ul>
+            {% for comment in task.comments %}
+            <li class="comment"><p class="comment-meta">{{ comment.user }} on {{comment.date|date('Y-m-d')}} </p>
+                <div class="comment-text">
+                    {{ comment.body }}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <form action="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(comment_form) }}>
+            {{ form_widget(comment_form) }}
+            <button type="submit">{{ 'task.comment.submit'|trans([], 'AguilaBundle') }}</button>
+        </form>
+    </section>
 </section>
 
 {% endblock %}

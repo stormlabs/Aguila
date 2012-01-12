@@ -51,11 +51,40 @@ class TaskController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
         }
 
+        $commentForm = $this->createCommentForm($task);
+
+        $request = $this->getRequest();
+        if ('POST' === $request->getMethod()) {
+            $commentForm->bindRequest($request);
+
+            if ($commentForm->isValid()) {
+                $user = $this->get('security.context')->getToken()->getUser();
+                $data = $commentForm->getData();
+                $commentList = $task->getComments();
+                $commentList[] = array(
+                    'user' => $user->getUserName(),
+                    'body' => $data['body'],
+                    'date' => new \Datetime('now'),
+                );
+                $task->setComments($commentList);
+                $em->persist($task);
+                $em->flush();
+
+                $this->get('session')->setFlash('notice', 'comment.added');
+
+                return $this->redirect($this->generateUrl('aguila_task_show', array(
+                    'project_slug' => $project_slug,
+                    'number' => $number,
+                )));
+            }
+        }
+
         return array(
-            'task'      => $task,
+            'task'                    => $task,
             'task_difficulty_choices' => Task::$difficulty_choices,
-            'task_priority_choices' => Task::$priority_choices,
-            'task_status_choices' => Task::$status_choices,
+            'task_priority_choices'   => Task::$priority_choices,
+            'task_status_choices'     => Task::$status_choices,
+            'comment_form'            => $commentForm->createView(),
         );
     }
 
@@ -186,55 +215,20 @@ class TaskController extends Controller
         );
     }
 
-    /**
-     * Adds a comment to a Task.
-     *
-     * @Route("/{number}/comment", name="aguila_task_update", requirements={"number" = "\d+"})
-     * @Method("post")
-     * @Template("AguilaBundle:Task:comment.html.twig")
-     */
-    public function addComment($project_slug, $number)
+    protected function createCommentForm(Task $task)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-        try {
-            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project_slug, $number);
-        }
-        catch (NoResultException $e) {
-            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
-        }
         $constraints = new Collection(array(
             'body' => new Constraints\NotBlank(),
         ));
-        $commentForm = $this->container->get('form.factory')->createNamedBuilder('form', 'comment', null, array(
-            'validation_constraint' => $constraints,
-        ))
-                ->add('body', 'text')
-                ->addValidator()
-                ->getForm();
-        $request = $this->getRequest();
+        $commentForm = $this->container->get('form.factory')->createNamedBuilder(
+            'form',
+            'task_comment_form',
+            null,
+            array('validation_constraint' => $constraints,)
+        )
+        ->add('body', 'textarea')
+        ->getForm();
 
-        $commentForm->bindRequest($request);
-        if ($commentForm->isValid()) {
-            $comment = $commentForm->getData();
-            $commentList = $task->getComments();
-            $commentList[] = array(
-                'user' => '',
-                'comment' => $comment['comment'],
-                'date' => new \Datetime('now'),
-            );
-            $task->setComments($commentList);
-            $em->persist($task);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('aguila_task_show', array(
-                'project_slug' => $project_slug,
-                'number' => $number,
-            )));
-        }
-
-        return array(
-            'task'      => $task,
-            'comment_form'   => $commentForm->createView(),
-        );
+        return $commentForm;
     }
 }
