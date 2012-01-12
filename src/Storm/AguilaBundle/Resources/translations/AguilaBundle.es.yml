@@ -1,4 +1,5 @@
 project:
+    not_found:                  No existe este Proyecto
     list:
         title:                  Proyectos
         new:                    Nuevo Proyecto
@@ -14,6 +15,7 @@ project:
         cancel:                 Cancelar
         submit:                 Guardar
 feature:
+    not_found:                  No existe esta Funcionalidad
     list:
         tasks:                  Tareas
         priority:               Prioridad
@@ -33,6 +35,7 @@ feature:
             status:             Estado
 
 task:
+    not_found:                  No existe esta Tarea
     list:
         no_tasks:               Que facil, no hay tareas
         reported_by:            reportada por

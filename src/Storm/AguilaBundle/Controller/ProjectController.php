@@ -34,30 +34,32 @@ class ProjectController extends Controller
     /**
      * Finds and displays a Project.
      *
-     * @Route("/{id}/show", name="project_show")
+     * @Route("/{slug}", name="project_show")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($slug)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $project = $em->getRepository('AguilaBundle:Project')->find($id);
+
+        $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $slug));
 
         if (!$project) {
-            throw $this->createNotFoundException('Unable to find Project.');
+            throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($slug);
 
         return array(
-            'project'      => $project,
-            'delete_form' => $deleteForm->createView(),        );
+            'project'     => $project,
+            'delete_form' => $deleteForm->createView(),
+        );
     }
 
     /**
      * Displays a form to create a new Project.
      *
-     * @Route("/new", name="project_new")
+     * @Route("/project/new", name="project_new")
      * @Template()
      */
     public function newAction()
@@ -74,7 +76,7 @@ class ProjectController extends Controller
     /**
      * Creates a new Project.
      *
-     * @Route("/create", name="project_create")
+     * @Route("/project/create", name="project_create")
      * @Method("post")
      * @Template("AguilaBundle:Project:new.html.twig")
      */
@@ -90,8 +92,8 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_show', array('id' => $project->getId())));
-            
+            return $this->redirect($this->generateUrl('project_show', array('slug' => $project->getSlug())));
+
         }
 
         return array(
@@ -103,21 +105,21 @@ class ProjectController extends Controller
     /**
      * Displays a form to edit an existing Project.
      *
-     * @Route("/{id}/edit", name="project_edit")
+     * @Route("/{slug}/admin/edit", name="project_edit")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction($slug)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $project = $em->getRepository('AguilaBundle:Project')->find($id);
+        $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $slug));
 
         if (!$project) {
-            throw $this->createNotFoundException('Unable to find Project.');
+            throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
         }
 
         $editForm = $this->createForm(new ProjectType(), $project);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($slug);
 
         return array(
             'project'      => $project,
@@ -129,22 +131,22 @@ class ProjectController extends Controller
     /**
      * Edits an existing Project.
      *
-     * @Route("/{id}/update", name="project_update")
+     * @Route("/{slug}/admin/update", name="project_update")
      * @Method("post")
      * @Template("AguilaBundle:Project:edit.html.twig")
      */
-    public function updateAction($id)
+    public function updateAction($slug)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $project = $em->getRepository('AguilaBundle:Project')->find($id);
+        $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $slug));
 
         if (!$project) {
-            throw $this->createNotFoundException('Unable to find Project.');
+            throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
         }
 
         $editForm   = $this->createForm(new ProjectType(), $project);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($slug);
 
         $request = $this->getRequest();
 
@@ -154,7 +156,7 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('project_edit', array('slug' => $slug)));
         }
 
         return array(
@@ -167,22 +169,22 @@ class ProjectController extends Controller
     /**
      * Deletes a Project.
      *
-     * @Route("/{id}/delete", name="project_delete")
+     * @Route("/{slug}/admin/delete", name="project_delete")
      * @Method("post")
      */
-    public function deleteAction($id)
+    public function deleteAction($slug)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($slug);
         $request = $this->getRequest();
 
         $form->bindRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $project = $em->getRepository('AguilaBundle:Project')->find($id);
+            $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $slug));
 
             if (!$project) {
-                throw $this->createNotFoundException('Unable to find Project.');
+                throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
             }
 
             $em->remove($project);
@@ -192,10 +194,10 @@ class ProjectController extends Controller
         return $this->redirect($this->generateUrl('project'));
     }
 
-    private function createDeleteForm($id)
+    private function createDeleteForm($slug)
     {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
+        return $this->createFormBuilder(array('slug' => $slug))
+            ->add('slug', 'hidden')
             ->getForm()
         ;
     }

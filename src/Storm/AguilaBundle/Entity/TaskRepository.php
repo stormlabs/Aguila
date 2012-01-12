@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class TaskRepository extends EntityRepository
 {
+    public function findOneByProject($project_slug, $number)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->leftJoin('t.feature', 'f')
+            ->leftJoin('f.project', 'p')
+            ->where('t.number = :number')
+            ->andWhere('p.slug = :project_slug')
+            ->setParameters(array(
+                'number' => $number,
+                'project_slug' => $project_slug,
+            ));
+        return $qb->getQuery()->getSingleResult();
+    }
 }

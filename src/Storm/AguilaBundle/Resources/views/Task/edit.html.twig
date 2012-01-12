@@ -5,9 +5,9 @@
 {% block content %}
 
 <section>
-    <form action="{{ path('task_update', { 'id': task.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    <form action="{{ path('task_update', {'project_slug': task.feature.project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(edit_form) }}>
         {{ form_widget(edit_form) }}
-        <a href="{{ path('task_show', {'id': task.id}) }}">{{ 'task.edit.cancel'|trans([], 'AguilaBundle') }}</a>
+        <a href="{{ path('task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ 'task.edit.cancel'|trans([], 'AguilaBundle') }}</a>
         <button type="submit">{{ 'task.edit.submit'|trans([], 'AguilaBundle') }}</button>
     </form>
 </section>

@@ -1,6 +1,6 @@
 {% for task in tasks %}
 <div>
-    <h3><a href="{{ path('task_show', {'id': task.id}) }}">{{ task.description }}</a></h3>
+    <h3><a href="{{ path('task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ task.description }}</a></h3>
     <p>
         {{ 'task.list.reported_by'|trans([], 'AguilaBundle') }} <strong>{{ task.reporter }}</strong>
         {% if task.assignee %}

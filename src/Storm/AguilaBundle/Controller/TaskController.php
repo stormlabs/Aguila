@@ -8,18 +8,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Storm\AguilaBundle\Entity\Task;
 use Storm\AguilaBundle\Form\TaskType;
+use Doctrine\ORM\NoResultException;
 
 /**
  * Task controller.
  *
- * @Route("/task")
+ * @Route("/{project_slug}/task")
  */
 class TaskController extends Controller
 {
     /**
      * Lists all Task tasks.
      *
-     * @Route("/", name="task_list")
      * @Template()
      */
     public function listAction()
@@ -34,17 +34,19 @@ class TaskController extends Controller
     /**
      * Finds and displays a Task task.
      *
-     * @Route("/{id}/show", name="task_show")
+     * @Route("/{number}", name="task_show", requirements={"number" = "\d+"})
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($project_slug, $number)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $this->getDoctrine()->getEntityManager();
 
-        $task = $em->getRepository('AguilaBundle:Task')->find($id);
-
-        if (!$task) {
-            throw $this->createNotFoundException('Unable to find Task task.');
+        try {
+            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project_slug, $number);
+        }
+        catch (NoResultException $e) {
+            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
         }
 
         return array(
@@ -58,29 +60,29 @@ class TaskController extends Controller
     /**
      * Displays a form to create a new Task task.
      *
-     * @Route("/new/{feature_id}", name="task_new")
      * @Template()
      */
-    public function newAction($feature_id)
+    public function newAction($project_slug, $feature_slug)
     {
         $task = new Task();
-        $task->setFeature($feature_id);
         $form   = $this->createForm(new TaskType(), $task);
 
         return array(
             'task' => $task,
-            'form'   => $form->createView()
+            'form'   => $form->createView(),
+            'project_slug' => $project_slug,
+            'feature_slug' => $feature_slug,
         );
     }
 
     /**
      * Creates a new Task task.
      *
-     * @Route("/create", name="task_create")
+     * @Route("/create/{feature_slug}", name="task_create")
      * @Method("post")
      * @Template("AguilaBundle:Task:new.html.twig")
      */
-    public function createAction()
+    public function createAction($project_slug, $feature_slug)
     {
         $task  = new Task();
         $request = $this->getRequest();
@@ -90,7 +92,7 @@ class TaskController extends Controller
         if ($form->isValid()) {
             /** @var $em \Doctrine\ORM\EntityManager */
             $em = $this->getDoctrine()->getEntityManager();
-            $feature = $em->getRepository('AguilaBundle:Feature')->find((int) $task->getFeature());
+            $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $feature_slug));
             $task->setFeature($feature);
 
             $project = $feature->getProject();
@@ -104,7 +106,10 @@ class TaskController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('feature_show', array('id' => $task->getFeature()->getId())));
+            return $this->redirect($this->generateUrl('task_show', array(
+                'project_slug' => $project_slug,
+                'number' => $task->getNumber(),
+            )));
             
         }
 
@@ -117,17 +122,18 @@ class TaskController extends Controller
     /**
      * Displays a form to edit an existing Task task.
      *
-     * @Route("/{id}/edit", name="task_edit")
+     * @Route("/{number}/edit", name="task_edit", requirements={"number" = "\d+"})
      * @Template()
      */
-    public function editAction($id)
+    public function editAction($project_slug, $number)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $task = $em->getRepository('AguilaBundle:Task')->find($id);
-
-        if (!$task) {
-            throw $this->createNotFoundException('Unable to find Task task.');
+        try {
+            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project_slug, $number);
+        }
+        catch (NoResultException $e) {
+            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
         }
 
         $editForm = $this->createForm(new TaskType(), $task);
@@ -141,18 +147,19 @@ class TaskController extends Controller
     /**
      * Edits an existing Task task.
      *
-     * @Route("/{id}/update", name="task_update")
+     * @Route("/{number}/update", name="task_update", requirements={"number" = "\d+"})
      * @Method("post")
      * @Template("AguilaBundle:Task:edit.html.twig")
      */
-    public function updateAction($id)
+    public function updateAction($project_slug, $number)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $task = $em->getRepository('AguilaBundle:Task')->find($id);
-
-        if (!$task) {
-            throw $this->createNotFoundException('Unable to find Task task.');
+        try {
+            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project_slug, $number);
+        }
+        catch (NoResultException $e) {
+            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
         }
 
         $editForm   = $this->createForm(new TaskType(), $task);
@@ -165,7 +172,10 @@ class TaskController extends Controller
             $em->persist($task);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('task_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('task_show', array(
+                'project_slug' => $project_slug,
+                'number' => $number,
+            )));
         }
 
         return array(

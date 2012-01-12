@@ -15,8 +15,8 @@
         {% for project in projects %}
         <li>
             <h3>
-                <a href="{{ path('project_show', {'id': project.id}) }}">{{ project.name }}</a>
-                <a href="{{ path('project_edit', {'id': project.id}) }}">edit</a>
+                <a href="{{ path('project_show', {'slug': project.slug}) }}">{{ project.name }}</a>
+                <a href="{{ path('project_edit', {'slug': project.slug}) }}">edit</a>
             </h3>
         </li>
         {% endfor %}

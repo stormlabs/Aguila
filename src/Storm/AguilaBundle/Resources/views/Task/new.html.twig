@@ -1,6 +1,6 @@
 <h2>{{ 'task.new.title'|trans([], 'AguilaBundle') }}</h2>
 
-<form action="{{ path('task_create') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('task_create', {'project_slug': project_slug, 'feature_slug': feature_slug}) }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <button type="submit">{{ 'task.new.submit'|trans([], 'AguilaBundle') }}</button>
 </form>

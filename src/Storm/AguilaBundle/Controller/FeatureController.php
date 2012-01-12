@@ -12,14 +12,13 @@ use Storm\AguilaBundle\Form\FeatureType;
 /**
  * Feature controller.
  *
- * @Route("/feature")
+ * @Route("/{project_slug}")
  */
 class FeatureController extends Controller
 {
     /**
      * Lists all Feature features.
      *
-     * @Route("/", name="feature_list")
      * @Template()
      */
     public function listAction()
@@ -34,20 +33,21 @@ class FeatureController extends Controller
     /**
      * Finds and displays a Feature feature.
      *
-     * @Route("/{id}/show", name="feature_show")
+     * @Route("/{slug}", name="feature_show")
+     * @Method("get")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($slug)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $feature = $em->getRepository('AguilaBundle:Feature')->find($id);
+        $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $slug));
 
         if (!$feature) {
-            throw $this->createNotFoundException('Unable to find Feature feature.');
+            throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($slug);
 
         return array(
             'feature'      => $feature,
@@ -58,29 +58,28 @@ class FeatureController extends Controller
     /**
      * Displays a form to create a new Feature feature.
      *
-     * @Route("/new/{project_id}", name="feature_new")
      * @Template()
      */
-    public function newAction($project_id)
+    public function newAction($project_slug)
     {
         $feature = new Feature();
-        $feature->setProject($project_id);
         $form   = $this->createForm(new FeatureType(), $feature);
 
         return array(
             'feature' => $feature,
             'form'   => $form->createView(),
+            'project_slug' => $project_slug,
         );
     }
 
     /**
      * Creates a new Feature feature.
      *
-     * @Route("/create", name="feature_create")
+     * @Route("/feature/create", name="feature_create")
      * @Method("post")
      * @Template("AguilaBundle:Feature:new.html.twig")
      */
-    public function createAction()
+    public function createAction($project_slug)
     {
         $feature  = new Feature();
         $request = $this->getRequest();
@@ -88,14 +87,19 @@ class FeatureController extends Controller
         $form->bindRequest($request);
 
         if ($form->isValid()) {
-            $project = $this->getDoctrine()->getEntityManager()->getReference('AguilaBundle:Project', $feature->getProject());
-            $feature->setProject($project);
+            /** @var $em \Doctrine\ORM\EntityManager */
             $em = $this->getDoctrine()->getEntityManager();
+
+            $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $project_slug));
+            $feature->setProject($project);
+
             $em->persist($feature);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('feature_show', array('id' => $feature->getId())));
-            
+            return $this->redirect($this->generateUrl('feature_show', array(
+                'project_slug' => $project_slug,
+                'slug' => $feature->getSlug()
+            )));
         }
 
         return array(
@@ -107,21 +111,21 @@ class FeatureController extends Controller
     /**
      * Displays a form to edit an existing Feature feature.
      *
-     * @Route("/{id}/edit", name="feature_edit")
+     * @Route("/feature/{slug}/edit", name="feature_edit")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction($slug)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $feature = $em->getRepository('AguilaBundle:Feature')->find($id);
+        $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $slug));
 
         if (!$feature) {
-            throw $this->createNotFoundException('Unable to find Feature feature.');
+            throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
         }
 
         $editForm = $this->createForm(new FeatureType(), $feature);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($slug);
 
         return array(
             'feature'      => $feature,
@@ -133,22 +137,22 @@ class FeatureController extends Controller
     /**
      * Edits an existing Feature feature.
      *
-     * @Route("/{id}/update", name="feature_update")
+     * @Route("/feature/{slug}/update", name="feature_update")
      * @Method("post")
      * @Template("AguilaBundle:Feature:edit.html.twig")
      */
-    public function updateAction($id)
+    public function updateAction($project_slug, $slug)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $feature = $em->getRepository('AguilaBundle:Feature')->find($id);
+        $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $slug));
 
         if (!$feature) {
-            throw $this->createNotFoundException('Unable to find Feature feature.');
+            throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
         }
 
         $editForm   = $this->createForm(new FeatureType(), $feature);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($slug);
 
         $request = $this->getRequest();
 
@@ -158,7 +162,10 @@ class FeatureController extends Controller
             $em->persist($feature);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('feature_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('feature_show', array(
+                'project_slug' => $project_slug,
+                'slug' => $slug,
+            )));
         }
 
         return array(
@@ -171,22 +178,22 @@ class FeatureController extends Controller
     /**
      * Deletes a Feature feature.
      *
-     * @Route("/{id}/delete", name="feature_delete")
+     * @Route("/feature/{slug}/delete", name="feature_delete")
      * @Method("post")
      */
-    public function deleteAction($id)
+    public function deleteAction($slug)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($slug);
         $request = $this->getRequest();
 
         $form->bindRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $feature = $em->getRepository('AguilaBundle:Feature')->find($id);
+            $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $slug));
 
             if (!$feature) {
-                throw $this->createNotFoundException('Unable to find Feature feature.');
+                throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
             }
 
             $em->remove($feature);
@@ -196,10 +203,10 @@ class FeatureController extends Controller
         return $this->redirect($this->generateUrl('feature'));
     }
 
-    private function createDeleteForm($id)
+    private function createDeleteForm($slug)
     {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
+        return $this->createFormBuilder(array('slug' => $slug))
+            ->add('slug', 'hidden')
             ->getForm()
         ;
     }

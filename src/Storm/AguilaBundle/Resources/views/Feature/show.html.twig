@@ -7,11 +7,11 @@
 <section>
     <header>
         <h2>{{ feature.name }}</h2>
-        <a href="{{ path('feature_edit', {'id': feature.id}) }}">{{ 'feature.show.edit'|trans([], 'AguilaBundle') }}</a>
+        <a href="{{ path('feature_edit', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">{{ 'feature.show.edit'|trans([], 'AguilaBundle') }}</a>
     </header>
 
     <div>
-    {% render 'AguilaBundle:Task:new' with {'feature_id': feature.id} %}
+    {% render 'AguilaBundle:Task:new' with {'project_slug': feature.project.slug, 'feature_slug': feature.slug} %}
     </div>
 
     {% include 'AguilaBundle:Task:list.html.twig' with {'tasks': feature.tasks} %}
