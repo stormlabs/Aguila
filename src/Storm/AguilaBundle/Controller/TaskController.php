@@ -3,6 +3,8 @@
 namespace Storm\AguilaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Collection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -181,6 +183,58 @@ class TaskController extends Controller
         return array(
             'task'      => $task,
             'edit_form'   => $editForm->createView(),
+        );
+    }
+    
+    /**
+     * Adds a comment to a Task.
+     *
+     * @Route("/{number}/comment", name="aguila_task_update", requirements={"number" = "\d+"})
+     * @Method("post")
+     * @Template("AguilaBundle:Task:comment.html.twig")
+     */
+    public function addComment($project_slug, $number)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        try {
+            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project_slug, $number);
+        }
+        catch (NoResultException $e) {
+            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
+        }
+        $constraints = new Collection(array(
+            'body' => new Constraints\NotBlank(),
+        ));
+        $commentForm = $this->container->get('form.factory')->createNamedBuilder('form', 'comment', null, array(
+            'validation_constraint' => $constraints,
+        ))
+                ->add('body', 'text')
+                ->addValidator()
+                ->getForm();
+        $request = $this->getRequest();
+        
+        $commentForm->bindRequest($request);
+        if ($commentForm->isValid()) {
+            $comment = $commentForm->getData();
+            $commentList = $task->getComments();
+            $commentList[] = array(
+                'user' => '',
+                'comment' => $comment['comment'],
+                'date' => new \Datetime('now'),
+            );
+            $task->setComments($commentList);
+            $em->persist($task);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('aguila_task_show', array(
+                'project_slug' => $project_slug,
+                'number' => $number,
+            )));
+        }
+
+        return array(
+            'task'      => $task,
+            'comment_form'   => $commentForm->createView(),
         );
     }
 }
