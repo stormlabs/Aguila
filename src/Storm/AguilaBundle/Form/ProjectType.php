@@ -16,6 +16,6 @@ class ProjectType extends AbstractType
 
     public function getName()
     {
-        return 'storm_aguilabundle_projecttype';
+        return 'project_form';
     }
 }

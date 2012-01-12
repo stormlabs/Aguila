@@ -36,6 +36,6 @@ class TaskType extends AbstractType
 
     public function getName()
     {
-        return 'storm_aguilabundle_tasktype';
+        return 'task_form';
     }
 }

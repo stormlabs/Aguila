@@ -17,6 +17,6 @@ class FeatureType extends AbstractType
 
     public function getName()
     {
-        return 'storm_aguilabundle_featuretype';
+        return 'feature_form';
     }
 }
