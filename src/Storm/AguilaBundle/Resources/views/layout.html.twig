@@ -1,7 +1,9 @@
 {% extends '::base.html.twig' %}
 
 {% block stylesheets %}
-<link href="" rel="stylesheet" type="text/css" media="all"/>
+    {% stylesheets filter='less' '@AguilaBundle/Resources/less/site.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+    {% endstylesheets %}
 {% endblock %}
 
 {% block body %}
