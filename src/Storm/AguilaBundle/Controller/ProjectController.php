@@ -32,7 +32,7 @@ class ProjectController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $projects = $em->getRepository('AguilaBundle:Project')->findAll();
+        $projects = $em->getRepository('AguilaBundle:Project')->findBy(array('public' => true));
 
         return array('projects' => $projects);
     }

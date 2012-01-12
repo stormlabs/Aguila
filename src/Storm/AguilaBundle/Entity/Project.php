@@ -52,10 +52,18 @@ class Project
      */
     private $taskCounter;
 
+    /**
+     * @var boolean $public
+     *
+     * @ORM\Column(name="public", type="boolean")
+     */
+    private $public;
+
     public function __construct()
     {
         $this->features = new ArrayCollection();
         $this->taskCounter = 1;
+        $this->public = true;
     }
 
     public function __toString()
@@ -148,5 +156,25 @@ class Project
     public function getTaskCounter()
     {
         return $this->taskCounter;
+    }
+
+    /**
+     * Set public
+     *
+     * @param boolean $public
+     */
+    public function setPublic($public)
+    {
+        $this->public = (boolean)$public;
+    }
+
+    /**
+     * Get public
+     *
+     * @return boolean
+     */
+    public function getPublic()
+    {
+        return $this->public;
     }
 }
