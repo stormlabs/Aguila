@@ -9,6 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Storm\AguilaBundle\Entity\Feature;
 use Storm\AguilaBundle\Form\FeatureType;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+
 /**
  * Feature controller.
  *
@@ -47,6 +52,13 @@ class FeatureController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
         }
 
+        $securityContext = $this->get('security.context');
+        // if the user has permission to edit the project
+        if (false === $securityContext->isGranted('VIEW', $feature->getProject()))
+        {
+            throw new AccessDeniedException();
+        }
+
         $deleteForm = $this->createDeleteForm($slug);
 
         return array(
@@ -81,20 +93,39 @@ class FeatureController extends Controller
      */
     public function createAction($project_slug)
     {
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = $this->getDoctrine()->getEntityManager();
+        $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $project_slug));
+
+        $securityContext = $this->get('security.context');
+        // if the user has permission to edit the project
+        if (false === $securityContext->isGranted('EDIT', $project))
+        {
+            throw new AccessDeniedException();
+        }
+
         $feature  = new Feature();
         $request = $this->getRequest();
         $form    = $this->createForm(new FeatureType(), $feature);
         $form->bindRequest($request);
 
         if ($form->isValid()) {
-            /** @var $em \Doctrine\ORM\EntityManager */
-            $em = $this->getDoctrine()->getEntityManager();
 
-            $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $project_slug));
             $feature->setProject($project);
 
             $em->persist($feature);
             $em->flush();
+
+            $aclProvider = $this->get('security.acl.provider');
+            $objectIdentity = ObjectIdentity::fromDomainObject($feature);
+            $acl = $aclProvider->createAcl($objectIdentity);
+
+            $securityContext = $this->get('security.context');
+            $user = $securityContext->getToken()->getUser();
+            $securityIdentity = UserSecurityIdentity::fromAccount($user);
+
+            $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+            $aclProvider->updateAcl($acl);
 
             return $this->redirect($this->generateUrl('aguila_feature_show', array(
                 'project_slug' => $project_slug,
@@ -124,6 +155,13 @@ class FeatureController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
         }
 
+        $securityContext = $this->get('security.context');
+        // if the user has permission to edit the project
+        if (false === $securityContext->isGranted('EDIT', $feature->getProject()))
+        {
+            throw new AccessDeniedException();
+        }
+
         $editForm = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($slug);
 
@@ -151,6 +189,13 @@ class FeatureController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
         }
 
+        $securityContext = $this->get('security.context');
+        // if the user has permission to edit the project
+        if (false === $securityContext->isGranted('EDIT', $feature->getProject()))
+        {
+            throw new AccessDeniedException();
+        }
+
         $editForm   = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($slug);
 
@@ -169,7 +214,7 @@ class FeatureController extends Controller
         }
 
         return array(
-            'feature'      => $feature,
+            'feature'     => $feature,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -194,6 +239,13 @@ class FeatureController extends Controller
 
             if (!$feature) {
                 throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
+            }
+
+            $securityContext = $this->get('security.context');
+            // check for edit access
+            if (false === $securityContext->isGranted('DELETE', $feature))
+            {
+                throw new AccessDeniedException();
             }
 
             $em->remove($feature);
