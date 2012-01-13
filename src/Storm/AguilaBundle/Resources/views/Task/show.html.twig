@@ -2,6 +2,17 @@
 
 {% block title "#" ~ task.id ~ ": " ~ task.description %}
 
+{% block breadcrumbs %}
+<nav>
+    <a href="{{ path('aguila_project_show', {
+        'slug': task.feature.project.slug}) }}">{{ task.feature.project.name }}</a> &raquo;
+    <a href="{{ path('aguila_feature_show', {
+        'project_slug': task.feature.project.slug,
+        'slug': task.feature.slug}) }}">{{ task.feature.name }}</a> &raquo;
+    #{{ task.number }}
+</nav>
+{% endblock %}
+
 {% block content %}
 
 <section>
