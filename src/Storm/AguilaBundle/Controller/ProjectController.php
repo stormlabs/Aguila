@@ -5,6 +5,8 @@ namespace Storm\AguilaBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use JMS\SecurityExtraBundle\Annotation\SecureParam;
 use Storm\AguilaBundle\Entity\Project;
 use Storm\AguilaBundle\Form\ProjectType;
 
@@ -38,21 +40,12 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}", name="aguila_project_show")
      * @Template()
+     * @ParamConverter("slug", class="AguilaBundle:Project")
+     * @SecureParam(name="project", permissions="VIEW")
      */
-    public function showAction($slug)
+    public function showAction(Project $project)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-
-        $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $slug));
-
-        if (!$project) {
-            throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
-        }
-
-        $this->checkAccess('VIEW', $project);
-
-        $deleteForm = $this->createDeleteForm($slug);
+        $deleteForm = $this->createDeleteForm($project->getSlug());
 
         return array(
             'project'     => $project,
@@ -112,21 +105,13 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}/admin/edit", name="aguila_project_edit")
      * @Template()
+     * @ParamConverter("project", class="AguilaBundle:Project")
+     * @SecureParam(name="project", permissions="EDIT")
      */
-    public function editAction($slug)
+    public function editAction(Project $project)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $slug));
-
-        if (!$project) {
-            throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
-        }
-
-        $this->checkAccess('EDIT', $project);
-
         $editForm = $this->createForm(new ProjectType(), $project);
-        $deleteForm = $this->createDeleteForm($slug);
+        $deleteForm = $this->createDeleteForm($project->getSlug());
 
         return array(
             'project'      => $project,
@@ -141,21 +126,15 @@ class ProjectController extends Controller
      * @Route("/{slug}/admin/update", name="aguila_project_update")
      * @Method("post")
      * @Template("AguilaBundle:Project:edit.html.twig")
+     * @ParamConverter("project", class="AguilaBundle:Project")
+     * @SecureParam(name="project", permissions="EDIT")
      */
-    public function updateAction($slug)
+    public function updateAction(Project $project)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $slug));
-
-        if (!$project) {
-            throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
-        }
-
-        $this->checkAccess('EDIT', $project);
-
         $editForm   = $this->createForm(new ProjectType(), $project);
-        $deleteForm = $this->createDeleteForm($slug);
+        $deleteForm = $this->createDeleteForm($project->getSlug());
 
         $request = $this->getRequest();
 
@@ -165,7 +144,7 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('aguila_project_edit', array('slug' => $slug)));
+            return $this->redirect($this->generateUrl('aguila_project_edit', array('slug' => $project->getSlug())));
         }
 
         return array(
@@ -180,23 +159,18 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}/admin/delete", name="aguila_project_delete")
      * @Method("post")
+     * @ParamConverter("project", class="AguilaBundle:Project")
+     * @SecureParam(name="project", permissions="DELETE")
      */
-    public function deleteAction($slug)
+    public function deleteAction(Project $project)
     {
-        $form = $this->createDeleteForm($slug);
+        $form = $this->createDeleteForm($project->getSlug());
         $request = $this->getRequest();
 
         $form->bindRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $slug));
-
-            if (!$project) {
-                throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
-            }
-
-            $this->checkAccess('DELETE', $project);
 
             $em->remove($project);
             $em->flush();
@@ -212,5 +186,4 @@ class ProjectController extends Controller
             ->getForm()
         ;
     }
-
 }

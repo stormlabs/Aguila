@@ -5,6 +5,9 @@ namespace Storm\AguilaBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use JMS\SecurityExtraBundle\Annotation\SecureParam;
+use Storm\AguilaBundle\Entity\Project;
 use Storm\AguilaBundle\Entity\Feature;
 use Storm\AguilaBundle\Form\FeatureType;
 
@@ -37,23 +40,16 @@ class FeatureController extends Controller
      * @Route("/{slug}", name="aguila_feature_show")
      * @Method("get")
      * @Template()
+     * @ParamConverter("slug", class="AguilaBundle:Feature")
      */
-    public function showAction($slug)
+    public function showAction(Feature $feature)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $slug));
-
-        if (!$feature) {
-            throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
-        }
-
         $this->checkAccess('VIEW', $feature->getProject());
 
-        $deleteForm = $this->createDeleteForm($slug);
+        $deleteForm = $this->createDeleteForm($feature->getSlug());
 
         return array(
-            'feature'      => $feature,
+            'feature'     => $feature,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -88,12 +84,7 @@ class FeatureController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $project = $em->getRepository('AguilaBundle:Project')->findOneBy(array('slug' => $project_slug));
 
-        $securityContext = $this->get('security.context');
-        // if the user has permission to edit the project
-        if (false === $securityContext->isGranted('EDIT', $project))
-        {
-            throw new AccessDeniedException();
-        }
+        $this->checkAccess('EDIT', $project);
 
         $feature  = new Feature();
         $request = $this->getRequest();
@@ -110,7 +101,7 @@ class FeatureController extends Controller
             $this->grantAccess(MaskBuilder::MASK_OWNER, $feature);
 
             return $this->redirect($this->generateUrl('aguila_feature_show', array(
-                'project_slug' => $project_slug,
+                'project_slug' => $project->getSlug(),
                 'slug' => $feature->getSlug()
             )));
         }
@@ -126,21 +117,14 @@ class FeatureController extends Controller
      *
      * @Route("/feature/{slug}/edit", name="aguila_feature_edit")
      * @Template()
+     * @ParamConverter("slug", class="AguilaBundle:Feature")
      */
-    public function editAction($slug)
+    public function editAction(Feature $feature)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $slug));
-
-        if (!$feature) {
-            throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
-        }
-
         $this->checkAccess('EDIT', $feature->getProject());
 
         $editForm = $this->createForm(new FeatureType(), $feature);
-        $deleteForm = $this->createDeleteForm($slug);
+        $deleteForm = $this->createDeleteForm($feature->getSlug());
 
         return array(
             'feature'      => $feature,
@@ -155,21 +139,16 @@ class FeatureController extends Controller
      * @Route("/feature/{slug}/update", name="aguila_feature_update")
      * @Method("post")
      * @Template("AguilaBundle:Feature:edit.html.twig")
+     * @ParamConverter("slug", class="AguilaBundle:Feature")
      */
-    public function updateAction($project_slug, $slug)
+    public function updateAction($project_slug, Feature $feature)
     {
         $em = $this->getDoctrine()->getEntityManager();
-
-        $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $slug));
-
-        if (!$feature) {
-            throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
-        }
 
         $this->checkAccess('EDIT', $feature->getProject());
 
         $editForm   = $this->createForm(new FeatureType(), $feature);
-        $deleteForm = $this->createDeleteForm($slug);
+        $deleteForm = $this->createDeleteForm($feature->getSlug());
 
         $request = $this->getRequest();
 
@@ -181,7 +160,7 @@ class FeatureController extends Controller
 
             return $this->redirect($this->generateUrl('aguila_feature_show', array(
                 'project_slug' => $project_slug,
-                'slug' => $slug,
+                'slug' => $feature->getSlug(),
             )));
         }
 
