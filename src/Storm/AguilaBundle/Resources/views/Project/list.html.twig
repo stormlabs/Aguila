@@ -4,11 +4,9 @@
 
 {% block content %}
 
-<h2>
-    {{ 'project.list.title'|trans([], 'AguilaBundle') }}
-    <em>({{ projects|length }})</em>
-    <a href="{{ path('aguila_project_new') }}">{{ 'project.list.new'|trans([], 'AguilaBundle') }}</a>
-</h2>
+{% include 'AguilaBundle:Project:new.html.twig' with {'form': form} %}
+
+<h2>{{ 'project.list.title'|trans([], 'AguilaBundle') }}</h2>
 
 <section>
     <ul>

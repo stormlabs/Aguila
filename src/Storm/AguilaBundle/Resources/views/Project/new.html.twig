@@ -1,15 +1,8 @@
-{% extends 'AguilaBundle::layout.html.twig' %}
+<h3>{{ 'project.new.title'|trans([], 'AguilaBundle') }}</h3>
 
-{% block title 'project.new.title'|trans([], 'AguilaBundle') %}
-
-{% block content %}
-
-<h2>{{ 'project.new.title'|trans([], 'AguilaBundle') }}</h2>
-
-<form action="{{ path('aguila_project_create') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('aguila_project_list') }}" method="post" {{ form_enctype(form) }}>
+    {#{{ form_errors(form) }}#}
     {{ form_widget(form) }}
-    <a href="{{ path('aguila_project_list') }}">{{ 'project.new.cancel'|trans([], 'AguilaBundle') }}</a>
+    {#{{ form_rest(form) }}#}
     <button type="submit">{{ 'project.new.submit'|trans([], 'AguilaBundle') }}</button>
 </form>
-
-{% endblock %}
