@@ -79,3 +79,9 @@ stof_doctrine_extensions:
     orm:
         default:
             sluggable:  true
+services:
+    aguila.extraparamconverter:
+        class: Storm\AguilaBundle\ParamConverter\ExtraParamConverter
+        tags:
+            - { name: request.param_converter, priority: 10 }
+        arguments: ['@?doctrine']
