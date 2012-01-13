@@ -215,6 +215,9 @@ class TaskController extends Controller
         );
     }
 
+    /*
+     * Creates a form for commentaries
+     */
     protected function createCommentForm(Task $task)
     {
         $constraints = new Collection(array(

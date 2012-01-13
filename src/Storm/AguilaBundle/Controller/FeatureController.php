@@ -176,23 +176,19 @@ class FeatureController extends Controller
      *
      * @Route("/feature/{slug}/delete", name="aguila_feature_delete")
      * @Method("post")
+     * @ParamConverter("slug", class="AguilaBundle:Feature")
      */
-    public function deleteAction($project_slug, $slug)
+    public function deleteAction($project_slug, Feature $feature)
     {
-        $form = $this->createDeleteForm($slug);
+        $form = $this->createDeleteForm($feature->getSlug());
         $request = $this->getRequest();
 
         $form->bindRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $feature = $em->getRepository('AguilaBundle:Feature')->findOneBy(array('slug' => $slug));
 
-            if (!$feature) {
-                throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
-            }
-
-            $this->checkAccess('DELETE', $feature);
+            $this->checkAccess('EDIT', $feature->getProject());
 
             $em->remove($feature);
             $em->flush();
@@ -200,7 +196,7 @@ class FeatureController extends Controller
 
         return $this->redirect($this->generateUrl('aguila_feature_show', array(
             'project_slug' => $project_slug,
-            'slug' => $slug,
+            'slug' => $feature->getSlug(),
         )));
     }
 
