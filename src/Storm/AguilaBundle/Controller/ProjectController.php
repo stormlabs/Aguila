@@ -2,16 +2,12 @@
 
 namespace Storm\AguilaBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Storm\AguilaBundle\Entity\Project;
 use Storm\AguilaBundle\Form\ProjectType;
 
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 
@@ -54,12 +50,7 @@ class ProjectController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
         }
 
-        $securityContext = $this->get('security.context');
-        // if the user has permission to edit the project
-        if (false === $securityContext->isGranted('VIEW', $project))
-        {
-            throw new AccessDeniedException();
-        }
+        $this->checkAccess('VIEW', $project);
 
         $deleteForm = $this->createDeleteForm($slug);
 
@@ -105,16 +96,7 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            $aclProvider = $this->get('security.acl.provider');
-            $objectIdentity = ObjectIdentity::fromDomainObject($project);
-            $acl = $aclProvider->createAcl($objectIdentity);
-
-            $securityContext = $this->get('security.context');
-            $user = $securityContext->getToken()->getUser();
-            $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
-            $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
-            $aclProvider->updateAcl($acl);
+            $this->grantAccess(MaskBuilder::MASK_OWNER, $project);
 
             return $this->redirect($this->generateUrl('aguila_project_show', array('slug' => $project->getSlug())));
         }
@@ -141,12 +123,7 @@ class ProjectController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
         }
 
-        $securityContext = $this->get('security.context');
-        // check for edit access
-        if (false === $securityContext->isGranted('EDIT', $project))
-        {
-            throw new AccessDeniedException();
-        }
+        $this->checkAccess('EDIT', $project);
 
         $editForm = $this->createForm(new ProjectType(), $project);
         $deleteForm = $this->createDeleteForm($slug);
@@ -175,12 +152,7 @@ class ProjectController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
         }
 
-        $securityContext = $this->get('security.context');
-        // check for edit access
-        if (false === $securityContext->isGranted('EDIT', $project))
-        {
-            throw new AccessDeniedException();
-        }
+        $this->checkAccess('EDIT', $project);
 
         $editForm   = $this->createForm(new ProjectType(), $project);
         $deleteForm = $this->createDeleteForm($slug);
@@ -224,12 +196,7 @@ class ProjectController extends Controller
                 throw $this->createNotFoundException($this->get('translator')->trans('project.not_found', array(), 'AguilaBundle'));
             }
 
-            $securityContext = $this->get('security.context');
-            // check for delete access
-            if (false === $securityContext->isGranted('DELETE', $project))
-            {
-                throw new AccessDeniedException();
-            }
+            $this->checkAccess('DELETE', $project);
 
             $em->remove($project);
             $em->flush();
@@ -245,4 +212,5 @@ class ProjectController extends Controller
             ->getForm()
         ;
     }
+
 }
