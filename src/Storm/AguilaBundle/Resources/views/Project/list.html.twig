@@ -16,7 +16,9 @@
         <li>
             <h3>
                 <a href="{{ path('aguila_project_show', {'slug': project.slug}) }}">{{ project.name }}</a>
-                <a href="{{ path('aguila_project_edit', {'slug': project.slug}) }}">edit</a>
+                {% if is_granted('EDIT', project) -%}
+                    <a href="{{ path('aguila_project_edit', {'slug': project.slug}) }}">edit</a>
+                {%- endif %}
             </h3>
         </li>
         {% endfor %}
