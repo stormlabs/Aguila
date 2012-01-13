@@ -19,8 +19,9 @@ class Controller extends BaseController
     protected function checkAccess($type, $object)
     {
         $securityContext = $this->get('security.context');
-        // if the user has permission to edit the project
-        if (false === $securityContext->isGranted($type, $object))
+        $className = ($object instanceof \Doctrine\ORM\Proxy\Proxy) ? get_parent_class($object) : get_class($object);
+        $objectIdentity = new ObjectIdentity($object->getId(), $className);
+        if (false === $securityContext->isGranted($type, $objectIdentity))
         {
             throw new AccessDeniedException();
         }
@@ -29,7 +30,8 @@ class Controller extends BaseController
     protected function grantAccess($type, $object)
     {
         $aclProvider = $this->get('security.acl.provider');
-        $objectIdentity = ObjectIdentity::fromDomainObject($object);
+        $className = ($object instanceof \Doctrine\ORM\Proxy\Proxy) ? get_parent_class($object) : get_class($object);
+        $objectIdentity = new ObjectIdentity($object->getId(), $className);
         $acl = $aclProvider->createAcl($objectIdentity);
 
         $securityContext = $this->get('security.context');
