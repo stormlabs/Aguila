@@ -4,6 +4,7 @@ app/cache/*
 app/logs/*
 build/
 vendor/
+tags
 .idea
 *.swp
 web/css/*
