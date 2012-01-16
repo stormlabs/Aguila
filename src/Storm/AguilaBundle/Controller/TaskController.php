@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use JMS\SecurityExtraBundle\Annotation\SecureParam;
 use Storm\AguilaBundle\Entity\Task;
 use Storm\AguilaBundle\Entity\Project;
 use Storm\AguilaBundle\Entity\Feature;
