@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Storm\AguilaBundle\Entity\Project
  *
- * @ORM\Table()
+ * @ORM\Table(indexes={@ORM\index(name="project_slug_idx", columns={"slug"})})
  * @ORM\Entity
  */
 class Project

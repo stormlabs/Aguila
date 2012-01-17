@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Storm\AguilaBundle\Entity\Feature
  *
- * @ORM\Table()
+ * @ORM\Table(indexes={@ORM\index(name="feature_slug_idx", columns={"slug"})})
  * @ORM\Entity(repositoryClass="Storm\AguilaBundle\Entity\FeatureRepository")
  */
 class Feature
