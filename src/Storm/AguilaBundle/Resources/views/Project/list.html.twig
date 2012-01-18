@@ -2,23 +2,24 @@
 
 {% block title 'project.list.title'|trans([], 'AguilaBundle') %}
 
+{% block sidebar %}
+
+<div class="project_new">
+    {% include 'AguilaBundle:Project:new.html.twig' with {'form': form} %}
+</div>
+
+<h3>{{ "project.list.title"|trans([], "AguilaBundle") }}</h3>
+
+<ul class="project_list unstyled">
+    {% for project in projects %}
+    <li{% if loop.index is odd %} class="odd"{% endif %}>
+        <a href="{{ path('aguila_project_show', {'slug': project.slug}) }}" class="name">{{ project.name }}</a>
+        <a href="{{ path('aguila_project_edit', {'slug': project.slug}) }}" class="edit icon pencil"></a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
 {% block content %}
-
-{% include 'AguilaBundle:Project:new.html.twig' with {'form': form} %}
-
-<h2>{{ 'project.list.title'|trans([], 'AguilaBundle') }}</h2>
-
-<section>
-    <ul>
-        {% for project in projects %}
-        <li>
-            <h3>
-                <a href="{{ path('aguila_project_show', {'slug': project.slug}) }}">{{ project.name }}</a>
-                <a href="{{ path('aguila_project_edit', {'slug': project.slug}) }}">edit</a>
-            </h3>
-        </li>
-        {% endfor %}
-    </ul>
-</section>
-
 {% endblock %}

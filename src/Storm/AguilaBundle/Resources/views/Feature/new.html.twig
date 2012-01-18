@@ -1,6 +1,7 @@
-<h2>{{ 'feature.new.title'|trans([], 'AguilaBundle') }}</h2>
+<h4>{{ 'feature.new.title'|trans([], 'AguilaBundle') }}</h4>
 
-<form action="{{ path('aguila_feature_create', {'project_slug': project_slug}) }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('aguila_feature_create', {'project_slug': project_slug}) }}"
+      method="post" {{ form_enctype(form) }} class="form-stacked">
     {{ form_widget(form) }}
-    <button type="submit">{{ 'feature.new.submit'|trans([], 'AguilaBundle') }}</button>
+    <button type="submit" class="btn primary">{{ 'feature.new.submit'|trans([], 'AguilaBundle') }}</button>
 </form>
