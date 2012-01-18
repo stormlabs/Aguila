@@ -38,7 +38,7 @@ feature:
             status:             Estado
     form:
         name:                   Nombre
-        description:            Description
+        description:            Descripción
 
 task:
     not_found:                  No existe esta Tarea
@@ -92,3 +92,5 @@ layout:
         login:    Ingresar
         logout:   Salir
         register: Registrarse
+
+coming.soon:    Pronto
