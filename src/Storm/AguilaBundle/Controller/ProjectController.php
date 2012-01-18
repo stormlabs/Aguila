@@ -19,7 +19,8 @@ class ProjectController extends Controller
     /**
      * Lists all Projects.
      *
-     * @Route("/", name="aguila_project_list")
+     * @Route("/", name="homepage")
+     * @Route("/projects", name="aguila_project_list")
      * @Template()
      */
     public function listAction()
