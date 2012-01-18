@@ -93,4 +93,42 @@ layout:
         logout:   Salir
         register: Registrarse
 
-coming.soon:    Pronto
+fos.user:
+        security:
+            login:
+                title:          Iniciar sesión
+                resetting:      ¿Olvidaste tu contraseña?
+                register:       Regístrate
+        registration:
+            title:              Regístrate
+            cancel:             Cancelar
+
+        resetting:
+            title:              Recuperar contraseña
+            cancel:             Cancelar
+            back:               Volver
+            reset.title:        Reestablecer tu contraseña
+
+# FOS Form field labels
+        group.form:
+            name:                   "Nombre de grupo:"
+
+        profile.form:
+            user.username:          "Nombre de usuario:"
+            user.email:             "Email:"
+            current:                "Contraseña actual:"
+
+        registration.form:
+            username:               "Nombre de usuario:"
+            email:                  "Email:"
+            plainPassword.first:    "Contraseña:"
+            plainPassword.second:   "Verificación:"
+
+        resetting.form:
+            new.first:              "Nueva contraseña:"
+            new.second:             "Verificación:"
+
+        change.password.form:
+            new.first:              "Nueva contraseña:"
+            new.second:             "Verificación:"
+            current:                "Contraseña actual:"
