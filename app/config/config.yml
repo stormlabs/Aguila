@@ -71,9 +71,14 @@ jms_security_extra:
 
 # FOSUserBundle Configuration
 fos_user:
-    db_driver:     orm
-    firewall_name: secured_area
-    user_class:    Storm\AguilaBundle\Entity\User
+    db_driver:      orm
+    firewall_name:  secured_area
+    user_class:     Storm\AguilaBundle\Entity\User
+    template:
+        theme:      AguilaBundle::form.html.twig
+    registration:
+            confirmation:
+                enabled:    true
 
 # StofDoctrineExtensionsBundle Configuration
 stof_doctrine_extensions:
