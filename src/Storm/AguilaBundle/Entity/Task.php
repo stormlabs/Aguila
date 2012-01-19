@@ -83,6 +83,13 @@ class Task
     private $comments;
 
     /**
+     * @var \DateTime $created_at
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $created_at;
+
+    /**
      * @var string $issues
      *
      * @ORM\Column(name="issues", type="string", length=255, nullable=true)
@@ -99,6 +106,7 @@ class Task
     public function __construct()
     {
         $this->status = 0;
+        $this->created_at = new \DateTime();
         $this->comments = array();
     }
 
@@ -315,5 +323,21 @@ class Task
     public function getFeature()
     {
         return $this->feature;
+    }
+
+    /**
+     * @param \DateTime $created_at
+     */
+    public function setCreatedAt($created_at)
+    {
+        $this->created_at = $created_at;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
     }
 }
