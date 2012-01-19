@@ -30,7 +30,7 @@ class UserFixture extends AbstractFixture implements ContainerAwareInterface, Or
         $manipulator->create(
             'admin',
             'admin',
-            'admin@aguila.sf',
+            'ejosblog@gmail.com',
             true,
             true);
 
@@ -38,7 +38,7 @@ class UserFixture extends AbstractFixture implements ContainerAwareInterface, Or
             $manipulator->create(
                 'user' . $i,
                 'user' . $i,
-                'user' . $i . '@aguila.sf',
+                'ejosblog+' . $i . '@gmail.com',
                 true,
                 false);
         }
