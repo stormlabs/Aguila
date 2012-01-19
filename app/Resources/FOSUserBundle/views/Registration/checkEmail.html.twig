@@ -1,0 +1,9 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+<div class="alert-message success">
+    <p>{{ 'registration.check_email'|trans({'%email%': user.email}, 'FOSUserBundle') }}</p>
+</div>
+
+<a class="btn" href="{{ path('homepage') }}">{{ "layout.go.home"|trans([], "AguilaBundle") }}</a>
+{% endblock fos_user_content %}

@@ -1,0 +1,8 @@
+{% form_theme form theme %}
+<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="form-stacked">
+    {{ form_widget(form) }}
+    <div class="actions">
+        <input class="btn primary" type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}"/> |
+        <a href="{{ path('homepage') }}">{{'fos.user.registration.cancel'|trans([], 'AguilaBundle')}}</a>
+    </div>
+</form>
