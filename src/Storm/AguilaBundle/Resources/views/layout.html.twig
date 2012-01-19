@@ -1,49 +1,34 @@
 {% extends '::base.html.twig' %}
 
+{% block title "Aguila" %}
+
 {% block stylesheets %}
     {% stylesheets filter='less' output='/css/main.css'
-        '@AguilaBundle/Resources/less/site.less'
-    %}
-    <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+            '@AguilaBundle/Resources/less/site.less'
+        %}
+    <link href="{{ asset_url }}" rel="stylesheet" media="screen"/>
     {% endstylesheets %}
+
+    {% javascripts output='/js/main.js'
+            '@AguilaBundle/Resources/public/js/*'
+        %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
 
 {% block body %}
 
-    <div class="topbar">
-        <div class="topbar-inner">
-            <div class="container-fluid">
-                <h3><a href="{{ path('aguila_project_list')}}" >Aguila</a></h3>
-                {% spaceless %}
-                <ul class="nav">
-                    <li><a href="{{ path('aguila_project_list') }}">{{ 'layout.nav.projects'|trans([], 'AguilaBundle') }}</a></li>
-                </ul>
-                <ul class="nav secondary-nav">
-                    {% if app.security.token and app.security.isGranted('ROLE_USER')  %}
-                        <li><a href="{{ path('fos_user_profile_show') }}">
-                            <img src="http://www.gravatar.com/avatar/{{ app.user.gravatar }}?s=24" style="float: left; padding-right: 10px; width: 24px; height: 24px;" />
-                            {{ app.user }}
-                        </a></li>
-                        <li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.nav.logout'|trans([], 'AguilaBundle') }}</a></li>
-                    {% else %}
-                        <li><a href="{{ path('fos_user_security_login') }}">{{ 'layout.nav.login'|trans([], 'AguilaBundle') }}</a></li>
-                        <li><a href="{{ path('fos_user_registration_register') }}">{{'layout.nav.register'|trans([], 'AguilaBundle')}}</a></li>
-                    {% endif %}
-                </ul>
-                {% endspaceless %}
-            </div>
-        </div>
+{% include 'AguilaBundle::topbar.html.twig' %}
+
+<div class="container-fluid">
+    <div class="sidebar">
+        {% block sidebar %}{% endblock %}
     </div>
 
-    <div class="container-fluid">
-        <div class="sidebar">
-            {% block sidebar %}{% endblock %}
-        </div>
-
-        <div class="content">
-            {% block breadcrumb %}{% endblock %}
-            {% block content %}{% endblock %}
-        </div>
+    <div class="content">
+        {% block breadcrumb %}{% endblock %}
+        {% block content %}{% endblock %}
     </div>
+</div>
 
 {% endblock body %}

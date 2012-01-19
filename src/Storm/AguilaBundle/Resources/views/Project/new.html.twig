@@ -1,6 +1,6 @@
 <h4>{{ 'project.new.title'|trans([], 'AguilaBundle') }}</h4>
 
-<form action="{{ path('aguila_project_list') }}" method="post" {{ form_enctype(form) }}  class="form-stacked">
+<form action="{{ path('aguila_project_list') }}" method="post" {{ form_enctype(form) }} class="form-stacked">
     {{ form_widget(form) }}
     <button type="submit" class="btn primary">{{ 'project.new.submit'|trans([], 'AguilaBundle') }}</button>
 </form>

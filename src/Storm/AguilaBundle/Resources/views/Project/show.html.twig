@@ -2,8 +2,22 @@
 
 {% block title project.name %}
 
-{% block sidebar %}
+{% block breadcrumb %}{% endblock %}
 
+{% block sidebar %}
+<div class="page-header">
+    <h1>
+        <a href="{{ path('aguila_project_show', {'slug': project.slug}) }}" class="name">{{ project.name }}</a>
+        <small>({{ project.features|length }})</small>
+    </h1>
+</div>
+
+<div class="page-header">
+    <h2>
+        {{ 'project.show.features'|trans([], 'AguilaBundle') }}
+        <small><a class="new-feature-button btn success" href="#">{{ 'project.show.feature.new'|trans([], 'AguilaBundle') }}</a></small>
+    </h2>
+</div>
 {% render 'AguilaBundle:Feature:new' with {'project_slug': project.slug} %}
 
 {% include 'AguilaBundle:Feature:list.html.twig' with {'features': project.features} %}
@@ -11,14 +25,9 @@
 {% endblock %}
 
 {% block content %}
-<h1>{{ project.name }}</h1>
-
 <div class="row">
     <div class="span16">
-        <h3>{{ "project.show.news.title"|trans([], "AguilaBundle") }}</h3>
-        <ul class="unstyled">
-            <li>{{ "project.show.news.0"|trans([], "AguilaBundle") }}</li>
-        </ul>
+        <h3>{{ "project.show.news"|trans([], "AguilaBundle") }}</h3>
     </div>
 </div>
 <div class="row">
@@ -26,10 +35,10 @@
         <h3>{{ "project.show.graph"|trans([], "AguilaBundle") }}</h3>
     </div>
     <div class="span-one-third">
-        <h3>{{ "project.show.top_features"|trans([], "AguilaBundle") }}</h3>
+        <h3>{{ "project.show.features"|trans([], "AguilaBundle") }}</h3>
     </div>
     <div class="span-one-third">
-        <h3>{{ "project.show.top_users"|trans([], "AguilaBundle") }}</h3>
+        <h3>{{ "project.show.users"|trans([], "AguilaBundle") }}</h3>
     </div>
 </div>
 

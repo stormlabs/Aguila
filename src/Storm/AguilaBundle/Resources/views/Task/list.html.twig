@@ -1,15 +1,24 @@
-{% for task in tasks %}
-<div>
-    <h3><a href="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ task.description }}</a></h3>
-    <p>
-        {{ 'task.list.reported_by'|trans([], 'AguilaBundle') }} <strong>{{ task.reporter }}</strong>
-        {% if task.assignee %}
-        {{ 'task.list.and_assignee'|trans([], 'AguilaBundle') }} <strong>{{ task.assignee }}</strong>
-        {% endif %}
-    </p>
+<div class="row">
+    <table class="zebra-striped span16">
+        <tbody>
+        {% for task in tasks %}
+        <tr>
+            <th>#{{ task.number }}</th>
+            <td>
+                <a href="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ task.description }}</a>
+                <p>
+                    {{ "task.list.reported_by"|trans({'%reporter%': task.reporter}, 'AguilaBundle') }}
+                    <time datetime="{{ task.createdAt|date('c') }}" title="{{ task.createdAt|date('Y-m-d G:i:s') }}">
+                        {{ "task.list.date"|trans({
+                            '%day%': task.createdAt|date('d'),
+                            '%month%': ('date.month.'~task.createdAt|date('F'))|trans([], 'AguilaBundle'),
+                            '%year%': task.createdAt|date('Y')
+                        }, 'AguilaBundle') }}
+                    </time>
+                </p>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
-{% else %}
-<div>
-    {{ "task.list.no_tasks"|trans([], 'AguilaBundle') }}
-</div>
-{% endfor %}

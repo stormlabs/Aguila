@@ -20,3 +20,22 @@
     {% endfor %}
 {% endspaceless %}
 {% endblock widget_choice_options %}
+
+{% block field_row %}
+{% spaceless %}
+<div {{ block('widget_container_attributes') }}>
+    {{ form_label(form, label|default(null)) }}
+    {{ form_errors(form) }}
+    <div class="input">
+    {{ form_widget(form, attr) }}
+    </div>
+</div>
+{% endspaceless %}
+{% endblock field_row %}
+
+{% block widget_container_attributes %}
+{% spaceless %}
+{% set attr = attr|merge({'class': attr.class|default('') ~ ' clearfix'}) %}
+{% for attrname,attrvalue in attr %}{{attrname}}="{{attrvalue}}" {% endfor %}
+{% endspaceless %}
+{% endblock widget_container_attributes %}

@@ -1,27 +1,18 @@
-{% extends 'AguilaBundle::layout.html.twig' %}
+{% extends 'AguilaBundle:Project:show.html.twig' %}
+
+{% set project = feature.project %}
 
 {% block title feature.project ~ " | " ~ feature.name %}
 
-{% block breadcrumbs %}
-<nav>
-    <a href="{{ path('aguila_project_show', {
-        'slug': feature.project.slug}) }}">{{ feature.project.name }}</a> &raquo;
-    {{ feature.name }}
-</nav>
-{% endblock %}
-
 {% block content %}
 
-<section>
-    <header>
-        <h2>{{ feature.name }}</h2>
-        <a href="{{ path('aguila_feature_edit', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">{{ 'feature.show.edit'|trans([], 'AguilaBundle') }}</a>
-    </header>
+{% render 'AguilaBundle:Task:new' with {'project_slug': feature.project.slug, 'feature_slug': feature.slug} %}
+<div class="page-header">
+<h2>
+    {{ 'feature.show.tasks'|trans([], 'AguilaBundle') }}
+    <small><a class="new-task-button btn success" href="#">{{ 'feature.show.task.new'|trans([], 'AguilaBundle') }}</a></small>
+</h2>
+</div>
+{% include 'AguilaBundle:Task:list.html.twig' with {'tasks': feature.tasks} %}
 
-    {% render 'AguilaBundle:Task:new' with {'project_slug': feature.project.slug, 'feature_slug': feature.slug} %}
-
-    {% include 'AguilaBundle:Task:list.html.twig' with {'tasks': feature.tasks} %}
-
-</section>
-
-{% endblock %}
+{% endblock content %}

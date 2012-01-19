@@ -1,25 +1,8 @@
-{% for feature in features %}
-<div>
-    <h3><a href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">{{ feature.name }}</a></h3>
-    <div>
-        {% if feature.involvedUsers %}
-        <h4>{{ 'feature.list.involvedUsers'|trans([], 'AguilaBundle') }}</h4>
-        <ul>
-            {% for user in feature.involvedUsers %}
-            <li>{{ user }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
-    <dl>
-        <dt>{{ 'feature.list.tasks'|trans([], 'AguilaBundle') }}</dt>
-        <dd>{{ feature.tasks|length }}</dd>
-        <dt>{{ 'feature.list.priority'|trans([], 'AguilaBundle') }}</dt>
-        <dd>{{ feature.priority }}</dd>
-    </dl>
-</div>
-{% else %}
-<div>
-    {{ "feature.list.no_features"|trans([], 'AguilaBundle') }}
-</div>
-{% endfor %}
+<ul class="list unstyled">
+    {% for feature in features %}
+    <li{% if loop.index is odd %} class="odd"{% endif %}>
+        <a href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" class="name">{{ feature.name }}</a>
+        <a href="{{ path('aguila_feature_edit', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" class="edit icon pencil"></a>
+    </li>
+    {% endfor %}
+</ul>
