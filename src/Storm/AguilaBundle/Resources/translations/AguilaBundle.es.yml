@@ -9,7 +9,8 @@ project:
         submit:                 Crear
     show:
         edit:                   Editar
-        feature:
+        features:               Features
+        feature.new:            Nueva
     edit:
         title:                  Editar Proyecto
         cancel:                 Cancelar
@@ -25,17 +26,20 @@ feature:
         involvedUsers:          Involucrados
         no_features:            Este proyecto no sirve para nada
     new:
-        title:                  Nueva Funcionalidad
+        title:                  Nueva Feature
         submit:                 Crear
+        cancel:                 Cancelar
     edit:
         cancel:                 Cancelar
         submit:                 Guardar
     show:
         edit:                   Editar
+        tasks:                  Tareas
         task:
             difficulty:         Dificultad
             priority:           Prioridad
             status:             Estado
+            new:                Nueva Tarea
     form:
         name:                   Nombre
         description:            Descripción
@@ -44,11 +48,13 @@ task:
     not_found:                  No existe esta Tarea
     list:
         no_tasks:               Que facil, no hay tareas
-        reported_by:            reportada por
+        reported_by:            por %reporter%
         and_assignee:           y asignado a
+        date:                   %day% de %month% de %year%
     new:
         title:                  Nueva Tarea
         submit:                 Crear
+        cancel:                 Cancelar
     show:
         edit:                   Editar
         reported_by:            reportada por
@@ -85,6 +91,29 @@ task:
         submit:         Enviar
         form:
             body:       Comentario
+
+date:
+    day:
+        Sunday:         Domingo
+        Monday:         Lunes
+        Tuesday:        Martes
+        Wednesday:      Miércoles
+        Thursday:       Jueves
+        Friday:         Viernes
+        Saturday:       Sábado
+    month:
+        January:        Enero
+        February:       Febrero
+        March:          Marzo
+        April:          Abril
+        May:            Mayo
+        June:           Junio
+        July:           Julio
+        August:         Agosto
+        September:      Septiembre
+        October:        Octubre
+        November:       Noviembre
+        December:       Diciembre
 
 layout:
     nav:
