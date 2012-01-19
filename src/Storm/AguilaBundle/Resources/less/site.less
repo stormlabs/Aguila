@@ -1,5 +1,7 @@
 @import "lib/bootstrap/bootstrap.less";
 
+@import "lib/elements.less";
+
 @import "lib/icons.less";
 
 body {
@@ -8,7 +10,14 @@ body {
 
 .form-stacked { padding-left: 0; }
 
-.project_list {
+.topbar {
+    .brand {
+        padding-left: 35px;
+        background: url(/bundles/aguila/images/logo.png) no-repeat 15px center;
+    }
+}
+
+.list {
     a {
         text-decoration: none;
         color: @blueDark;
@@ -33,5 +42,24 @@ body {
         float: right;
         margin: 0 6px;
         line-height: 40px;
+    }
+}
+
+.single_form {
+    width: 470px;
+    margin: 0 auto;
+}
+
+.task-form {
+    textarea {
+        width: 100%;
+        resize:vertical
+    }
+}
+
+.page-header{
+    .btn {
+        position: relative;
+        top: -0.35em;
     }
 }
