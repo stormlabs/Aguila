@@ -2,9 +2,13 @@
 
 {% block title 'fos.user.registration.title'|trans([], 'AguilaBundle') %}
 
-{% block fos_user_content %}
-<div class="single_form">
-    <h1>{{'fos.user.registration.title'|trans([], 'AguilaBundle')}}</h1>
-    {% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% block content %}
+<div class="page-header">
+    <h1>
+        {{ "layout.site.name"|trans([], 'AguilaBundle') }}
+        <small>{{ "layout.site.slogan"|trans([], 'AguilaBundle') }}</small>
+    </h1>
 </div>
-{% endblock fos_user_content %}
+<h2>{{ "fos.user.registration.title"|trans([], 'AguilaBundle') }}</h2>
+{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock content %}

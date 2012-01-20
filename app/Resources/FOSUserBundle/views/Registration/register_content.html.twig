@@ -1,8 +1,35 @@
 {% form_theme form theme %}
-<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="form-stacked">
-    {{ form_widget(form) }}
+<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="form-stacked fos_user_registration_register">
+    <div class="row">
+        <div class="span5">
+            <fieldset>
+                {{ form_widget(form) }}
+            </fieldset>
+        </div>
+        <div class="span11">
+            <div class="row">
+                <div class="span6">
+                    <div class="row">
+                        <div class="span2 featured">
+                            <span class="icon lightbulb"></span>
+                        </div>
+                        <div class="span2 featured">
+                            <span class="icon clock"></span>
+                        </div>
+                        <div class="span2 featured">
+                            <span class="icon image"></span>
+                        </div>
+                    </div>
+                    <p>{{ "fos.user.registration.message"|trans([], 'AguilaBundle') }}</p>
+
+                </div>
+                <div class="span5">
+                    <img src="{{ asset('/bundles/aguila/images/logo_200.png') }}" alt="aguila logo"/>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="actions">
-        <input class="btn primary" type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}"/> |
-        <a href="{{ path('homepage') }}">{{'fos.user.registration.cancel'|trans([], 'AguilaBundle')}}</a>
+        <input class="btn primary" type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}"/>
     </div>
 </form>

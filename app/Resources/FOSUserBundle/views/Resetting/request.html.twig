@@ -1,8 +1,10 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
 {% block fos_user_content %}
-<div class="single_form">
-    <h1>{{'fos.user.resetting.title'|trans([], 'AguilaBundle')}}</h1>
+<div class="single_page">
+    <div class="page-header">
+        <h1>{{'fos.user.resetting.title'|trans([], 'AguilaBundle')}}</h1>
+    </div>
     {% include "FOSUserBundle:Resetting:request_content.html.twig" %}
 </div>
 {% endblock fos_user_content %}

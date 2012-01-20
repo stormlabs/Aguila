@@ -1,8 +1,8 @@
-<ul class="list unstyled">
+<ul class="unstyled">
     {% for feature in features %}
     <li{% if loop.index is odd %} class="odd"{% endif %}>
-        <a href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" class="name">{{ feature.name }}</a>
-        <a href="{{ path('aguila_feature_edit', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" class="edit icon pencil"></a>
+        <a href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" >{{ feature.name }}</a>
+        <a href="{{ path('aguila_feature_edit', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" class="icon pencil"></a>
     </li>
     {% endfor %}
 </ul>
