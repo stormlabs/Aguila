@@ -27,16 +27,16 @@
 <div {{ block('widget_container_attributes') }}>
     {{ form_label(form, label|default(null)) }}
     <div class="input">
-    {{ form_widget(form, attr) }}
+        {{ form_widget(form, attr) }}
         {% if errors|length > 0 %}
             <span class="help-inline">{{ form_errors(form) }}</span>
         {% elseif help is defined %}
             <span class="help-inline">{{ help }}</span>
         {%endif%}
-    </div>
-    {% if helpBlock is defined %}
+        {% if helpBlock is defined %}
         <span class="help-block">{{ helpBlock }}</span>
-    {%endif%}
+        {%endif%}
+    </div>
 </div>
 {% endspaceless %}
 {% endblock field_row %}
