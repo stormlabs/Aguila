@@ -1,57 +1,118 @@
-{% extends 'AguilaBundle::layout.html.twig' %}
+{% extends 'AguilaBundle:Feature:show.html.twig' %}
 
-{% block title "#" ~ task.id ~ ": " ~ task.description %}
+{% set project = task.feature.project %}
+{% set feature = task.feature %}
 
-{% block breadcrumbs %}
-<nav>
-    <a href="{{ path('aguila_project_show', {
-        'slug': task.feature.project.slug}) }}">{{ task.feature.project.name }}</a> &raquo;
-    <a href="{{ path('aguila_feature_show', {
-        'project_slug': task.feature.project.slug,
-        'slug': task.feature.slug}) }}">{{ task.feature.name }}</a> &raquo;
-    #{{ task.number }}
-</nav>
-{% endblock %}
+{% block title task.feature.project ~ " #" ~ task.id ~ ": " ~ task.description %}
 
-{% block content %}
+{#{% block breadcrumbs %}#}
+{#<nav>#}
+    {#<a href="{{ path('aguila_project_show', {#}
+        {#'slug': task.feature.project.slug}) }}">{{ task.feature.project.name }}</a> &raquo;#}
+    {#<a href="{{ path('aguila_feature_show', {#}
+        {#'project_slug': task.feature.project.slug,#}
+        {#'slug': task.feature.slug}) }}">{{ task.feature.name }}</a> &raquo;#}
+    {##{{ task.number }}#}
+{#</nav>#}
+{#{% endblock %}#}
 
-<section>
+{% block sub_content %}
+<div class="task">
+    <div class="page-header">
+        <h3>
+            {{ task.title }}
+        </h3>
 
-    <header>
-        <h2>{{ task.description }}</h2>
-        <a href="{{ path('aguila_task_edit', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ 'task.show.edit'|trans([], 'AguilaBundle') }}</a>
-        <p>
-            {{ 'task.show.reported_by'|trans([], 'AguilaBundle') }} <strong>{{ task.reporter }}</strong>
-            {% if task.assignee %}
-            {{ 'task.show.and_assignee'|trans([], 'AguilaBundle') }} <strong>{{ task.assignee }}</strong>
-            {% endif %}
-        </p>
-    </header>
+        {% include 'AguilaBundle:Task:meta.html.twig' %}
+    </div>
 
-    <dl>
-        <dt>{{ 'feature.show.task.difficulty'|trans([], 'AguilaBundle') }}</dt>
-        <dd>{{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}</dd>
-        <dt>{{ 'feature.show.task.priority'|trans([], 'AguilaBundle') }}</dt>
-        <dd>{{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}</dd>
-        <dt>{{ 'feature.show.task.status'|trans([], 'AguilaBundle') }}</dt>
-        <dd>{{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}</dd>
-    </dl>
-    <section>
-        <h2>{{ 'Comments'|trans([], 'AguilaBundle') }}</h2>
-        <ul>
-            {% for comment in task.comments %}
-            <li class="comment"><p class="comment-meta">{{ comment.user }} on {{comment.date|date('Y-m-d')}} </p>
-                <div class="comment-text">
-                    {{ comment.body }}
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        <form action="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(comment_form) }}>
-            {{ form_widget(comment_form) }}
-            <button type="submit">{{ 'task.comment.submit'|trans([], 'AguilaBundle') }}</button>
-        </form>
-    </section>
-</section>
+    <div style="overflow: auto">
 
+        <div class="span3 metadata" style="background: #d3d3d3; float: right;">
+            <div>
+                <span class="icon lightbulb"></span>
+                {{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}
+            </div>
+            <div>
+                <span class="icon clock"></span>
+                {{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}
+            </div>
+            <div>
+                <span class="icon document"></span>
+                {{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}
+            </div>
+            <div>
+                <a class="btn{% if task.status %} error{% else %} info{% endif %}" href="{{ path('aguila_task_close', {
+                        'project_slug': task.feature.project.slug,
+                        'number': task.number}) }}">
+                    {{ task.status == 0 ? "REOPEN" :"CLOSE" }}
+                </a>
+            </div>
+            {#<div>#}
+                {#<a class="btn" href="{{ path('aguila_task_edit', {#}
+                        {#'project_slug': task.feature.project.slug,#}
+                        {#'number': task.number}) }}">#}
+                    {#{{ 'task.show.edit'|trans([], 'AguilaBundle') }}#}
+                {#</a>#}
+            {#</div>#}
+        </div>
+
+            {{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}{{ task.description }}
+        {{ task.description }}
+
+
+
+    </div>
+</div>
+
+<div class="page-header">
+    <h3>Comentarios</h3>
+</div>
+
+<ul>
+    {% for comment in task.comments %}
+    <li class="comment"><p class="comment-meta">{{ comment.user }} on {{comment.date|date('Y-m-d')}} </p>
+
+        <div class="comment-text">
+            {{ comment.body }}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+<form class="form-stacked" action="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(comment_form) }}>
+    <fieldset>
+        {{ form_widget(comment_form) }}
+    </fieldset>
+    <div class="actions">
+        <button class="btn primary" type="submit">{{ 'task.comment.submit'|trans([], 'AguilaBundle') }}</button>
+    </div>
+</form>
+</div>
 {% endblock %}

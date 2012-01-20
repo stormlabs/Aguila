@@ -10,11 +10,11 @@
 
 <h3>{{ "project.list.title"|trans([], "AguilaBundle") }}</h3>
 
-<ul class="unstyled">
+<ul class="unstyled zebra-striped">
     {% for project in projects %}
     <li{% if loop.index is odd %} class="odd"{% endif %}>
         <a href="{{ path('aguila_project_show', {'slug': project.slug}) }}" >{{ project.name }}</a>
-        <a href="{{ path('aguila_project_edit', {'slug': project.slug}) }}" class="icon pencil"></a>
+        <a href="{{ path('aguila_project_edit', {'slug': project.slug}) }}" class="icon cog"></a>
     </li>
     {% endfor %}
 </ul>

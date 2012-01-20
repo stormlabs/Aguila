@@ -8,17 +8,18 @@
 <div class="page-header">
     <h1>
         <a href="{{ path('aguila_project_show', {'slug': project.slug}) }}" class="name">{{ project.name }}</a>
-        <small>({{ project.features|length }})</small>
+        <small>
+            ({{ project.features|length }})
+            <a href="{{ path('aguila_project_edit', {'slug': project.slug}) }}" class="icon cog"></a>
+        </small>
     </h1>
-</div>
 
-<div class="page-header">
     <h2>
         {{ 'project.show.features'|trans([], 'AguilaBundle') }}
         <small><a class="new-feature-button btn success" href="#">{{ 'project.show.feature.new'|trans([], 'AguilaBundle') }}</a></small>
     </h2>
+    {% render 'AguilaBundle:Feature:new' with {'project_slug': project.slug} %}
 </div>
-{% render 'AguilaBundle:Feature:new' with {'project_slug': project.slug} %}
 
 {% include 'AguilaBundle:Feature:list.html.twig' with {'features': project.features} %}
 

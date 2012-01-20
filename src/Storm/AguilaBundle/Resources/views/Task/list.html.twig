@@ -1,24 +1,13 @@
-<div class="row">
-    <table class="zebra-striped span16">
-        <tbody>
-        {% for task in tasks %}
-        <tr>
-            <th>#{{ task.number }}</th>
-            <td>
-                <a href="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ task.description }}</a>
-                <p>
-                    {{ "task.list.reported_by"|trans({'%reporter%': task.reporter}, 'AguilaBundle') }}
-                    <time datetime="{{ task.createdAt|date('c') }}" title="{{ task.createdAt|date('Y-m-d G:i:s') }}">
-                        {{ "task.list.date"|trans({
-                            '%day%': task.createdAt|date('d'),
-                            '%month%': ('date.month.'~task.createdAt|date('F'))|trans([], 'AguilaBundle'),
-                            '%year%': task.createdAt|date('Y')
-                        }, 'AguilaBundle') }}
-                    </time>
-                </p>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+<ul class="unstyled zebra-striped tasks">
+    {% for task in tasks %}
+    <li class="task row{% if loop.index is odd %} odd{% endif%}">
+        <div class="number span1">#{{ task.number }}</div>
+        <div class="span5">
+            <a class="title" href="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">
+                {{ task.title }}
+            </a>
+            {% include 'AguilaBundle:Task:meta.html.twig' %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>

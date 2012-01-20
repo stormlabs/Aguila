@@ -1,4 +1,4 @@
-<ul class="unstyled">
+<ul class="unstyled zebra-striped">
     {% for feature in features %}
     <li{% if loop.index is odd %} class="odd"{% endif %}>
         <a href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" >{{ feature.name }}</a>
