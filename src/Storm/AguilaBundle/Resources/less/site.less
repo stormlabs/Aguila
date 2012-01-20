@@ -17,35 +17,36 @@ body {
     }
 }
 
-.list {
-    a {
-        text-decoration: none;
-        color: @blueDark;
-    }
-    li {
-        &:hover .edit { display: inline; }
-        height: 40px;
-        .name {
-            font-size: @basefont * 1.2;
-            display: inline-block;
-            float: left;
-            line-height: 40px;
-            padding: 0 10px;
-
+.sidebar {
+    ul {
+        a {
+            text-decoration: none;
+            color: @blueDark;
         }
-    }
-    li.odd { background: lighten(@blue, 55%) }
-    .edit {
-        color: inherit;
-        font-size: @basefont + 2;
-        display: none;
-        float: right;
-        margin: 0 6px;
-        line-height: 40px;
+        li {
+            font-size: @basefont * 1.2;
+            line-height: 40px;
+            &:hover .icon { display: inline; }
+            height: 40px;
+            a {
+                display: inline-block;
+                float: left;
+                padding: 0 10px;
+
+            }
+        }
+        li.odd { background: lighten(@blue, 55%) }
+        .icon {
+            color: inherit;
+            display: none;
+            float: right;
+            margin: 0 6px;
+            line-height: 50px;
+        }
     }
 }
 
-.single_form {
+.single_page {
     width: 470px;
     margin: 0 auto;
 }
@@ -61,5 +62,23 @@ body {
     .btn {
         position: relative;
         top: -0.35em;
+    }
+}
+
+.fos_user_registration_register {
+    p {
+        font-size: 2em;
+        line-height: 1.2em;
+        padding: 10px 0 0 0;
+        text-align: center;
+    }
+    .featured {
+        font-size: 7em;
+        line-height: 1.2em;
+        text-align: center;
+    }
+    img {
+        display: block;
+        margin: 0 auto;
     }
 }
