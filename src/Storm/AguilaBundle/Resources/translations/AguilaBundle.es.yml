@@ -30,6 +30,7 @@ feature:
         submit:                 Crear
         cancel:                 Cancelar
     edit:
+        title:                  Editar Feature
         cancel:                 Cancelar
         submit:                 Guardar
     show:
@@ -48,7 +49,7 @@ task:
     not_found:                  No existe esta Tarea
     list:
         no_tasks:               Que facil, no hay tareas
-        reported_by:            por %reporter%
+        reported_by:            por
         and_assignee:           y asignado a
         date:                   %day% de %month% de %year%
     new:

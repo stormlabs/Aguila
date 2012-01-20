@@ -17,6 +17,9 @@ class Task
     static $priority_choices = array('task.priority.0', 'task.priority.1', 'task.priority.2', 'task.priority.3');
     static $status_choices = array('task.status.0', 'task.priority.1', 'task.priority.2');
 
+    const CLOSE = 0;
+    const OPEN = 1;
+
     /**
      * @var integer $id
      *
@@ -32,6 +35,13 @@ class Task
      * @ORM\Column(name="number", type="integer")
      */
     private $number;
+
+    /**
+     * @var text $title
+     *
+     * @ORM\Column(name="title", type="text")
+     */
+    private $title;
 
     /**
      * @var text $description
@@ -105,14 +115,14 @@ class Task
 
     public function __construct()
     {
-        $this->status = 0;
+        $this->status = self::OPEN;
         $this->created_at = new \DateTime();
         $this->comments = array();
     }
 
     public function __toString()
     {
-        return $this->description;
+        return $this->title;
     }
 
     /**
@@ -339,5 +349,21 @@ class Task
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    /**
+     * @param \Storm\AguilaBundle\Entity\text $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return \Storm\AguilaBundle\Entity\text
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 }

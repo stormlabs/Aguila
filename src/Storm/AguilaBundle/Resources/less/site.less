@@ -17,6 +17,17 @@ body {
     }
 }
 
+// ZEBRA-STRIPING
+// --------------
+ul.zebra-striped {
+    li:nth-child(odd){
+      background-color: #f9f9f9;
+    }
+    li:hover {
+      background-color: #f5f5f5;
+    }
+}
+
 .sidebar {
     ul {
         a {
@@ -35,7 +46,6 @@ body {
 
             }
         }
-        li.odd { background: lighten(@blue, 55%) }
         .icon {
             color: inherit;
             display: none;
@@ -84,7 +94,51 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    &:hover {
+        .icon {
+            display: inline;
+        }
+    }
     .icon {
         font-weight: normal;
+    }
+    small {
+        .icon {
+            display: none;
+        }
+    }
+}
+.tasks {
+    padding-left: 30px;
+    li {
+        padding-top: 15px;
+    }
+}
+
+.task {
+    .number {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    .title {
+        overflow: hidden;
+        display: inline-block;
+        height: 1.5em;
+    }
+    .meta {
+        time {color: @gray;}
+    }
+
+    .metadata {
+        .data {
+            text-align: center;
+            font-size: 1.1em;
+            .icon {
+                font-size: 2.2em;
+                line-height: 1em;
+                display: block;
+
+            }
+        }
     }
 }

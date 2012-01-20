@@ -80,11 +80,11 @@ class TaskController extends Controller
         }
 
         return array(
-            'task'                    => $task,
+            'task' => $task,
             'task_difficulty_choices' => Task::$difficulty_choices,
-            'task_priority_choices'   => Task::$priority_choices,
-            'task_status_choices'     => Task::$status_choices,
-            'comment_form'            => $commentForm->createView(),
+            'task_priority_choices' => Task::$priority_choices,
+            'task_status_choices' => Task::$status_choices,
+            'comment_form' => $commentForm->createView(),
         );
     }
 
@@ -96,11 +96,11 @@ class TaskController extends Controller
     public function newAction($project_slug, $feature_slug)
     {
         $task = new Task();
-        $form   = $this->createForm(new TaskType(), $task);
+        $form = $this->createForm(new TaskType(), $task);
 
         return array(
             'task' => $task,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
             'project_slug' => $project_slug,
             'feature_slug' => $feature_slug,
         );
@@ -115,9 +115,9 @@ class TaskController extends Controller
      */
     public function createAction($project_slug, $feature_slug)
     {
-        $task  = new Task();
+        $task = new Task();
         $request = $this->getRequest();
-        $form    = $this->createForm(new TaskType(), $task);
+        $form = $this->createForm(new TaskType(), $task);
         $form->bindRequest($request);
 
         if ($form->isValid()) {
@@ -146,7 +146,7 @@ class TaskController extends Controller
 
         return array(
             'task' => $task,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         );
     }
 
@@ -170,8 +170,8 @@ class TaskController extends Controller
         $editForm = $this->createForm(new TaskType(), $task);
 
         return array(
-            'task'      => $task,
-            'edit_form'   => $editForm->createView(),
+            'task' => $task,
+            'edit_form' => $editForm->createView(),
         );
     }
 
@@ -193,7 +193,7 @@ class TaskController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
         }
 
-        $editForm   = $this->createForm(new TaskType(), $task);
+        $editForm = $this->createForm(new TaskType(), $task);
 
         $request = $this->getRequest();
 
@@ -210,8 +210,8 @@ class TaskController extends Controller
         }
 
         return array(
-            'task'      => $task,
-            'edit_form'   => $editForm->createView(),
+            'task' => $task,
+            'edit_form' => $editForm->createView(),
         );
     }
 
@@ -226,9 +226,42 @@ class TaskController extends Controller
             null,
             array('validation_constraint' => $constraints,)
         )
-        ->add('body', 'textarea')
-        ->getForm();
+            ->add('body', 'textarea')
+            ->getForm();
 
         return $commentForm;
+    }
+
+    /**
+     * Close an existing Task task.
+     *
+     * @Route("/{number}/close", name="aguila_task_close", requirements={"number" = "\d+"})
+     * @Template()
+     */
+    public function closeAction($project_slug, $number)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        try {
+            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project_slug, $number);
+        }
+        catch (NoResultException $e) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($task->getStatus() == Task::CLOSE) {
+            $task->setStatus(Task::OPEN);
+        }
+        else {
+            $task->setStatus(Task::CLOSE);
+        }
+
+        $em->persist($task);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('aguila_task_show', array(
+            'project_slug' => $project_slug,
+            'number' => $number,
+        )));
     }
 }

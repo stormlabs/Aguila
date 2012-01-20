@@ -31,6 +31,7 @@ class TaskFixture extends AbstractFixture implements OrderedFixtureInterface
             $feature = $this->getReference("feature-".($n%11));
             $task->setFeature($feature);
             $task->setDescription($fortune ? $this->getDescription() : $feature->getName()."-task-".$n);
+            $task->setTitle(substr($task->getDescription(), 0, 40));
             $task->setDifficulty(($n+10) % 4);
             $task->setPriority($n % 4);
             $user = $manager->getRepository('AguilaBundle:User')->findOneBy(array('username' => 'admin'));

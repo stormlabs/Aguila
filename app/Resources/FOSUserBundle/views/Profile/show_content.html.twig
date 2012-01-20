@@ -1,4 +1,8 @@
-<div class="fos_user_user_show">
-    <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
-    <p>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}: {{ user.email }}</p>
-</div>
+<dl>
+    <dt>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}</dt>
+    <dd>{{ user.username }}</dd>
+    <dt>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}</dt>
+    <dd>{{ user.email }}</dd>
+    <dt>{{ 'profile.show.tasks'|trans({}, 'FOSUserBundle') }}</dt>
+    <dd>task_list</dd>
+</dl>
