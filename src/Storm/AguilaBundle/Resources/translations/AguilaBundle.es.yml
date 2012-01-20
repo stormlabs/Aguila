@@ -150,17 +150,20 @@ fos.user:
         reset.title:        Reestablecer tu contraseña
 
     change_password:
-        title:              Cambiar Contraseña
+        title:              Cambiar contraseña
 
     # FOS Form field labels
     group.form:
         name:                   "Nombre de grupo:"
 
-    profile.form:
-        user.username:          "Nombre de usuario:"
-        user.email:             "Email:"
-        user.email.help:        "Este email es usado para extraer la image de gravatar"
-        current:                "Contraseña actual:"
+    profile:
+        edit:
+            title:              Editar perfil
+        form:
+            user.username:          "Nombre de usuario:"
+            user.email:             "Email:"
+            user.email.help:        "Este email es usado para extraer la image de gravatar"
+            current:                "Contraseña actual:"
 
     resetting.form:
         new.first:              "Nueva contraseña:"
