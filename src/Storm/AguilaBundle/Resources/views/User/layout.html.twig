@@ -1,0 +1,18 @@
+{% extends 'AguilaBundle::layout.html.twig' %}
+
+{% block sidebar %}
+<h2>{{ app.user }}</h2>
+<ul class="unstyled">
+    <li>
+        <a href="{{ path('fos_user_change_password') }}">{{ "fos.user.change_password.title"|trans([], 'AguilaBundle') }}</a>
+        <span class="icon key"></span>
+    </li>
+    <li>
+        <a href="{{ path('fos_user_profile_edit') }}">{{ "fos.user.profile.edit.title"|trans([], 'AguilaBundle') }}</a>
+        <span class="icon user"></span>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

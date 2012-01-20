@@ -1,5 +1,8 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends "AguilaBundle:User:layout.html.twig" %}
 
-{% block fos_user_content %}
+{% block content %}
+<div class="page-header">
+    <h2>{{'fos.user.profile.edit.title'|trans([], 'AguilaBundle')}}</h2>
+</div>
 {% include "FOSUserBundle:Profile:edit_content.html.twig" %}
-{% endblock fos_user_content %}
+{% endblock content %}
