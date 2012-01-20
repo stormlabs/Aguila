@@ -116,48 +116,57 @@ date:
         December:       Diciembre
 
 layout:
+    site:
+        name:           Aguila
+        slogan:         Aguiliza tus proyectos
     nav:
-        projects: Proyectos
-        login:    Ingresar
-        logout:   Salir
-        register: Registrarse
+        projects:       Proyectos
+        login:          Ingresar
+        logout:         Salir
+        register:       Registrarse
 
 fos.user:
-        security:
-            login:
-                title:          Iniciar sesión
-                resetting:      ¿Olvidaste tu contraseña?
-                register:       Regístrate
-        registration:
-            title:              Regístrate
-            cancel:             Cancelar
-
-        resetting:
-            title:              Recuperar contraseña
-            cancel:             Cancelar
-            back:               Volver
-            reset.title:        Reestablecer tu contraseña
-
-# FOS Form field labels
-        group.form:
-            name:                   "Nombre de grupo:"
-
-        profile.form:
-            user.username:          "Nombre de usuario:"
-            user.email:             "Email:"
-            current:                "Contraseña actual:"
-
-        registration.form:
+    current.password.help:          Solo por seguridad
+    security:
+        login:
+            title:          Iniciar sesión
+            resetting:      ¿Olvidaste tu contraseña?
+            register:       Regístrate
+    registration:
+        title:              Regístrate
+        message: |
+            Una herramienta ligera para la
+            gestión de proyectos ágiles.
+        form:
             username:               "Nombre de usuario:"
             email:                  "Email:"
             plainPassword.first:    "Contraseña:"
             plainPassword.second:   "Verificación:"
 
-        resetting.form:
-            new.first:              "Nueva contraseña:"
-            new.second:             "Verificación:"
+    resetting:
+        title:              Recuperar contraseña
+        cancel:             Cancelar
+        back:               Volver
+        reset.title:        Reestablecer tu contraseña
 
-        change.password.form:
-            new.first:              "Nueva contraseña:"
-            new.second:             "Verificación:"
-            current:                "Contraseña actual:"
+    change_password:
+        title:              Cambiar Contraseña
+
+    # FOS Form field labels
+    group.form:
+        name:                   "Nombre de grupo:"
+
+    profile.form:
+        user.username:          "Nombre de usuario:"
+        user.email:             "Email:"
+        user.email.help:        "Este email es usado para extraer la image de gravatar"
+        current:                "Contraseña actual:"
+
+    resetting.form:
+        new.first:              "Nueva contraseña:"
+        new.second:             "Verificación:"
+
+    change.password.form:
+        new.first:              "Nueva contraseña:"
+        new.second:             "Verificación:"
+        current:                "Contraseña actual:"
