@@ -15,8 +15,10 @@
         {{ form_widget(edit_form) }}
     </fieldset>
     <div class="actions">
-    <button class="btn primary" type="submit">{{ 'feature.edit.submit'|trans([], 'AguilaBundle') }}</button>
-    <a class="btn" href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">{{ 'feature.edit.cancel'|trans([], 'AguilaBundle') }}</a>
+        <button class="btn primary" type="submit">{{ 'feature.edit.submit'|trans([], 'AguilaBundle') }}</button>
+        <a class="btn" href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}">
+            {{ 'feature.edit.cancel'|trans([], 'AguilaBundle') }}
+        </a>
     </div>
 </form>
 

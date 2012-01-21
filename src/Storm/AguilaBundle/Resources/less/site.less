@@ -17,10 +17,20 @@ body {
     }
 }
 
-// ZEBRA-STRIPING
-// --------------
+// forms
+.row > [class*="span"] {
+  input, textarea, .uneditable-input{
+      width: 100%;
+  }
+}
+
+textarea {
+    resize:vertical
+}
+
+// zebra lists
 ul.zebra-striped {
-    li:nth-child(odd){
+    li:nth-child(odd) {
       background-color: #f9f9f9;
     }
     li {
@@ -69,13 +79,6 @@ ul.zebra-striped {
 .single_page {
     width: 470px;
     margin: 0 auto;
-}
-
-.task-form {
-    textarea {
-        width: 100%;
-        resize:vertical
-    }
 }
 
 .page-header{

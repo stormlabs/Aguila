@@ -5,22 +5,11 @@
 
 {% block title task.feature.project ~ " #" ~ task.id ~ ": " ~ task.description %}
 
-{#{% block breadcrumbs %}#}
-{#<nav>#}
-    {#<a href="{{ path('aguila_project_show', {#}
-        {#'slug': task.feature.project.slug}) }}">{{ task.feature.project.name }}</a> &raquo;#}
-    {#<a href="{{ path('aguila_feature_show', {#}
-        {#'project_slug': task.feature.project.slug,#}
-        {#'slug': task.feature.slug}) }}">{{ task.feature.name }}</a> &raquo;#}
-    {##{{ task.number }}#}
-{#</nav>#}
-{#{% endblock %}#}
-
 {% block sub_content %}
 <div class="task">
     <div class="page-header">
         <h3>
-            <span class="btn {% if not task.status %}error disabled">close{% else %}success disabled">open{% endif %}</span>
+            <span class="label {% if task.status == 0 %}important{% elseif task.status == 1%}success{% else %}warning{% endif %}">{{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}</span>
             {{ task.title }}
             <a class="edit" href="{{ path('aguila_task_edit', {
                         'project_slug': task.feature.project.slug,
@@ -34,12 +23,12 @@
     </div>
 
     <div class="metadata well">
-        <span class="icon lightbulb"></span>
-        {{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}
-        <span class="icon clock"></span>
-        {{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}
-        <span class="icon document"></span>
-        {{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}
+        <span class="icon lightbulb"></span>{{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}
+        <span class="icon clock"></span>    {{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}
+        {% if task.assignee %}
+        <img src="http://www.gravatar.com/avatar/{{ task.assignee.gravatar }}?s=12" style="width: 12px; height: 12px;" />
+        <strong>{{ task.assignee }}</strong>
+        {% endif %}
         <a class="btn small {% if task.status %}error{% else %}success{% endif %}"
            href="{{ path('aguila_task_close', {'project_slug': task.feature.project.slug,'number': task.number}) }}"
                 >
