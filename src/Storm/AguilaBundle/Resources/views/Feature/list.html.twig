@@ -1,6 +1,7 @@
+{% set current = feature is defined ? feature.id : false %}
 <ul class="unstyled zebra-striped">
     {% for feature in features %}
-    <li{% if loop.index is odd %} class="odd"{% endif %}>
+    <li{% if feature.id == current %} class="current"{% endif %}>
         <a href="{{ path('aguila_feature_show', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" >{{ feature.name }}</a>
         <a href="{{ path('aguila_feature_edit', {'project_slug': feature.project.slug, 'slug': feature.slug}) }}" class="icon pencil"></a>
     </li>

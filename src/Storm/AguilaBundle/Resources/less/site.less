@@ -23,8 +23,18 @@ ul.zebra-striped {
     li:nth-child(odd){
       background-color: #f9f9f9;
     }
-    li:hover {
-      background-color: #f5f5f5;
+    li {
+        &:hover {
+          background-color: #f5f5f5;
+        }
+        &.current {
+            background: @blueDark;
+            .box-shadow(0 0 5px rgba(0,0,0,.6));
+            a {
+                font-weight: bold;
+                color: @white;
+            }
+        }
     }
 }
 
