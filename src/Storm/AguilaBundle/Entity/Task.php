@@ -39,7 +39,7 @@ class Task
     /**
      * @var text $title
      *
-     * @ORM\Column(name="title", type="text")
+     * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 

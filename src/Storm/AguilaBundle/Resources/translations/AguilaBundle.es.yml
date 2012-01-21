@@ -79,6 +79,7 @@ task:
         - Trabajando en ello
         - Ya fue
     form:
+        title:          Título
         description:    Descripción
         difficulty:     Dificultad
         priority:       Prioridad

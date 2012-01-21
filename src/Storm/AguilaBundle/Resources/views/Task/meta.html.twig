@@ -1,5 +1,6 @@
 <p class="meta">
     {{ "task.list.reported_by"|trans([], 'AguilaBundle') }}
+    <img src="http://www.gravatar.com/avatar/{{ task.reporter.gravatar }}?s=12" style="width: 12px; height: 12px;" />
     <strong>{{ task.reporter }}</strong>
     <time datetime="{{ task.createdAt|date('c') }}" title="{{ task.createdAt|date('Y-m-d G:i:s') }}">
         {{ "task.list.date"|trans({
