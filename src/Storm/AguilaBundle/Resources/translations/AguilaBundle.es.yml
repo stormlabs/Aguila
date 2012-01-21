@@ -75,9 +75,9 @@ task:
         - ¡Ahora mismo!
         - ¡¡Para ayer!!
     status:
-        - Esta en nada
+        - Cerrada
+        - Abierta
         - Trabajando en ello
-        - Ya fue
     form:
         title:          Título
         description:    Descripción
