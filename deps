@@ -80,3 +80,6 @@
     git=http://github.com/stof/StofDoctrineExtensionsBundle.git
     target=/bundles/Stof/DoctrineExtensionsBundle
 
+[twitter-bootstrap]
+    git=https://github.com/twitter/bootstrap.git
+    version=1.4.0

@@ -63,6 +63,7 @@ class TaskController extends Controller
                 $commentList = $task->getComments();
                 $commentList[] = array(
                     'user' => $user->getUserName(),
+                    'gravatar' => $user->getGravatar(),
                     'body' => $data['body'],
                     'date' => new \Datetime('now'),
                 );

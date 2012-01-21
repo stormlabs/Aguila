@@ -1,4 +1,4 @@
-@import "lib/bootstrap/bootstrap.less";
+@import "../../../../../vendor/twitter-bootstrap/lib/bootstrap.less";
 
 @import "lib/elements.less";
 
@@ -115,6 +115,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+
 .task {
     .number {
         font-size: 1.2em;
@@ -127,18 +128,19 @@ h1, h2, h3, h4, h5, h6 {
     }
     .meta {
         time {color: @gray;}
+        .edit {
+        }
     }
 
     .metadata {
-        .data {
+        padding:  10px;
+        font-size: 1.1em;
+        .icon {
+            font-size: 1.4em;
+            line-height: 1em;
+            width: 1em;
+            display: inline-block;
             text-align: center;
-            font-size: 1.1em;
-            .icon {
-                font-size: 2.2em;
-                line-height: 1em;
-                display: block;
-
-            }
         }
     }
 }
