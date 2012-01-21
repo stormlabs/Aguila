@@ -47,11 +47,8 @@ class FeatureController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('feature.not_found', array(), 'AguilaBundle'));
         }
 
-        $deleteForm = $this->createDeleteForm($slug);
-
         return array(
             'feature'      => $feature,
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
