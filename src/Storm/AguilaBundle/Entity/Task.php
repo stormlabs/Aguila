@@ -15,10 +15,11 @@ class Task
 {
     static $difficulty_choices = array('task.difficulty.0', 'task.difficulty.1', 'task.difficulty.2', 'task.difficulty.3');
     static $priority_choices = array('task.priority.0', 'task.priority.1', 'task.priority.2', 'task.priority.3');
-    static $status_choices = array('task.status.0', 'task.priority.1', 'task.priority.2');
+    static $status_choices = array('task.status.0', 'task.status.1', 'task.status.2');
 
     const CLOSE = 0;
     const OPEN = 1;
+    const WORK = 2;
 
     /**
      * @var integer $id
