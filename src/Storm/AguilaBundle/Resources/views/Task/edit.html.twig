@@ -1,15 +1,22 @@
-{% extends 'AguilaBundle::layout.html.twig' %}
+{% extends 'AguilaBundle:Feature:show.html.twig' %}
 
-{% block title "#" ~ task.id ~ ": " ~ task.description %}
+{% set project = task.feature.project %}
+{% set feature = task.feature %}
 
-{% block content %}
+{% block title task.feature.project ~ " #" ~ task.id ~ ": " ~ task.description %}
 
-<section>
-    <form action="{{ path('aguila_task_update', {'project_slug': task.feature.project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(edit_form) }}>
+{% block sub_content %}
+
+<form class="form-stacked" action="{{ path('aguila_task_update', {'project_slug': task.feature.project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(edit_form) }}>
+    <fieldset>
         {{ form_widget(edit_form) }}
-        <a href="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ 'task.edit.cancel'|trans([], 'AguilaBundle') }}</a>
-        <button type="submit">{{ 'task.edit.submit'|trans([], 'AguilaBundle') }}</button>
-    </form>
-</section>
+    </fieldset>
+    <div class="actions">
+        <button class="btn primary" type="submit">{{ 'task.edit.submit'|trans([], 'AguilaBundle') }}</button>
+        <a class="btn" href="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">
+            {{ 'task.edit.cancel'|trans([], 'AguilaBundle') }}
+        </a>
+    </div>
+</form>
 
 {% endblock %}
