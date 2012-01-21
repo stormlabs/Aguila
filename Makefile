@@ -63,3 +63,9 @@ ctags:
 
 check_cs:
 	php bin/check_cs fix
+
+update_prod:
+	git reset --hard $(cat VERSION)
+	ENV=prod make cc -e
+	ENV=prod make warmup -e
+	ENV=prod make assets -e
