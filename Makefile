@@ -64,7 +64,14 @@ ctags:
 check_cs:
 	php bin/check_cs fix
 
-update_prod:
+install:
+	git reset --hard $(cat VERSION)
+	make vendors
+	ENV=prod make database -e
+	make deploy
+	php app/console doctrine:fixtures:load --fixtures=src/Storm/AguilaBundle/DataFixtures/ORM/Prod --env=prod
+
+deploy:
 	git reset --hard $(cat VERSION)
 	ENV=prod make cc -e
 	ENV=prod make warmup -e
