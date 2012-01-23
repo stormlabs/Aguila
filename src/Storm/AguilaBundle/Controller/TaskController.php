@@ -9,11 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use JMS\SecurityExtraBundle\Annotation\SecureParam;
+use Doctrine\ORM\NoResultException;
+
 use Storm\AguilaBundle\Entity\Task;
 use Storm\AguilaBundle\Entity\Project;
 use Storm\AguilaBundle\Entity\Feature;
 use Storm\AguilaBundle\Form\TaskType;
-use Doctrine\ORM\NoResultException;
+use Storm\AguilaBundle\Entity\Comment;
+use Storm\AguilaBundle\Form\CommentType;
 
 /**
  * Task controller.
@@ -27,17 +30,17 @@ class TaskController extends Controller
      *
      * @Template()
      */
-    public function listAction()
+    public function listAction($feature_slug, $status = Task::OPEN)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $tasks = $em->getRepository('AguilaBundle:Task')->findAll();
+        $tasks = $em->getRepository('AguilaBundle:Task')->findOpenByFeature($feature_slug, $status);
 
         return array('tasks' => $tasks);
     }
 
     /**
-     * Finds and displays a Task task.
+     * Finds and displays a Task.
      *
      * @Route("/{number}", name="aguila_task_show", requirements={"number" = "\d+"})
      * @Template()
@@ -56,33 +59,59 @@ class TaskController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
         }
 
-        $commentForm = $this->createCommentForm($task);
+        $comment = new Comment();
+        $commentForm = $this->createForm(new CommentType(), $comment);
+
+        return array(
+            'task' => $task,
+            'task_difficulty_choices' => Task::$difficulty_choices,
+            'task_priority_choices' => Task::$priority_choices,
+            'task_status_choices' => Task::$status_choices,
+            'comment_form' => $commentForm->createView(),
+        );
+    }
+
+    /**
+     * Adds a Comment to the Task
+     *
+     * @Route("/{number}/comment", name="aguila_task_comment", requirements={"number" = "\d+"})
+     * @Template("AguilaBundle:Task:show.html.twig")
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @SecureParam(name="project", permissions="VIEW")
+     */
+    public function commentAction(Project $project, $number)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        try {
+            /** @var $task \Storm\AguilaBundle\Entity\Task */
+            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project->getSlug(), $number);
+        }
+        catch (NoResultException $e) {
+            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
+        }
+
+        $comment = new Comment();
+        $form = $this->createForm(new CommentType(), $comment);
 
         $request = $this->getRequest();
-        if ('POST' === $request->getMethod()) {
-            $commentForm->bindRequest($request);
+        $form->bindRequest($request);
 
-            if ($commentForm->isValid()) {
-                $user = $this->get('security.context')->getToken()->getUser();
-                $data = $commentForm->getData();
-                $commentList = $task->getComments();
-                $commentList[] = array(
-                    'user' => $user->getUserName(),
-                    'gravatar' => $user->getGravatar(),
-                    'body' => $data['body'],
-                    'date' => new \Datetime('now'),
-                );
-                $task->setComments($commentList);
-                $em->persist($task);
-                $em->flush();
+        if ($form->isValid()) {
 
-                $this->get('session')->setFlash('notice', 'comment.added');
+            $comment->setUser($this->get('security.context')->getToken()->getUser());
+            $comment->setType(Comment::POST);
 
-                return $this->redirect($this->generateUrl('aguila_task_show', array(
-                    'project_slug' => $project->getSlug(),
-                    'number' => $number,
-                )));
-            }
+            $task->addComment($comment);
+
+            $em->persist($task);
+            $em->persist($comment);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('aguila_task_show', array(
+                'project_slug' => $project->getSlug(),
+                'number' => $number,
+            )));
         }
 
         return array(
@@ -90,12 +119,12 @@ class TaskController extends Controller
             'task_difficulty_choices' => Task::$difficulty_choices,
             'task_priority_choices'   => Task::$priority_choices,
             'task_status_choices'     => Task::$status_choices,
-            'comment_form'            => $commentForm->createView(),
+            'comment_form'            => $form->createView(),
         );
     }
 
     /**
-     * Displays a form to create a new Task task.
+     * Displays a form to create a new Task.
      *
      * @Template()
      * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
@@ -236,28 +265,8 @@ class TaskController extends Controller
         );
     }
 
-    /*
-     * Creates a form for commentaries
-     */
-    protected function createCommentForm(Task $task)
-    {
-        $constraints = new Collection(array(
-            'body' => new Constraints\NotBlank(),
-        ));
-        $commentForm = $this->container->get('form.factory')->createNamedBuilder(
-            'form',
-            'task_comment_form',
-            null,
-            array('validation_constraint' => $constraints,)
-        )
-            ->add('body', 'textarea')
-            ->getForm();
-
-        return $commentForm;
-    }
-
     /**
-     * Close an existing Task task.
+     * Close an existing Task.
      *
      * @Route("/{number}/close", name="aguila_task_close", requirements={"number" = "\d+"})
      * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})

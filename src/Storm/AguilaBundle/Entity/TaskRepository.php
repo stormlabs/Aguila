@@ -3,6 +3,7 @@
 namespace Storm\AguilaBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Storm\AguilaBundle\Entity\Task;
 
 /**
  * TaskRepository
@@ -24,5 +25,18 @@ class TaskRepository extends EntityRepository
                 'project_slug' => $project_slug,
             ));
         return $qb->getQuery()->getSingleResult();
+    }
+
+    public function findOpenByFeature($feature_slug, $status = Task::OPEN)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->leftJoin('t.feature', 'f')
+            ->where('f.slug = :feature_slug')
+            ->andWhere('t.status = :status')
+            ->setParameters(array(
+                'feature_slug' => $feature_slug,
+                'status' => $status,
+        ));
+        return $qb->getQuery()->getResult();
     }
 }

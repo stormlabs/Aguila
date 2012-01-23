@@ -80,7 +80,6 @@ task:
         - Trabajando en ello
     form:
         title:          Título
-        description:    Descripción
         difficulty:     Dificultad
         priority:       Prioridad
         assignee:       Asignado a

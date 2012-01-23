@@ -3,6 +3,7 @@
 namespace Storm\AguilaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Storm\AguilaBundle\Entity\Task
@@ -15,11 +16,12 @@ class Task
 {
     static $difficulty_choices = array('task.difficulty.0', 'task.difficulty.1', 'task.difficulty.2', 'task.difficulty.3');
     static $priority_choices = array('task.priority.0', 'task.priority.1', 'task.priority.2', 'task.priority.3');
-    static $status_choices = array('task.status.0', 'task.status.1', 'task.status.2');
+    static $status_choices = array('task.status.0', 'task.status.1', 'task.status.2', 'task.status.3');
 
     const CLOSE = 0;
     const OPEN = 1;
-    const WORK = 2;
+    const IN_PROGRESS = 2;
+    const REOPENED = 3;
 
     /**
      * @var integer $id
@@ -43,13 +45,6 @@ class Task
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
-
-    /**
-     * @var text $description
-     *
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
 
     /**
      * @var integer $difficulty
@@ -87,9 +82,9 @@ class Task
     private $reporter;
 
     /**
-     * @var array $comments
+     * @var ArrayCollection $comments
      *
-     * @ORM\Column(name="comments", type="array")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
      */
     private $comments;
 
@@ -118,7 +113,7 @@ class Task
     {
         $this->status = self::OPEN;
         $this->created_at = new \DateTime();
-        $this->comments = array();
+        $this->comments = new ArrayCollection();
     }
 
     public function __toString()
@@ -157,23 +152,19 @@ class Task
     }
 
     /**
-     * Set description
-     *
-     * @param text $description
+     * @param string $title
      */
-    public function setDescription($description)
+    public function setTitle($title)
     {
-        $this->description = $description;
+        $this->title = $title;
     }
 
     /**
-     * Get description
-     *
-     * @return text
+     * @return string
      */
-    public function getDescription()
+    public function getTitle()
     {
-        return $this->description;
+        return $this->title;
     }
 
     /**
@@ -279,7 +270,7 @@ class Task
     /**
      * Set comments
      *
-     * @param array $comments
+     * @param ArrayCollection $comments
      */
     public function setComments($comments)
     {
@@ -289,11 +280,33 @@ class Task
     /**
      * Get comments
      *
-     * @return array
+     * @return ArrayCollection
      */
     public function getComments()
     {
         return $this->comments;
+    }
+
+    public function addComment(Comment $comment)
+    {
+        $comment->setTask($this);
+        $this->comments->add($comment);
+    }
+
+    /**
+     * @param \DateTime $created_at
+     */
+    public function setCreatedAt($created_at)
+    {
+        $this->created_at = $created_at;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
     }
 
     /**
@@ -334,37 +347,5 @@ class Task
     public function getFeature()
     {
         return $this->feature;
-    }
-
-    /**
-     * @param \DateTime $created_at
-     */
-    public function setCreatedAt($created_at)
-    {
-        $this->created_at = $created_at;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * @param \Storm\AguilaBundle\Entity\text $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return \Storm\AguilaBundle\Entity\text
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 }
