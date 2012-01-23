@@ -23,6 +23,10 @@ database:
 	php app/console doctrine:database:drop --force --env=$(ENV)
 	php app/console doctrine:database:create --env=$(ENV)
 	php app/console doctrine:schema:create --env=$(ENV)
+	make acl
+
+acl:
+	php app/console init:acl
 
 fixtures:
 	php app/console doctrine:fixtures:load --env=$(ENV)
