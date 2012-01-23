@@ -3,7 +3,7 @@
 {% set project = task.feature.project %}
 {% set feature = task.feature %}
 
-{% block title task.feature.project ~ " #" ~ task.id ~ ": " ~ task.description %}
+{% block title task.feature.project ~ " #" ~ task.id ~ ": " ~ task.title %}
 
 {% block sub_content %}
 <div class="task">
@@ -35,8 +35,6 @@
             {{ task.status == 0 ? "REOPEN" :"CLOSE" }}
         </a>
     </div>
-
-    {{ task.description }}
 </div>
 
 <div class="page-header">

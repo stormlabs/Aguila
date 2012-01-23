@@ -45,13 +45,6 @@ class Task
     private $title;
 
     /**
-     * @var text $description
-     *
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
-
-    /**
      * @var integer $difficulty
      *
      * @ORM\Column(name="difficulty", type="integer")
@@ -157,23 +150,19 @@ class Task
     }
 
     /**
-     * Set description
-     *
-     * @param text $description
+     * @param string $title
      */
-    public function setDescription($description)
+    public function setTitle($title)
     {
-        $this->description = $description;
+        $this->title = $title;
     }
 
     /**
-     * Get description
-     *
-     * @return text
+     * @return string
      */
-    public function getDescription()
+    public function getTitle()
     {
-        return $this->description;
+        return $this->title;
     }
 
     /**
@@ -297,6 +286,22 @@ class Task
     }
 
     /**
+     * @param \DateTime $created_at
+     */
+    public function setCreatedAt($created_at)
+    {
+        $this->created_at = $created_at;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
      * Set issues
      *
      * @param string $issues
@@ -334,37 +339,5 @@ class Task
     public function getFeature()
     {
         return $this->feature;
-    }
-
-    /**
-     * @param \DateTime $created_at
-     */
-    public function setCreatedAt($created_at)
-    {
-        $this->created_at = $created_at;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * @param \Storm\AguilaBundle\Entity\text $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return \Storm\AguilaBundle\Entity\text
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 }

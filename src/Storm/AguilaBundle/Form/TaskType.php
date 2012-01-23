@@ -12,26 +12,16 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('description')
             ->add('difficulty', 'choice', array(
                 'choices' => Task::$difficulty_choices,
             ))
             ->add('priority', 'choice', array(
                 'choices' => Task::$priority_choices,
             ))
-//            ->add('status', 'choice', array(
-//                'choices' => Task::$status_choices,
-//            ))
             ->add('assignee', 'entity', array(
                 'class' => 'AguilaBundle:User',
                 'required' => false,
             ))
-//            ->add('comments', null, array(
-//                'required' => false,
-//            ))
-//            ->add('issues', null, array(
-//                'required' => false,
-//            ))
         ;
     }
 

@@ -6,9 +6,6 @@
     </div>
 
     <div class="row">
-        {{ form_row(form.description, {'attr': {'class': 'span12'}}) }}
-    </div>
-    <div class="row">
         {{ form_row(form.difficulty, {'attr': {'class': 'span4'}}) }}
         {{ form_row(form.priority, {'attr': {'class': 'span4'}}) }}
         {{ form_row(form.assignee, {'attr': {'class': 'span4'}}) }}
@@ -27,19 +24,6 @@
         });
         $('.reset-task-form').click(function () {
             $('.new-task-button').click();
-            setTimeout(function () {
-                $('#task_form_description').css('height', '3em');
-            }, 500);
-        });
-        $('#task_form_description').focusin(function () {
-            if ($(this).val().length === 0) {
-                $(this).animate({'height':'7em'}, 500);
-            }
-        });
-        $('#task_form_description').focusout(function () {
-            if ($('#task_form_description').val().length === 0) {
-                $('#task_form_description').animate({'height':'3em'}, 500);
-            }
         });
     });
 </script>
