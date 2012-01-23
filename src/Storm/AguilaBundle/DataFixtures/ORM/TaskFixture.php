@@ -36,8 +36,7 @@ class TaskFixture extends AbstractFixture implements OrderedFixtureInterface
             $user = $manager->getRepository('AguilaBundle:User')->findOneBy(array('username' => 'admin'));
             $task->setReporter($user);
             $task->setCreatedAt(new \DateTime('now + '.$n.'days - '.$n.'months'));
-            $number = $this->getReference("project-salgamos")->getId().$n;
-            $task->setNumber((int) $number);
+            $task->setNumber($n+1);
 
             $manager->persist($task);
         }
