@@ -1,0 +1,28 @@
+<div class="topbar">
+    <div class="topbar-inner">
+        <div class="container-fluid">
+            <h3>
+                <a class="brand" href="{{ path('homepage')}}" ><img src="" height="18px" />  Aguila</a>
+            </h3>
+            {% spaceless %}
+            {% if app.security.token and app.security.isGranted('ROLE_USER')  %}
+            <ul class="nav">
+                <li><a href="{{ path('aguila_project_list') }}">{{ 'layout.nav.projects'|trans([], 'AguilaBundle') }}</a></li>
+            </ul>
+            {% endif %}
+            <ul class="nav secondary-nav">
+                {% if app.security.token and app.security.isGranted('ROLE_USER')  %}
+                <li><a href="{{ path('fos_user_profile_show') }}">
+                    <img src="http://www.gravatar.com/avatar/{{ app.user.gravatar }}?s=30" style="float: left; padding-right: 10px; width: 20px; height: 20px;" />
+                    {{ app.user }}
+                </a></li>
+                <li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.nav.logout'|trans([], 'AguilaBundle') }}</a></li>
+                {% else %}
+                <li><a href="{{ path('fos_user_registration_register') }}">{{'layout.nav.register'|trans([], 'AguilaBundle')}}</a></li>
+                <li><a href="{{ path('fos_user_security_login') }}">{{ 'layout.nav.login'|trans([], 'AguilaBundle') }}</a></li>
+                {% endif %}
+            </ul>
+            {% endspaceless %}
+        </div>
+    </div>
+</div>

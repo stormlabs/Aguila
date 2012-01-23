@@ -14,10 +14,18 @@ class ProjectFixture extends AbstractFixture implements OrderedFixtureInterface
      */
     function load($manager)
     {
-//        $project = new Project();
-//        $project->setName('Salgamos');
-//        $manager->persist($project);
-//        $manager->flush();
+        $project1 = new Project();
+        $project1->setName('Salgamos');
+        $manager->persist($project1);
+
+        $project2 = new Project();
+        $project2->setName('Aguila');
+        $manager->persist($project2);
+
+        $manager->flush();
+
+        $this->addReference('project-salgamos', $project1);
+        $this->addReference('project-aguila', $project2);
     }
 
     /**

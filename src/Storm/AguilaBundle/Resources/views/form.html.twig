@@ -20,3 +20,41 @@
     {% endfor %}
 {% endspaceless %}
 {% endblock widget_choice_options %}
+
+{% block field_row %}
+{% spaceless %}
+{% if errors|length > 0 %}{% set attr = attr|merge({'class': attr.class|default('') ~ ' error'}) %}{%endif%}
+<div {{ block('widget_container_attributes') }}>
+    {{ form_label(form, label|default(null)) }}
+    <div class="input">
+        {{ form_widget(form, attr) }}
+        {% if errors|length > 0 %}
+            <span class="help-inline">{{ form_errors(form) }}</span>
+        {% elseif help is defined %}
+            <span class="help-inline">{{ help }}</span>
+        {%endif%}
+        {% if helpBlock is defined %}
+        <span class="help-block">{{ helpBlock }}</span>
+        {%endif%}
+    </div>
+</div>
+{% endspaceless %}
+{% endblock field_row %}
+
+{% block widget_container_attributes %}
+{% spaceless %}
+{% set attr = attr|merge({'class': attr.class|default('') ~ ' clearfix'}) %}
+{% for attrname,attrvalue in attr %}{{attrname}}="{{attrvalue}}" {% endfor %}
+{% endspaceless %}
+{% endblock widget_container_attributes %}
+
+{% block field_errors %}
+{% spaceless %}
+{% if errors|length > 0 %}
+    {% for error in errors %}
+        {% if not loop.index %} | {% endif %}
+        {{ error.messageTemplate|trans(error.messageParameters, 'validators') }}
+    {% endfor %}
+{% endif %}
+{% endspaceless %}
+{% endblock field_errors %}

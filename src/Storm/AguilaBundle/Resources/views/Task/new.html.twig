@@ -1,6 +1,45 @@
-<h2>{{ 'task.new.title'|trans([], 'AguilaBundle') }}</h2>
+<form style="display: none" class="task-form form-stacked" action="{{ path('aguila_task_create', {'project_slug': project_slug, 'feature_slug': feature_slug}) }}" method="post" {{ form_enctype(form) }}>
+    <h4>{{ 'task.new.title'|trans([], 'AguilaBundle') }}</h4>
 
-<form action="{{ path('aguila_task_create', {'project_slug': project_slug, 'feature_slug': feature_slug}) }}" method="post" {{ form_enctype(form) }}>
-    {{ form_widget(form) }}
-    <button type="submit">{{ 'task.new.submit'|trans([], 'AguilaBundle') }}</button>
+    <div class="row">
+        {{ form_row(form.title, {'attr': {'class': 'span12'}}) }}
+    </div>
+
+    <div class="row">
+        {{ form_row(form.description, {'attr': {'class': 'span12'}}) }}
+    </div>
+    <div class="row">
+        {{ form_row(form.difficulty, {'attr': {'class': 'span4'}}) }}
+        {{ form_row(form.priority, {'attr': {'class': 'span4'}}) }}
+        {{ form_row(form.assignee, {'attr': {'class': 'span4'}}) }}
+    </div>
+    {{ form_rest(form) }}
+
+    <button type="submit" class="btn primary">{{ 'task.new.submit'|trans([], 'AguilaBundle') }}</button>
+    <button type="reset" class="btn reset-task-form" href="#">{{ 'task.new.cancel'|trans([], 'AguilaBundle') }}</button>
 </form>
+
+<script type="text/javascript">
+    $(function () {
+        $('.new-task-button').click(function () {
+            $(".task-form").slideToggle();
+            return false;
+        });
+        $('.reset-task-form').click(function () {
+            $('.new-task-button').click();
+            setTimeout(function () {
+                $('#task_form_description').css('height', '3em');
+            }, 500);
+        });
+        $('#task_form_description').focusin(function () {
+            if ($(this).val().length === 0) {
+                $(this).animate({'height':'7em'}, 500);
+            }
+        });
+        $('#task_form_description').focusout(function () {
+            if ($('#task_form_description').val().length === 0) {
+                $('#task_form_description').animate({'height':'3em'}, 500);
+            }
+        });
+    });
+</script>

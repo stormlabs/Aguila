@@ -1,0 +1,48 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block title 'fos.user.security.login.title'|trans([], 'AguilaBundle') %}
+
+{% block content %}
+<div class="single_page">
+    <div class="page-header">
+        <h1>{{'fos.user.security.login.title'|trans([], 'AguilaBundle')}}</h1>
+    </div>
+    {% if error %}
+    <div class="alert-message error">{{ error }}</div>
+    {% endif %}
+
+    <form action="{{ path("fos_user_security_check") }}" method="post" class="form-stacked">
+        <fieldset>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+
+            <div class="clearfix">
+                <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+
+                <div class="input">
+                    <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+
+                <div class="input">
+                    <input type="password" id="password" name="_password"/>
+                    <a class="help-inline" href="{{ path('fos_user_resetting_request') }}">{{'fos.user.security.login.resetting'|trans([], 'AguilaBundle')}}</a>
+                </div>
+            </div>
+
+            <div class="clearfix">
+                <label for="remember_me">
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on"/>
+                    <span>{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</span>
+                </label>
+            </div>
+        </fieldset>
+        <div class="actions">
+            <input class="btn primary" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}"/> |
+            <a href="{{ path('fos_user_registration_register') }}">{{'fos.user.security.login.register'|trans([], 'AguilaBundle')}}</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

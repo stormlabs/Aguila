@@ -1,0 +1,10 @@
+{% form_theme form theme %}
+<form action="{{ path('fos_user_resetting_reset', {'token': token}) }}" {{ form_enctype(form) }} method="POST" class="form-stacked">
+    <fieldset>
+        {{ form_widget(form) }}
+    </fieldset>
+    <div class="actions">
+        <input class="btn primary" type="submit" value="{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}"/>
+        <a href="{{ path('homepage') }}">{{'fos.user.resetting.cancel'|trans([], 'AguilaBundle')}}</a>
+    </div>
+</form>

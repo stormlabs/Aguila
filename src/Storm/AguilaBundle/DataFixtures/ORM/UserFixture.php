@@ -27,18 +27,11 @@ class UserFixture extends AbstractFixture implements ContainerAwareInterface, Or
         /* @var $manipulator UserManipulator */
         $manipulator = $this->container->get('fos_user.util.user_manipulator');
 
-        $manipulator->create(
-            'admin',
-            'admin',
-            'admin@aguila.sf',
-            true,
-            true);
-
         for ($i = 0; $i < 3; $i++) {
             $manipulator->create(
                 'user' . $i,
                 'user' . $i,
-                'user' . $i . '@aguila.sf',
+                'ejosblog+' . $i . '@gmail.com',
                 true,
                 false);
         }

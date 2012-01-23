@@ -1,15 +1,13 @@
-{% for task in tasks %}
-<div>
-    <h3><a href="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">{{ task.description }}</a></h3>
-    <p>
-        {{ 'task.list.reported_by'|trans([], 'AguilaBundle') }} <strong>{{ task.reporter }}</strong>
-        {% if task.assignee %}
-        {{ 'task.list.and_assignee'|trans([], 'AguilaBundle') }} <strong>{{ task.assignee }}</strong>
-        {% endif %}
-    </p>
-</div>
-{% else %}
-<div>
-    {{ "task.list.no_tasks"|trans([], 'AguilaBundle') }}
-</div>
-{% endfor %}
+<ul class="unstyled zebra-striped tasks">
+    {% for task in tasks %}
+    <li class="task row{% if loop.index is odd %} odd{% endif%}">
+        <div class="number span1">#{{ task.number }}</div>
+        <div class="span5">
+            <a class="title" href="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}">
+                {{ task.title }}
+            </a>
+            {% include 'AguilaBundle:Task:meta.html.twig' %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>

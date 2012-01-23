@@ -1,0 +1,13 @@
+{% form_theme form theme %}
+
+<form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="form-stacked fos_user_profile_edit">
+    <fieldset>
+        {{ form_row(form.user.username) }}
+        {{ form_row(form.user.email, {'help': 'fos.user.profile.form.user.email.help'|trans({}, 'AguilaBundle')}) }}
+        {{ form_row(form.current, {'help': 'fos.user.current.password.help'|trans({}, 'AguilaBundle')}) }}
+        {{ form_rest(form) }}
+    </fieldset>
+    <div class="actions">
+        <input class="btn primary" type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}"/>
+    </div>
+</form>

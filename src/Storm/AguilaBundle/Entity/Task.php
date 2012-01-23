@@ -15,7 +15,11 @@ class Task
 {
     static $difficulty_choices = array('task.difficulty.0', 'task.difficulty.1', 'task.difficulty.2', 'task.difficulty.3');
     static $priority_choices = array('task.priority.0', 'task.priority.1', 'task.priority.2', 'task.priority.3');
-    static $status_choices = array('task.status.0', 'task.priority.1', 'task.priority.2');
+    static $status_choices = array('task.status.0', 'task.status.1', 'task.status.2');
+
+    const CLOSE = 0;
+    const OPEN = 1;
+    const WORK = 2;
 
     /**
      * @var integer $id
@@ -32,6 +36,13 @@ class Task
      * @ORM\Column(name="number", type="integer")
      */
     private $number;
+
+    /**
+     * @var text $title
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
 
     /**
      * @var text $description
@@ -83,6 +94,13 @@ class Task
     private $comments;
 
     /**
+     * @var \DateTime $created_at
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $created_at;
+
+    /**
      * @var string $issues
      *
      * @ORM\Column(name="issues", type="string", length=255, nullable=true)
@@ -98,13 +116,14 @@ class Task
 
     public function __construct()
     {
-        $this->status = 0;
+        $this->status = self::OPEN;
+        $this->created_at = new \DateTime();
         $this->comments = array();
     }
 
     public function __toString()
     {
-        return $this->description;
+        return $this->title;
     }
 
     /**
@@ -315,5 +334,37 @@ class Task
     public function getFeature()
     {
         return $this->feature;
+    }
+
+    /**
+     * @param \DateTime $created_at
+     */
+    public function setCreatedAt($created_at)
+    {
+        $this->created_at = $created_at;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @param \Storm\AguilaBundle\Entity\text $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return \Storm\AguilaBundle\Entity\text
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 }

@@ -1,0 +1,22 @@
+<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="form-stacked">
+    <fieldset>
+        {% if invalid_username is defined %}
+        <div class="alert-message error">
+            <a class="close" href="#">×</a>
+
+            <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</p>
+        </div>
+        {% endif %}
+        <div class="clearfix">
+            <label for="username">{{ 'resetting.request.username'|trans({}, 'FOSUserBundle') }}</label>
+
+            <div class="input">
+                <input type="text" id="username" name="username"/>
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions">
+        <input class="btn primary" type="submit" value="{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}"/> |
+        <a href="{{ path('fos_user_security_login') }}">{{'fos.user.resetting.cancel'|trans([], 'AguilaBundle')}}</a>
+    </div>
+</form>

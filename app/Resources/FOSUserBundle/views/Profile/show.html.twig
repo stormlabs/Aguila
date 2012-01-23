@@ -1,0 +1,8 @@
+{% extends "AguilaBundle:User:layout.html.twig" %}
+
+{% block content %}
+<div class="page-header">
+    <h2>{{ app.user }}</h2>
+</div>
+{% include "FOSUserBundle:Profile:show_content.html.twig" %}
+{% endblock content %}

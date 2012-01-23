@@ -31,4 +31,9 @@ class User extends BaseUser
     {
         return $this->id;
     }
+
+    public function getGravatar()
+    {
+        return md5($this->email);
+    }
 }

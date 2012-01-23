@@ -35,6 +35,7 @@ assetic:
         less:
             node: /usr/bin/node
             node_paths: [/usr/lib/nodejs]
+            apply_to: "\.less$"
         # closure:
         #     jar: %kernel.root_dir%/java/compiler.jar
         # yui_css:
@@ -70,9 +71,14 @@ jms_security_extra:
 
 # FOSUserBundle Configuration
 fos_user:
-    db_driver:     orm
-    firewall_name: secured_area
-    user_class:    Storm\AguilaBundle\Entity\User
+    db_driver:      orm
+    firewall_name:  secured_area
+    user_class:     Storm\AguilaBundle\Entity\User
+    template:
+        theme:      AguilaBundle::form.html.twig
+    registration:
+            confirmation:
+                enabled:    true
 
 # StofDoctrineExtensionsBundle Configuration
 stof_doctrine_extensions:

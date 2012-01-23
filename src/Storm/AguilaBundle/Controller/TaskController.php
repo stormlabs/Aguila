@@ -68,6 +68,7 @@ class TaskController extends Controller
                 $commentList = $task->getComments();
                 $commentList[] = array(
                     'user' => $user->getUserName(),
+                    'gravatar' => $user->getGravatar(),
                     'body' => $data['body'],
                     'date' => new \Datetime('now'),
                 );
@@ -107,11 +108,11 @@ class TaskController extends Controller
             throw new AccessDeniedException($this->getRequest()->getUri());
         }
         $task = new Task();
-        $form   = $this->createForm(new TaskType(), $task);
+        $form = $this->createForm(new TaskType(), $task);
 
         return array(
             'task' => $task,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
             'project_slug' => $project->getSlug(),
             'feature_slug' => $feature->getSlug(),
         );
@@ -133,9 +134,10 @@ class TaskController extends Controller
             throw new AccessDeniedException($this->getRequest()->getUri());
         }
 
-        $task  = new Task();
+        $task = new Task();
+        $form = $this->createForm(new TaskType(), $task);
+
         $request = $this->getRequest();
-        $form    = $this->createForm(new TaskType(), $task);
         $form->bindRequest($request);
 
         if ($form->isValid()) {
@@ -161,7 +163,7 @@ class TaskController extends Controller
 
         return array(
             'task' => $task,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         );
     }
 
@@ -188,7 +190,7 @@ class TaskController extends Controller
 
         return array(
             'task'      => $task,
-            'edit_form'   => $editForm->createView(),
+            'edit_form' => $editForm->createView(),
         );
     }
 
@@ -212,7 +214,7 @@ class TaskController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
         }
 
-        $editForm   = $this->createForm(new TaskType(), $task);
+        $editForm = $this->createForm(new TaskType(), $task);
 
         $request = $this->getRequest();
 
@@ -229,8 +231,8 @@ class TaskController extends Controller
         }
 
         return array(
-            'task'      => $task,
-            'edit_form'   => $editForm->createView(),
+            'task' => $task,
+            'edit_form' => $editForm->createView(),
         );
     }
 
@@ -248,9 +250,44 @@ class TaskController extends Controller
             null,
             array('validation_constraint' => $constraints,)
         )
-        ->add('body', 'textarea')
-        ->getForm();
+            ->add('body', 'textarea')
+            ->getForm();
 
         return $commentForm;
+    }
+
+    /**
+     * Close an existing Task task.
+     *
+     * @Route("/{number}/close", name="aguila_task_close", requirements={"number" = "\d+"})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @SecureParam(name="project", permissions="EDIT")
+     * @Template()
+     */
+    public function closeAction(Project $project, $number)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        try {
+            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project->getSlug(), $number);
+        }
+        catch (NoResultException $e) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($task->getStatus() == Task::CLOSE) {
+            $task->setStatus(Task::OPEN);
+        }
+        else {
+            $task->setStatus(Task::CLOSE);
+        }
+
+        $em->persist($task);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('aguila_task_show', array(
+            'project_slug' => $project->getSlug(),
+            'number' => $number,
+        )));
     }
 }

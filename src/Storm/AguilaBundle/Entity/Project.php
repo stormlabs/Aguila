@@ -4,12 +4,13 @@ namespace Storm\AguilaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Storm\AguilaBundle\Entity\Project
  *
- * @ORM\Table()
+ * @ORM\Table(indexes={@ORM\index(name="project_slug_idx", columns={"slug"})})
  * @ORM\Entity
  */
 class Project
@@ -26,6 +27,7 @@ class Project
     /**
      * @var string $name
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;

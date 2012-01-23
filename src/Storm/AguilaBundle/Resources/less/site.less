@@ -1,9 +1,159 @@
-/* HEADER */
-header {
-    h1, nav {
-        display:inline-block;
+@import "../../../../../vendor/twitter-bootstrap/lib/bootstrap.less";
+
+@import "lib/elements.less";
+
+@import "lib/icons.less";
+
+body {
+    padding-top: 60px;
+}
+
+.form-stacked { padding-left: 0; }
+
+.topbar {
+    .brand {
+        padding-left: 35px;
+        background: url(/bundles/aguila/images/logo.png) no-repeat 15px center;
+    }
+}
+
+// forms
+.row > [class*="span"] {
+  input, textarea, .uneditable-input{
+      width: 100%;
+  }
+}
+
+textarea {
+    resize:vertical
+}
+
+// zebra lists
+ul.zebra-striped {
+    li:nth-child(odd) {
+      background-color: #f9f9f9;
     }
     li {
-        display:inline;
+        &:hover {
+          background-color: #f5f5f5;
+        }
+        &.current {
+            background: @blueDark;
+            .box-shadow(0 0 5px rgba(0,0,0,.6));
+            a {
+                font-weight: bold;
+                color: @white;
+            }
+        }
+    }
+}
+
+.sidebar {
+    ul {
+        a {
+            text-decoration: none;
+            color: @blueDark;
+        }
+        li {
+            font-size: @basefont * 1.2;
+            line-height: 40px;
+            &:hover .icon { display: inline; }
+            height: 40px;
+            a {
+                display: inline-block;
+                float: left;
+                padding: 0 10px;
+
+            }
+        }
+        .icon {
+            color: inherit;
+            display: none;
+            float: right;
+            margin: 0 6px;
+            line-height: 50px;
+        }
+    }
+}
+
+.single_page {
+    width: 470px;
+    margin: 0 auto;
+}
+
+.page-header{
+    .btn {
+        position: relative;
+        top: -0.35em;
+    }
+}
+
+.fos_user_registration_register {
+    p {
+        font-size: 2em;
+        line-height: 1.2em;
+        padding: 10px 0 0 0;
+        text-align: center;
+    }
+    .featured {
+        font-size: 7em;
+        line-height: 1.2em;
+        text-align: center;
+    }
+    img {
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    &:hover {
+        .icon {
+            display: inline;
+        }
+    }
+    .icon {
+        font-weight: normal;
+    }
+    small {
+        .icon {
+            display: none;
+        }
+    }
+}
+.tasks {
+    padding-left: 30px;
+    li {
+        padding-top: 15px;
+    }
+}
+
+
+.task {
+    .number {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    .title {
+        overflow: hidden;
+        display: inline-block;
+        height: 1.5em;
+    }
+    .meta {
+        time {color: @gray;}
+        .edit {
+        }
+    }
+
+    .metadata {
+        padding:  10px;
+        font-size: 1.1em;
+        .icon {
+            font-size: 1.4em;
+            line-height: 1em;
+            width: 1em;
+            display: inline-block;
+            text-align: center;
+        }
     }
 }

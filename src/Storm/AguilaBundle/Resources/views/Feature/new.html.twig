@@ -1,6 +1,20 @@
-<h2>{{ 'feature.new.title'|trans([], 'AguilaBundle') }}</h2>
-
-<form action="{{ path('aguila_feature_create', {'project_slug': project_slug}) }}" method="post" {{ form_enctype(form) }}>
+<form style="display: none" class="feature-form form-stacked" action="{{ path('aguila_feature_create', {'project_slug': project_slug}) }}" method="post" {{ form_enctype(form) }}>
+    <h4>{{ 'feature.new.title'|trans([], 'AguilaBundle') }}</h4>
     {{ form_widget(form) }}
-    <button type="submit">{{ 'feature.new.submit'|trans([], 'AguilaBundle') }}</button>
+    <button type="submit" class="btn primary">{{ 'feature.new.submit'|trans([], 'AguilaBundle') }}</button>
+    <button type="reset" class="btn reset-feature-form" href="#">{{ 'feature.new.cancel'|trans([], 'AguilaBundle') }}</button>
+    <a href="#"></a>
 </form>
+
+<script type="text/javascript">
+    $(function () {
+        $(".new-feature-button").click(function () {
+            $(this).toggleClass('plus').toggleClass('minus');
+            $(".feature-form").slideToggle();
+            return false;
+        });
+        $(".reset-feature-form").click(function () {
+            $(".new-feature-button").click();
+        });
+    });
+</script>

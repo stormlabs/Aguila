@@ -50,16 +50,13 @@ class FeatureController extends Controller
             throw new AccessDeniedException($this->getRequest()->getUri());
         }
 
-        $deleteForm = $this->createDeleteForm($feature->getSlug());
-
         return array(
-            'feature'     => $feature,
-            'delete_form' => $deleteForm->createView(),
+            'feature' => $feature,
         );
     }
 
     /**
-     * Displays a form to create a new Feature feature.
+     * Displays a form to create a new Feature.
      *
      * @Template()
      * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
@@ -78,7 +75,7 @@ class FeatureController extends Controller
     }
 
     /**
-     * Creates a new Feature feature.
+     * Creates a new Feature.
      *
      * @Route("/feature/create", name="aguila_feature_create")
      * @Method("post")

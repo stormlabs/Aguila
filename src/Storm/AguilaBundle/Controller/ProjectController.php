@@ -23,7 +23,8 @@ class ProjectController extends Controller
     /**
      * Lists all Projects.
      *
-     * @Route("/", name="aguila_project_list")
+     * @Route("/", name="homepage")
+     * @Route("/projects", name="aguila_project_list")
      * @Template()
      */
     public function listAction()
@@ -32,7 +33,29 @@ class ProjectController extends Controller
 
         $projects = $em->getRepository('AguilaBundle:Project')->findBy(array('public' => true));
 
-        return array('projects' => $projects);
+        $project = new Project();
+        $form   = $this->createForm(new ProjectType(), $project);
+
+        $request = $this->getRequest();
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->bindRequest($request);
+
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($project);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('aguila_project_show', array('slug' => $project->getSlug())));
+
+            }
+        }
+
+        return array(
+            'projects' => $projects,
+            'form'   => $form->createView()
+        );
     }
 
     /**
@@ -54,53 +77,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * Displays a form to create a new Project.
-     *
-     * @Route("/project/new", name="aguila_project_new")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $project = new Project();
-        $form   = $this->createForm(new ProjectType(), $project);
-
-        return array(
-            'project' => $project,
-            'form'   => $form->createView()
-        );
-    }
-
-    /**
-     * Creates a new Project.
-     *
-     * @Route("/project/create", name="aguila_project_create")
-     * @Method("post")
-     * @Template("AguilaBundle:Project:new.html.twig")
-     */
-    public function createAction()
-    {
-        $project  = new Project();
-        $request = $this->getRequest();
-        $form    = $this->createForm(new ProjectType(), $project);
-        $form->bindRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($project);
-            $em->flush();
-
-            $this->grantAccess(MaskBuilder::MASK_OWNER, $project);
-
-            return $this->redirect($this->generateUrl('aguila_project_show', array('slug' => $project->getSlug())));
-        }
-
-        return array(
-            'project' => $project,
-            'form'   => $form->createView()
-        );
-    }
-
-    /**
      * Displays a form to edit an existing Project.
      *
      * @Route("/{slug}/admin/edit", name="aguila_project_edit")
@@ -114,7 +90,7 @@ class ProjectController extends Controller
         $deleteForm = $this->createDeleteForm($project->getSlug());
 
         return array(
-            'project'      => $project,
+            'project'     => $project,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
