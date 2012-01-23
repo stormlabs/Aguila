@@ -24,9 +24,9 @@
 
     <div class="metadata well">
         <span class="icon lightbulb"></span>{{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}
-        <span class="icon clock"></span>    {{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}
+        <span class="icon clock"></span> {{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}
         {% if task.assignee %}
-        <img src="http://www.gravatar.com/avatar/{{ task.assignee.gravatar }}?s=12" style="width: 12px; height: 12px;" />
+        <img src="http://www.gravatar.com/avatar/{{ task.assignee.gravatar }}?s=12" style="width: 12px; height: 12px;"/>
         <strong>{{ task.assignee }}</strong>
         {% endif %}
         <a class="btn small {% if task.status %}error{% else %}success{% endif %}"
@@ -35,10 +35,6 @@
             {{ task.status == 0 ? "REOPEN" :"CLOSE" }}
         </a>
     </div>
-</div>
-
-<div class="page-header">
-    <h3>Comentarios</h3>
 </div>
 
 <ul class="unstyled">
@@ -59,13 +55,11 @@
 </ul>
 <form class="form-stacked" action="{{ path('aguila_task_comment', {'project_slug': project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(comment_form) }}>
     <fieldset>
-        {{ form_row(comment_form.body, {'widget_attr':{'class': 'span10'}}) }}
-        {#{{ form_row(comment_form.body, {'widget_attr':{'class': 'span10'}}) }}#}
+        {{ form_row(comment_form.body, {'attr':{'class': 'span10'}}) }}
         {{ form_rest(comment_form) }}
     </fieldset>
     <div class="actions">
         <button class="btn primary" type="submit">{{ 'task.comment.submit'|trans([], 'AguilaBundle') }}</button>
     </div>
 </form>
-</div>
 {% endblock %}

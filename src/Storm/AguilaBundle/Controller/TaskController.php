@@ -99,6 +99,11 @@ class TaskController extends Controller
             $em->persist($task);
             $em->persist($comment);
             $em->flush();
+
+            return $this->redirect($this->generateUrl('aguila_task_show', array(
+                'project_slug' => $project_slug,
+                'number' => $number,
+            )));
         }
 
         return array(
