@@ -3,6 +3,7 @@
 namespace Storm\AguilaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Storm\AguilaBundle\Entity\Task
@@ -81,9 +82,9 @@ class Task
     private $reporter;
 
     /**
-     * @var array $comments
+     * @var ArrayCollection $comments
      *
-     * @ORM\Column(name="comments", type="array")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="task")
      */
     private $comments;
 
@@ -112,7 +113,7 @@ class Task
     {
         $this->status = self::OPEN;
         $this->created_at = new \DateTime();
-        $this->comments = array();
+        $this->comments = new ArrayCollection();
     }
 
     public function __toString()
@@ -269,7 +270,7 @@ class Task
     /**
      * Set comments
      *
-     * @param array $comments
+     * @param ArrayCollection $comments
      */
     public function setComments($comments)
     {
@@ -279,11 +280,17 @@ class Task
     /**
      * Get comments
      *
-     * @return array
+     * @return ArrayCollection
      */
     public function getComments()
     {
         return $this->comments;
+    }
+
+    public function addComment(Comment $comment)
+    {
+        $comment->setTask($this);
+        $this->comments->add($comment);
     }
 
     /**

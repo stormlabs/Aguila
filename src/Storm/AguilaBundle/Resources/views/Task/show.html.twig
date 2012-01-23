@@ -46,9 +46,9 @@
     <li class="well">
         <div class="page-header">
             <h3>
-                <img src="http://www.gravatar.com/avatar/{{ comment.gravatar }}?s=30" style="padding-right: 10px; width: 20px; height: 20px;"/>
+                <img src="http://www.gravatar.com/avatar/{{ comment.user.gravatar }}?s=30" style="padding-right: 10px; width: 20px; height: 20px;"/>
                 {{ comment.user }}
-                <small> on {{comment.date|date('Y-m-d')}}</small>
+                <small> on {{comment.createdAt|date('Y-m-d')}}</small>
             </h3>
         </div>
         <p>
@@ -57,7 +57,7 @@
     </li>
     {% endfor %}
 </ul>
-<form class="form-stacked" action="{{ path('aguila_task_show', {'project_slug': task.feature.project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(comment_form) }}>
+<form class="form-stacked" action="{{ path('aguila_task_comment', {'project_slug': project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(comment_form) }}>
     <fieldset>
         {{ form_row(comment_form.body, {'widget_attr':{'class': 'span10'}}) }}
         {#{{ form_row(comment_form.body, {'widget_attr':{'class': 'span10'}}) }}#}

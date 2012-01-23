@@ -8,9 +8,12 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\ORM\NoResultException;
+
 use Storm\AguilaBundle\Entity\Task;
 use Storm\AguilaBundle\Form\TaskType;
-use Doctrine\ORM\NoResultException;
+use Storm\AguilaBundle\Entity\Comment;
+use Storm\AguilaBundle\Form\CommentType;
 
 /**
  * Task controller.
@@ -51,34 +54,8 @@ class TaskController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
         }
 
-        $commentForm = $this->createCommentForm($task);
-
-        $request = $this->getRequest();
-        if ('POST' === $request->getMethod()) {
-            $commentForm->bindRequest($request);
-
-            if ($commentForm->isValid()) {
-                $user = $this->get('security.context')->getToken()->getUser();
-                $data = $commentForm->getData();
-                $commentList = $task->getComments();
-                $commentList[] = array(
-                    'user' => $user->getUserName(),
-                    'gravatar' => $user->getGravatar(),
-                    'body' => $data['body'],
-                    'date' => new \Datetime('now'),
-                );
-                $task->setComments($commentList);
-                $em->persist($task);
-                $em->flush();
-
-                $this->get('session')->setFlash('notice', 'comment.added');
-
-                return $this->redirect($this->generateUrl('aguila_task_show', array(
-                    'project_slug' => $project_slug,
-                    'number' => $number,
-                )));
-            }
-        }
+        $comment = new Comment();
+        $commentForm = $this->createForm(new CommentType(), $comment);
 
         return array(
             'task' => $task,
@@ -86,6 +63,50 @@ class TaskController extends Controller
             'task_priority_choices' => Task::$priority_choices,
             'task_status_choices' => Task::$status_choices,
             'comment_form' => $commentForm->createView(),
+        );
+    }
+
+    /**
+     * Comment
+     * @Route("/{number}/comment", name="aguila_task_comment", requirements={"number" = "\d+"})
+     * @Template("AguilaBundle:Task:show.html.twig")
+     */
+    public function commentAction($project_slug, $number)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        try {
+            /** @var $task \Storm\AguilaBundle\Entity\Task */
+            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project_slug, $number);
+        }
+        catch (NoResultException $e) {
+            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
+        }
+
+        $comment = new Comment();
+        $form = $this->createForm(new CommentType(), $comment);
+
+        $request = $this->getRequest();
+        $form->bindRequest($request);
+
+        if ($form->isValid()) {
+
+            $comment->setUser($this->get('security.context')->getToken()->getUser());
+            $comment->setType(Comment::POST);
+
+            $task->addComment($comment);
+
+            $em->persist($task);
+            $em->persist($comment);
+            $em->flush();
+        }
+
+        return array(
+            'task' => $task,
+            'task_difficulty_choices' => Task::$difficulty_choices,
+            'task_priority_choices' => Task::$priority_choices,
+            'task_status_choices' => Task::$status_choices,
+            'comment_form' => $form->createView(),
         );
     }
 
@@ -214,23 +235,6 @@ class TaskController extends Controller
             'task' => $task,
             'edit_form' => $editForm->createView(),
         );
-    }
-
-    protected function createCommentForm(Task $task)
-    {
-        $constraints = new Collection(array(
-            'body' => new Constraints\NotBlank(),
-        ));
-        $commentForm = $this->container->get('form.factory')->createNamedBuilder(
-            'form',
-            'task_comment_form',
-            null,
-            array('validation_constraint' => $constraints,)
-        )
-            ->add('body', 'textarea')
-            ->getForm();
-
-        return $commentForm;
     }
 
     /**
