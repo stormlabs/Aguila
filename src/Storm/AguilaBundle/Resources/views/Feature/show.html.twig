@@ -17,7 +17,7 @@
 </div>
 <div class="row">
     <div class="span6">
-        {% render 'AguilaBundle:Task:list' with {'project_slug': project.slug, 'feature_slug': feature.slug} %}
+        {% render 'AguilaBundle:Task:list' with {'feature_slug': feature.slug} %}
     </div>
     <div class="span10">
         {% block sub_content %}{% endblock sub_content %}

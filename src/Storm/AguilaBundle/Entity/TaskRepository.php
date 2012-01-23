@@ -27,7 +27,7 @@ class TaskRepository extends EntityRepository
         return $qb->getQuery()->getSingleResult();
     }
 
-    public function findOpenByFeature($feature_slug)
+    public function findOpenByFeature($feature_slug, $status = Task::OPEN)
     {
         $qb = $this->createQueryBuilder('t')
             ->leftJoin('t.feature', 'f')
@@ -35,7 +35,7 @@ class TaskRepository extends EntityRepository
             ->andWhere('t.status = :status')
             ->setParameters(array(
                 'feature_slug' => $feature_slug,
-                'status' => Task::OPEN,
+                'status' => $status,
         ));
         return $qb->getQuery()->getResult();
     }

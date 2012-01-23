@@ -22,14 +22,13 @@ class TaskController extends Controller
     /**
      * Lists all Task tasks.
      *
-     * @Route("/list/{feature_slug}", name="aguila_task_llst")
      * @Template()
      */
-    public function listAction($feature_slug)
+    public function listAction($feature_slug, $status = Task::OPEN)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $tasks = $em->getRepository('AguilaBundle:Task')->findOpenByFeature($feature_slug);
+        $tasks = $em->getRepository('AguilaBundle:Task')->findOpenByFeature($feature_slug, $status);
 
         return array('tasks' => $tasks);
     }
