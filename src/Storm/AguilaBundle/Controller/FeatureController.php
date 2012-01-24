@@ -55,7 +55,7 @@ class FeatureController extends Controller
      * Displays a form to create a new Feature.
      *
      * @Template()
-     * ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
      * SecureParam(name="project", permissions="EDIT")
      */
     public function newAction(Project $project)
