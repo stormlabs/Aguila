@@ -40,16 +40,12 @@ class FeatureController extends Controller
      * @Route("/{slug}", name="aguila_feature_show")
      * @Method("get")
      * @Template()
-     * @ParamConverter("feature", class="AguilaBundle:Feature")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "slug"}})
      * @SecureParam(name="project", permissions="VIEW")
      */
     public function showAction(Project $project, Feature $feature)
     {
-        if ($feature->getProject() !== $project)  {
-            throw new AccessDeniedException($this->getRequest()->getUri());
-        }
-
         return array(
             'feature' => $feature,
         );
@@ -59,8 +55,8 @@ class FeatureController extends Controller
      * Displays a form to create a new Feature.
      *
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
-     * @SecureParam(name="project", permissions="EDIT")
+     * ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * SecureParam(name="project", permissions="EDIT")
      */
     public function newAction(Project $project)
     {
@@ -80,7 +76,7 @@ class FeatureController extends Controller
      * @Route("/feature/create", name="aguila_feature_create")
      * @Method("post")
      * @Template("AguilaBundle:Feature:new.html.twig")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
     public function createAction(Project $project)
@@ -120,15 +116,12 @@ class FeatureController extends Controller
      * @Route("/feature/{slug}/edit", name="aguila_feature_edit")
      * @Template()
      * @ParamConverter("slug", class="AguilaBundle:Feature")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "slug"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
     public function editAction(Project $project, Feature $feature)
     {
-        if ($feature->getProject() !== $project)  {
-            throw new AccessDeniedException($this->getRequest()->getUri());
-        }
-
         $editForm = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($feature->getSlug());
 
@@ -145,16 +138,12 @@ class FeatureController extends Controller
      * @Route("/feature/{slug}/update", name="aguila_feature_update")
      * @Method("post")
      * @Template("AguilaBundle:Feature:edit.html.twig")
-     * @ParamConverter("slug", class="AguilaBundle:Feature")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "slug"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
     public function updateAction(Project $project, Feature $feature)
     {
-        if ($feature->getProject() !== $project)  {
-            throw new AccessDeniedException($this->getRequest()->getUri());
-        }
-
         $editForm   = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($feature->getSlug());
 
@@ -185,16 +174,12 @@ class FeatureController extends Controller
      *
      * @Route("/feature/{slug}/delete", name="aguila_feature_delete")
      * @Method("post")
-     * @ParamConverter("slug", class="AguilaBundle:Feature")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "slug"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
     public function deleteAction(Project $project, Feature $feature)
     {
-        if ($feature->getProject() !== $project)  {
-            throw new AccessDeniedException($this->getRequest()->getUri());
-        }
-
         $form = $this->createDeleteForm($feature->getSlug());
         $request = $this->getRequest();
 

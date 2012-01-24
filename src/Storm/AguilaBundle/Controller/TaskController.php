@@ -44,30 +44,20 @@ class TaskController extends Controller
      *
      * @Route("/{number}", name="aguila_task_show", requirements={"number" = "\d+"})
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
-     * @SecureParam(name="project", permissions="VIEW")
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
+     * SecureParam(name="project", permissions="VIEW")
      */
-    public function showAction(Project $project, $number)
+    public function showAction(Task $task)
     {
-        /** @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->getDoctrine()->getEntityManager();
-
-        try {
-            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project->getSlug(), $number);
-        }
-        catch (NoResultException $e) {
-            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
-        }
-
         $comment = new Comment();
         $commentForm = $this->createForm(new CommentType(), $comment);
 
         return array(
-            'task' => $task,
+            'task'                    => $task,
             'task_difficulty_choices' => Task::$difficulty_choices,
-            'task_priority_choices' => Task::$priority_choices,
-            'task_status_choices' => Task::$status_choices,
-            'comment_form' => $commentForm->createView(),
+            'task_priority_choices'   => Task::$priority_choices,
+            'task_status_choices'     => Task::$status_choices,
+            'comment_form'            => $commentForm->createView(),
         );
     }
 
@@ -76,21 +66,12 @@ class TaskController extends Controller
      *
      * @Route("/{number}/comment", name="aguila_task_comment", requirements={"number" = "\d+"})
      * @Template("AguilaBundle:Task:show.html.twig")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
      * @SecureParam(name="project", permissions="VIEW")
      */
-    public function commentAction(Project $project, $number)
+    public function commentAction(Project $project, Task $task)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        try {
-            /** @var $task \Storm\AguilaBundle\Entity\Task */
-            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project->getSlug(), $number);
-        }
-        catch (NoResultException $e) {
-            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
-        }
-
         $comment = new Comment();
         $form = $this->createForm(new CommentType(), $comment);
 
@@ -98,6 +79,7 @@ class TaskController extends Controller
         $form->bindRequest($request);
 
         if ($form->isValid()) {
+            $em = $this->getDoctrine()->getEntityManager();
 
             $comment->setUser($this->get('security.context')->getToken()->getUser());
             $comment->setType(Comment::POST);
@@ -110,7 +92,7 @@ class TaskController extends Controller
 
             return $this->redirect($this->generateUrl('aguila_task_show', array(
                 'project_slug' => $project->getSlug(),
-                'number' => $number,
+                'number' => $task->getNumber(),
             )));
         }
 
@@ -127,15 +109,12 @@ class TaskController extends Controller
      * Displays a form to create a new Task.
      *
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
-     * @ParamConverter("feature", class="AguilaBundle:Feature", options={"match" = {"feature_slug"="slug"}})
-     * @SecureParam(name="project", permissions="EDIT")
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "feature_slug"}})
+     * SecureParam(name="project", permissions="EDIT")
      */
     public function newAction(Project $project, Feature $feature)
     {
-        if ($feature->getProject() !== $project)  {
-            throw new AccessDeniedException($this->getRequest()->getUri());
-        }
         $task = new Task();
         $form = $this->createForm(new TaskType(), $task);
 
@@ -153,16 +132,12 @@ class TaskController extends Controller
      * @Route("/create/{feature_slug}", name="aguila_task_create")
      * @Method("post")
      * @Template("AguilaBundle:Task:new.html.twig")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
-     * @ParamConverter("feature", class="AguilaBundle:Feature", options={"match" = {"feature_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "feature_slug"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
     public function createAction(Project $project, Feature $feature)
     {
-        if ($feature->getProject() !== $project)  {
-            throw new AccessDeniedException($this->getRequest()->getUri());
-        }
-
         $task = new Task();
         $form = $this->createForm(new TaskType(), $task);
 
@@ -201,20 +176,12 @@ class TaskController extends Controller
      *
      * @Route("/{number}/edit", name="aguila_task_edit", requirements={"number" = "\d+"})
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
-    public function editAction(Project $project, $number)
+    public function editAction(Project $project, Task $task)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        try {
-            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project->getSlug(), $number);
-        }
-        catch (NoResultException $e) {
-            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
-        }
-
         $editForm = $this->createForm(new TaskType(), $task);
 
         return array(
@@ -229,19 +196,13 @@ class TaskController extends Controller
      * @Route("/{number}/update", name="aguila_task_update", requirements={"number" = "\d+"})
      * @Method("post")
      * @Template("AguilaBundle:Task:edit.html.twig")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
-    public function updateAction(Project $project, $number)
+    public function updateAction(Project $project, Task $task)
     {
         $em = $this->getDoctrine()->getEntityManager();
-
-        try {
-            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project->getSlug(), $number);
-        }
-        catch (NoResultException $e) {
-            throw $this->createNotFoundException($this->get('translator')->trans('task.not_found', array(), 'AguilaBundle'));
-        }
 
         $editForm = $this->createForm(new TaskType(), $task);
 
@@ -255,7 +216,7 @@ class TaskController extends Controller
 
             return $this->redirect($this->generateUrl('aguila_task_show', array(
                 'project_slug' => $project->getSlug(),
-                'number' => $number,
+                'number' => $task->getNumber(),
             )));
         }
 
@@ -269,34 +230,27 @@ class TaskController extends Controller
      * Close an existing Task.
      *
      * @Route("/{number}/close", name="aguila_task_close", requirements={"number" = "\d+"})
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"match" = {"project_slug"="slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
      * @SecureParam(name="project", permissions="EDIT")
      * @Template()
      */
-    public function closeAction(Project $project, $number)
+    public function closeAction(Project $project, Task $task)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        try {
-            $task = $em->getRepository('AguilaBundle:Task')->findOneByProject($project->getSlug(), $number);
-        }
-        catch (NoResultException $e) {
-            throw $this->createNotFoundException();
-        }
-
         if ($task->getStatus() == Task::CLOSE) {
             $task->setStatus(Task::OPEN);
         }
         else {
             $task->setStatus(Task::CLOSE);
         }
+        $em = $this->getDoctrine()->getEntityManager();
 
         $em->persist($task);
         $em->flush();
 
         return $this->redirect($this->generateUrl('aguila_task_show', array(
             'project_slug' => $project->getSlug(),
-            'number' => $number,
+            'number' => $task->getNumber(),
         )));
     }
 }

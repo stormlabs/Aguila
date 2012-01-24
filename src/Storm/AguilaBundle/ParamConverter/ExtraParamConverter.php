@@ -23,49 +23,33 @@ class ExtraParamConverter implements ParamConverterInterface
         $class = $configuration->getClass();
         $options = $this->getOptions($configuration);
 
-        // find by criteria
-        if (false === $object = $this->findOneBy($class, $request, $options)) {
-            throw new \LogicException('Unable to guess how to get a Doctrine instance from the request information.');
+        $method = $options['method'];
+        $params = array();
+
+        foreach ($options['params'] as $key) {
+            if ($request->attributes->has($key)) {
+                $params[] = $request->attributes->get($key);
+            }
         }
 
-        if (null === $object && false === $configuration->isOptional()) {
-            throw new NotFoundHttpException(sprintf('%s object not found.', $class));
+        $repository = $this->registry->getRepository($class, $options['entity_manager']);
+
+        if (false === $object = call_user_func_array(array($repository, $method), $params)) {
+            throw new \LogicException('Unable to guess how to get a Doctrine instance from the request information.');
         }
 
         $request->attributes->set($configuration->getName(), $object);
     }
 
-    protected function findOneBy($class, Request $request, $options)
-    {
-        $criteria = array();
-        $metadata = $this->registry->getEntityManager($options['entity_manager'])->getClassMetadata($class);
-
-        foreach ($request->attributes->all() as $key => $value) {
-            if (isset($options['match'][$key]) && $metadata->hasField($options['match'][$key])) {
-                $criteria[$options['match'][$key]] = $value;
-            }
-        }
-
-        if (!$criteria) {
-            return false;
-        }
-
-        return $this->registry->getRepository($class, $options['entity_manager'])->findOneBy($criteria);
-    }
-
     public function supports(ConfigurationInterface $configuration)
     {
-        if (null === $this->registry) {
-            return false;
-        }
-
         if (null === $configuration->getClass()) {
             return false;
         }
 
         $options = $this->getOptions($configuration);
 
-        if (empty($options['match'])) {
+        if ('' === $options['method']) {
             return false;
         }
 
@@ -75,6 +59,7 @@ class ExtraParamConverter implements ParamConverterInterface
 
             return true;
         } catch (MappingException $e) {
+
             return false;
         }
     }
@@ -83,7 +68,8 @@ class ExtraParamConverter implements ParamConverterInterface
     {
         return array_replace(array(
             'entity_manager' => 'default',
-            'match' => array(),
+            'method' => '',
+            'params' => array(),
         ), $configuration->getOptions());
     }
 }

@@ -63,7 +63,7 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}", name="aguila_project_show")
      * @Template()
-     * @ParamConverter("slug", class="AguilaBundle:Project")
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
      * @SecureParam(name="project", permissions="VIEW")
      */
     public function showAction(Project $project)
@@ -81,7 +81,7 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}/admin/edit", name="aguila_project_edit")
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project")
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
     public function editAction(Project $project)
@@ -102,7 +102,7 @@ class ProjectController extends Controller
      * @Route("/{slug}/admin/update", name="aguila_project_update")
      * @Method("post")
      * @Template("AguilaBundle:Project:edit.html.twig")
-     * @ParamConverter("project", class="AguilaBundle:Project")
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
      * @SecureParam(name="project", permissions="EDIT")
      */
     public function updateAction(Project $project)
@@ -135,7 +135,7 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}/admin/delete", name="aguila_project_delete")
      * @Method("post")
-     * @ParamConverter("project", class="AguilaBundle:Project")
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
      * @SecureParam(name="project", permissions="DELETE")
      */
     public function deleteAction(Project $project)

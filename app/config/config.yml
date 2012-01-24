@@ -86,7 +86,7 @@ stof_doctrine_extensions:
         default:
             sluggable:  true
 services:
-    aguila.extraparamconverter:
+    sensio_framework_extra.converter.doctrine.orm:
         class: Storm\AguilaBundle\ParamConverter\ExtraParamConverter
         tags:
             - { name: request.param_converter, priority: 10 }

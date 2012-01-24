@@ -18,7 +18,7 @@
         {{ 'project.show.features'|trans([], 'AguilaBundle') }}
         <small><a class="new-feature-button btn success" href="#">{{ 'project.show.feature.new'|trans([], 'AguilaBundle') }}</a></small>
     </h2>
-    {% render 'AguilaBundle:Feature:new' with {'project_slug': project.slug} %}
+    {% render 'AguilaBundle:Feature:new' with {'project': project} %}
 </div>
 
 {% include 'AguilaBundle:Feature:list.html.twig' with {'features': project.features} %}
