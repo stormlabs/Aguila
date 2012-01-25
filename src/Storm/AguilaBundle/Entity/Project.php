@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Storm\AguilaBundle\Entity\Project
  *
  * @ORM\Table(indexes={@ORM\index(name="project_slug_idx", columns={"slug"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Storm\AguilaBundle\Entity\ProjectRepository")
  */
 class Project
 {
