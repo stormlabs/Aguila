@@ -40,12 +40,12 @@ class FeatureController extends Controller
      * @Route("/{slug}", name="aguila_feature_show")
      * @Method("get")
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
      * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "slug"}})
-     * @SecureParam(name="project", permissions="VIEW")
      */
-    public function showAction(Project $project, Feature $feature)
+    public function showAction(Feature $feature)
     {
+        $this->checkAccess(MaskBuilder::MASK_VIEW, $feature->getProject());
+
         return array(
             'feature' => $feature,
         );
@@ -56,10 +56,11 @@ class FeatureController extends Controller
      *
      * @Template()
      * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
-     * SecureParam(name="project", permissions="EDIT")
      */
     public function newAction(Project $project)
     {
+        //$this->checkAccess(MaskBuilder::MASK_EDIT, $project);
+
         $feature = new Feature();
         $form   = $this->createForm(new FeatureType(), $feature);
 
@@ -77,10 +78,11 @@ class FeatureController extends Controller
      * @Method("post")
      * @Template("AguilaBundle:Feature:new.html.twig")
      * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
-     * @SecureParam(name="project", permissions="EDIT")
      */
     public function createAction(Project $project)
     {
+        $this->checkAccess(MaskBuilder::MASK_EDIT, $project);
+
         $feature  = new Feature();
         $request = $this->getRequest();
         $form    = $this->createForm(new FeatureType(), $feature);
@@ -116,12 +118,12 @@ class FeatureController extends Controller
      * @Route("/feature/{slug}/edit", name="aguila_feature_edit")
      * @Template()
      * @ParamConverter("slug", class="AguilaBundle:Feature")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
      * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "slug"}})
-     * @SecureParam(name="project", permissions="EDIT")
      */
-    public function editAction(Project $project, Feature $feature)
+    public function editAction(Feature $feature)
     {
+        $this->checkAccess(MaskBuilder::MASK_EDIT, $feature->getProject());
+
         $editForm = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($feature->getSlug());
 
@@ -138,12 +140,12 @@ class FeatureController extends Controller
      * @Route("/feature/{slug}/update", name="aguila_feature_update")
      * @Method("post")
      * @Template("AguilaBundle:Feature:edit.html.twig")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
      * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "slug"}})
-     * @SecureParam(name="project", permissions="EDIT")
      */
-    public function updateAction(Project $project, Feature $feature)
+    public function updateAction(Feature $feature)
     {
+        $this->checkAccess(MaskBuilder::MASK_EDIT, $feature->getProject());
+
         $editForm   = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($feature->getSlug());
 
@@ -157,7 +159,7 @@ class FeatureController extends Controller
             $em->flush();
 
             return $this->redirect($this->generateUrl('aguila_feature_show', array(
-                'project_slug' => $project->getSlug(),
+                'project_slug' => $feature->getProject()->getSlug(),
                 'slug' => $feature->getSlug(),
             )));
         }
@@ -174,12 +176,12 @@ class FeatureController extends Controller
      *
      * @Route("/feature/{slug}/delete", name="aguila_feature_delete")
      * @Method("post")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
      * @ParamConverter("feature", class="AguilaBundle:Feature", options={"method"="findFeatureBySlugs", "params"={"project_slug", "slug"}})
-     * @SecureParam(name="project", permissions="EDIT")
      */
-    public function deleteAction(Project $project, Feature $feature)
+    public function deleteAction(Feature $feature)
     {
+        $this->checkAccess(MaskBuilder::MASK_EDIT, $feature->getProject());
+
         $form = $this->createDeleteForm($feature->getSlug());
         $request = $this->getRequest();
 
@@ -193,7 +195,7 @@ class FeatureController extends Controller
         }
 
         return $this->redirect($this->generateUrl('aguila_feature_show', array(
-            'project_slug' => $project->getSlug(),
+            'project_slug' => $feature->getProject()->getSlug(),
             'slug' => $feature->getSlug(),
         )));
     }

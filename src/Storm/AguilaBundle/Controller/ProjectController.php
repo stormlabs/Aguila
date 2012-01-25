@@ -47,8 +47,9 @@ class ProjectController extends Controller
                 $em->persist($project);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('aguila_project_show', array('slug' => $project->getSlug())));
+                $this->grantAccess(MaskBuilder::MASK_OWNER, $project, true);
 
+                return $this->redirect($this->generateUrl('aguila_project_show', array('slug' => $project->getSlug())));
             }
         }
 
@@ -63,11 +64,11 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}", name="aguila_project_show")
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
-     * @SecureParam(name="project", permissions="VIEW")
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findOneBySlug", "params"={"slug"}})
      */
     public function showAction(Project $project)
     {
+        //$this->checkAccess(MaskBuilder::MASK_VIEW, $project);
         $deleteForm = $this->createDeleteForm($project->getSlug());
 
         return array(
@@ -81,11 +82,12 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}/admin/edit", name="aguila_project_edit")
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
-     * @SecureParam(name="project", permissions="EDIT")
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findOneBySlug", "params"={"slug"}})
      */
     public function editAction(Project $project)
     {
+        $this->checkAccess(MaskBuilder::MASK_OWNER, $project);
+
         $editForm = $this->createForm(new ProjectType(), $project);
         $deleteForm = $this->createDeleteForm($project->getSlug());
 
@@ -103,11 +105,10 @@ class ProjectController extends Controller
      * @Method("post")
      * @Template("AguilaBundle:Project:edit.html.twig")
      * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
-     * @SecureParam(name="project", permissions="EDIT")
      */
     public function updateAction(Project $project)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $this->checkAccess(MaskBuilder::MASK_OWNER, $project);
 
         $editForm   = $this->createForm(new ProjectType(), $project);
         $deleteForm = $this->createDeleteForm($project->getSlug());
@@ -117,6 +118,8 @@ class ProjectController extends Controller
         $editForm->bindRequest($request);
 
         if ($editForm->isValid()) {
+            $em = $this->getDoctrine()->getEntityManager();
+
             $em->persist($project);
             $em->flush();
 
@@ -124,22 +127,23 @@ class ProjectController extends Controller
         }
 
         return array(
-            'project'      => $project,
+            'project'     => $project,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Deletes a Project.
+     * Deletes a Project
      *
      * @Route("/{slug}/admin/delete", name="aguila_project_delete")
      * @Method("post")
      * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
-     * @SecureParam(name="project", permissions="DELETE")
      */
     public function deleteAction(Project $project)
     {
+        $this->checkAccess(MaskBuilder::MASK_OWNER, $project);
+
         $form = $this->createDeleteForm($project->getSlug());
         $request = $this->getRequest();
 
@@ -155,6 +159,12 @@ class ProjectController extends Controller
         return $this->redirect($this->generateUrl('aguila_project_list'));
     }
 
+    /**
+     * Creates a form for deleting Projects
+     *
+     * @param $slug
+     * @return mixed
+     */
     private function createDeleteForm($slug)
     {
         return $this->createFormBuilder(array('slug' => $slug))

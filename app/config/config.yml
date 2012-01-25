@@ -65,10 +65,6 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
 
-jms_security_extra:
-    secure_controllers:  true
-    secure_all_services: false
-
 # FOSUserBundle Configuration
 fos_user:
     db_driver:      orm
@@ -85,9 +81,6 @@ stof_doctrine_extensions:
     orm:
         default:
             sluggable:  true
-services:
-    sensio_framework_extra.converter.doctrine.orm:
-        class: Storm\AguilaBundle\ParamConverter\ExtraParamConverter
-        tags:
-            - { name: request.param_converter, priority: 10 }
-        arguments: ['@?doctrine']
+
+parameters:
+    sensio_framework_extra.converter.doctrine.class: Storm\AguilaBundle\ParamConverter\ExtraParamConverter
