@@ -104,7 +104,7 @@ class ProjectController extends Controller
      * @Route("/{slug}/admin/update", name="aguila_project_update")
      * @Method("post")
      * @Template("AguilaBundle:Project:edit.html.twig")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findOneBySlug", "params"={"slug"}})
      */
     public function updateAction(Project $project)
     {
@@ -138,7 +138,7 @@ class ProjectController extends Controller
      *
      * @Route("/{slug}/admin/delete", name="aguila_project_delete")
      * @Method("post")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findOneBySlug", "params"={"slug"}})
      */
     public function deleteAction(Project $project)
     {

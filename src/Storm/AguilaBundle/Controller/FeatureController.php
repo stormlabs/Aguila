@@ -55,7 +55,7 @@ class FeatureController extends Controller
      * Displays a form to create a new Feature.
      *
      * @Template()
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findOneBySlug", "params"={"project_slug"}})
      */
     public function newAction(Project $project)
     {
@@ -77,7 +77,7 @@ class FeatureController extends Controller
      * @Route("/feature/create", name="aguila_feature_create")
      * @Method("post")
      * @Template("AguilaBundle:Feature:new.html.twig")
-     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findBySlug", "params"={"project_slug"}})
+     * @ParamConverter("project", class="AguilaBundle:Project", options={"method"="findOneBySlug", "params"={"project_slug"}})
      */
     public function createAction(Project $project)
     {
