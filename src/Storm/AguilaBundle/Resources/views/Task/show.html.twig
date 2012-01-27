@@ -37,29 +37,8 @@
     </div>
 </div>
 
-<ul class="unstyled">
-    {% for comment in task.comments %}
-    <li class="well">
-        <div class="page-header">
-            <h3>
-                <img src="http://www.gravatar.com/avatar/{{ comment.user.gravatar }}?s=30" style="padding-right: 10px; width: 20px; height: 20px;"/>
-                {{ comment.user }}
-                <small> on {{comment.createdAt|date('Y-m-d')}}</small>
-            </h3>
-        </div>
-        <p>
-            {{ comment.body|raw }}
-        </p>
-    </li>
-    {% endfor %}
-</ul>
-<form class="form-stacked" action="{{ path('aguila_task_comment', {'project_slug': project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(comment_form) }}>
-    <fieldset>
-        {{ form_row(comment_form.body, {'attr':{'class': 'span10'}}) }}
-        {{ form_rest(comment_form) }}
-    </fieldset>
-    <div class="actions">
-        <button class="btn primary" type="submit">{{ 'task.comment.submit'|trans([], 'AguilaBundle') }}</button>
-    </div>
-</form>
+{% render 'AguilaBundle:Comment:list' with {'task_id': task.id} %}
+
+{% render 'AguilaBundle:Comment:new' with {'task_id': task.id} %}
+
 {% endblock %}

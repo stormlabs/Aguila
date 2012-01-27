@@ -32,3 +32,7 @@ aguila_feature:
 aguila_task:
     resource: "@AguilaBundle/Controller/TaskController.php"
     type:     annotation
+
+aguila_comment:
+    resource: "@AguilaBundle/Controller/CommentController.php"
+    type:     annotation
