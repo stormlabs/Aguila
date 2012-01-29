@@ -49,6 +49,7 @@ doctrine:
         port:     %database_port%
         dbname:   %database_name%
         user:     %database_user%
+        path:     %kernel.root_dir%/data.sqlite
         password: %database_password%
         charset:  UTF8
 
