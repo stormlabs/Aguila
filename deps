@@ -82,4 +82,4 @@
 
 [twitter-bootstrap]
     git=https://github.com/twitter/bootstrap.git
-    version=1.4.0
+    version=v1.4.0
