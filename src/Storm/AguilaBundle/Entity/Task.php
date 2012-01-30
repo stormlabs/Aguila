@@ -14,9 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Task
 {
-    static $difficulty_choices = array('task.difficulty.0', 'task.difficulty.1', 'task.difficulty.2', 'task.difficulty.3');
-    static $priority_choices = array('task.priority.0', 'task.priority.1', 'task.priority.2', 'task.priority.3');
-
     const CLOSE = 0;
     const OPEN = 1;
     const IN_PROGRESS = 2;

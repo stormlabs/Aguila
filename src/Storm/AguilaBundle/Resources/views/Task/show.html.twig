@@ -9,7 +9,7 @@
 <div class="task">
     <div class="page-header">
         <h3>
-            <span class="label {% if task.status == 0 %}important{% elseif task.status == 1%}success{% else %}warning{% endif %}">{{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}</span>
+            <span class="label {% if task.status == 0 %}important{% elseif task.status == 1%}success{% else %}warning{% endif %}">{{ task.statusChoices[task.status]|trans([], 'AguilaBundle') }}</span>
             {{ task.title }}
             <a class="edit" href="{{ path('aguila_task_edit', {
                         'project_slug': task.feature.project.slug,
@@ -23,14 +23,14 @@
     </div>
 
     <div class="metadata well">
-        <span class="icon lightbulb"></span>{{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}
-        <span class="icon clock"></span> {{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}
+        <span class="icon lightbulb"></span>{{ task.difficulty }}
+        <span class="icon clock"></span> {{ task.priority }}
         {% if task.assignee %}
         <img src="http://www.gravatar.com/avatar/{{ task.assignee.gravatar }}?s=12" style="width: 12px; height: 12px;"/>
         <strong>{{ task.assignee }}</strong>
         {% endif %}
         <a class="btn small" href="{{ path('aguila_task_close', {'project_slug': task.feature.project.slug,'number': task.number}) }}">
-            {{ task.status == 0 ? "REOPEN" :"CLOSE" }}
+            {{ task.statusChoices[task.status] }}
         </a>
     </div>
 </div>
