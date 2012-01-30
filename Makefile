@@ -2,6 +2,7 @@
 #
 #
 ENV := dev
+VARSION := v0.1.1
 
 shell:
 	phpsh app/shell.php
@@ -65,14 +66,15 @@ check_cs:
 	php bin/check_cs fix
 
 install:
-	git reset --hard $(cat VERSION)
+	git reset --hard $(VERSION)
 	make vendors
 	ENV=prod make database -e
 	make deploy
 	php app/console doctrine:fixtures:load --fixtures=src/Storm/AguilaBundle/DataFixtures/ORM/Prod --env=prod
 
 deploy:
-	git reset --hard $(cat VERSION)
+	git pull
+	git reset --hard $(VERSION)
 	ENV=prod make cc -e
 	ENV=prod make warmup -e
 	ENV=prod make assets -e
