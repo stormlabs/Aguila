@@ -29,9 +29,7 @@
         <img src="http://www.gravatar.com/avatar/{{ task.assignee.gravatar }}?s=12" style="width: 12px; height: 12px;"/>
         <strong>{{ task.assignee }}</strong>
         {% endif %}
-        <a class="btn small {% if task.status %}error{% else %}success{% endif %}"
-           href="{{ path('aguila_task_close', {'project_slug': task.feature.project.slug,'number': task.number}) }}"
-                >
+        <a class="btn small" href="{{ path('aguila_task_close', {'project_slug': task.feature.project.slug,'number': task.number}) }}">
             {{ task.status == 0 ? "REOPEN" :"CLOSE" }}
         </a>
     </div>
