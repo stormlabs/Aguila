@@ -1,0 +1,9 @@
+<form class="form-stacked" action="{{ path('aguila_comment_create', {'task_id': task.id}) }}" method="post" {{ form_enctype(form) }}>
+    <fieldset>
+        {{ form_row(form.body, {'attr':{'class': 'span10'}}) }}
+        {{ form_rest(form) }}
+    </fieldset>
+    <div class="actions">
+        <button class="btn primary" type="submit">{{ 'task.comment.submit'|trans([], 'AguilaBundle') }}</button>
+    </div>
+</form>

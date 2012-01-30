@@ -9,7 +9,7 @@
 <div class="task">
     <div class="page-header">
         <h3>
-            <span class="label {% if task.status == 0 %}important{% elseif task.status == 1%}success{% else %}warning{% endif %}">{{ task_status_choices[task.status]|trans([], 'AguilaBundle') }}</span>
+            <span class="label {% if task.status == 0 %}important{% elseif task.status == 1%}success{% else %}warning{% endif %}">{{ task.statusChoices[task.status]|trans([], 'AguilaBundle') }}</span>
             {{ task.title }}
             <a class="edit" href="{{ path('aguila_task_edit', {
                         'project_slug': task.feature.project.slug,
@@ -23,43 +23,20 @@
     </div>
 
     <div class="metadata well">
-        <span class="icon lightbulb"></span>{{ task_difficulty_choices[task.difficulty]|trans([], 'AguilaBundle') }}
-        <span class="icon clock"></span> {{ task_priority_choices[task.priority]|trans([], 'AguilaBundle') }}
+        <span class="icon lightbulb"></span>{{ task.difficulty }}
+        <span class="icon clock"></span> {{ task.priority }}
         {% if task.assignee %}
         <img src="http://www.gravatar.com/avatar/{{ task.assignee.gravatar }}?s=12" style="width: 12px; height: 12px;"/>
         <strong>{{ task.assignee }}</strong>
         {% endif %}
-        <a class="btn small {% if task.status %}error{% else %}success{% endif %}"
-           href="{{ path('aguila_task_close', {'project_slug': task.feature.project.slug,'number': task.number}) }}"
-                >
-            {{ task.status == 0 ? "REOPEN" :"CLOSE" }}
+        <a class="btn small" href="{{ path('aguila_task_close', {'project_slug': task.feature.project.slug,'number': task.number}) }}">
+            {{ task.statusChoices[task.status] }}
         </a>
     </div>
 </div>
 
-<ul class="unstyled">
-    {% for comment in task.comments %}
-    <li class="well">
-        <div class="page-header">
-            <h3>
-                <img src="http://www.gravatar.com/avatar/{{ comment.user.gravatar }}?s=30" style="padding-right: 10px; width: 20px; height: 20px;"/>
-                {{ comment.user }}
-                <small> on {{comment.createdAt|date('Y-m-d')}}</small>
-            </h3>
-        </div>
-        <p>
-            {{ comment.body|raw }}
-        </p>
-    </li>
-    {% endfor %}
-</ul>
-<form class="form-stacked" action="{{ path('aguila_task_comment', {'project_slug': project.slug, 'number': task.number}) }}" method="post" {{ form_enctype(comment_form) }}>
-    <fieldset>
-        {{ form_row(comment_form.body, {'attr':{'class': 'span10'}}) }}
-        {{ form_rest(comment_form) }}
-    </fieldset>
-    <div class="actions">
-        <button class="btn primary" type="submit">{{ 'task.comment.submit'|trans([], 'AguilaBundle') }}</button>
-    </div>
-</form>
+{% render 'AguilaBundle:Comment:list' with {'task_id': task.id} %}
+
+{% render 'AguilaBundle:Comment:new' with {'task_id': task.id} %}
+
 {% endblock %}

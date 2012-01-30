@@ -26,6 +26,8 @@ security:
                 login_path: /login
             logout: true
             anonymous: ~
+            remember_me:
+                key: 146c07ef2479cedcd54c7c2af5cf3a80
             #http_basic:
             #    realm: "Secured Demo Area"
 

@@ -23,11 +23,12 @@
 
 {% block field_row %}
 {% spaceless %}
+{% set row_attr = row_attr is defined ? row_attr : {} %}
 {% if errors|length > 0 %}{% set attr = attr|merge({'class': attr.class|default('') ~ ' error'}) %}{%endif%}
-<div {{ block('widget_container_attributes') }}>
+<div {{ block('row_container_attributes') }}>
     {{ form_label(form, label|default(null)) }}
     <div class="input">
-        {{ form_widget(form, attr) }}
+        {{ form_widget(form, {'attr': attr}) }}
         {% if errors|length > 0 %}
             <span class="help-inline">{{ form_errors(form) }}</span>
         {% elseif help is defined %}
@@ -43,10 +44,17 @@
 
 {% block widget_container_attributes %}
 {% spaceless %}
-{% set attr = attr|merge({'class': attr.class|default('') ~ ' clearfix'}) %}
+{% set attr = attr|merge({'class': attr.class|default('')}) %}
 {% for attrname,attrvalue in attr %}{{attrname}}="{{attrvalue}}" {% endfor %}
 {% endspaceless %}
 {% endblock widget_container_attributes %}
+
+{% block row_container_attributes %}
+{% spaceless %}
+{% set row_attr = row_attr|merge({'class': row_attr.class|default('') ~ ' clearfix'}) %}
+{% for attrname,attrvalue in row_attr %}{{attrname}}="{{attrvalue}}" {% endfor %}
+{% endspaceless %}
+{% endblock row_container_attributes %}
 
 {% block field_errors %}
 {% spaceless %}

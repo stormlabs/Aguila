@@ -1,14 +1,12 @@
 <form style="display: none" class="task-form form-stacked" action="{{ path('aguila_task_create', {'project_slug': project_slug, 'feature_slug': feature_slug}) }}" method="post" {{ form_enctype(form) }}>
     <h4>{{ 'task.new.title'|trans([], 'AguilaBundle') }}</h4>
 
-    <div class="row">
-        {{ form_row(form.title, {'attr': {'class': 'span12'}}) }}
-    </div>
+    {{ form_row(form.title, {'attr': {'class': 'span12'}}) }}
 
     <div class="row">
-        {{ form_row(form.difficulty, {'attr': {'class': 'span4'}}) }}
-        {{ form_row(form.priority, {'attr': {'class': 'span4'}}) }}
-        {{ form_row(form.assignee, {'attr': {'class': 'span4'}}) }}
+        {{ form_row(form.difficulty, {'row_attr': {'class': 'span4'}}) }}
+        {{ form_row(form.priority, {'row_attr': {'class': 'span4'}}) }}
+        {{ form_row(form.assignee, {'row_attr': {'class': 'span4'}}) }}
     </div>
     {{ form_rest(form) }}
 

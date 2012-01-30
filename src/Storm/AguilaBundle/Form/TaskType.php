@@ -12,17 +12,27 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('difficulty', 'choice', array(
-                'choices' => Task::$difficulty_choices,
-            ))
-            ->add('priority', 'choice', array(
-                'choices' => Task::$priority_choices,
-            ))
+            ->add('difficulty', null, array(
+                'attr' => array('min' => 0, 'max' => 100)
+            )
+        )
+            ->add('priority', null, array(
+                'attr' => array('min' => 0, 'max' => 100)
+            )
+        )
             ->add('assignee', 'entity', array(
                 'class' => 'AguilaBundle:User',
                 'required' => false,
-            ))
-        ;
+            )
+        );
+        if ($options['data']->getId() !== null) {
+            $builder
+                ->add('feature')
+                ->add('status', 'choice', array(
+                    'choices' => Task::getStatusChoices(),
+                )
+            );
+        }
     }
 
     public function getName()

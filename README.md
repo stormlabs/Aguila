@@ -1,7 +1,7 @@
 Gestor de Proyectos Aguila
 ==========================
 
-Aguila es un gestor simple de proyectos de software desaroolado en Symfony2.
+Aguila es un gestor simple de proyectos de software desarrollado en Symfony2.
 
 Instalación
 -----------
@@ -14,6 +14,10 @@ Instalación
     Copia `/app/config/parameters.ini.dist` a `/app/config/parameters.ini` y
     editalo para utilizar los datos de tu base de datos.
 
-3. Obten los vendos
+3. Obten los vendors
 
     make vendors
+
+4. Corre `make install` para inicializar la base de datos y añadir fixtures
+
+    make install

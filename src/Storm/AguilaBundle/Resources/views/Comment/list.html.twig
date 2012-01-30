@@ -1,0 +1,7 @@
+<ul class="unstyled">
+    {% for comment in comments %}
+    <li>
+        {% render 'AguilaBundle:Comment:show' with {'id': comment.id} %}
+    </li>
+    {% endfor %}
+</ul>

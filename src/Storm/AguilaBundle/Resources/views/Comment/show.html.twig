@@ -1,0 +1,14 @@
+<div class="well">
+    <div style="float: left;">
+        <img src="http://www.gravatar.com/avatar/{{ comment.user.gravatar }}?s=30" style="padding-right: 10px; width: 20px; height: 20px;"/>
+        {{ comment.user }}
+        on {{comment.createdAt|date('Y-m-d')}}
+    </div>
+
+    <form style="float: right;" action="{{ path('aguila_comment_delete', { 'id': comment.id }) }}" method="post">
+        {{ form_widget(delete_form.id) }}
+        {{ form_rest(delete_form) }}
+        <button class="btn small" type="submit">Delete</button>
+    </form>
+</div>
+<p>{{ comment.body|raw }}</p>

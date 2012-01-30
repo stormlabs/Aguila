@@ -2,8 +2,6 @@
 
 namespace Storm\AguilaBundle\Controller;
 
-use Symfony\Component\Validator\Constraints;
-use Symfony\Component\Validator\Constraints\Collection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -56,17 +54,13 @@ class TaskController extends Controller
         $commentForm = $this->createForm(new CommentType(), $comment);
 
         return array(
-            'task'                    => $task,
-            'task_difficulty_choices' => Task::$difficulty_choices,
-            'task_priority_choices'   => Task::$priority_choices,
-            'task_status_choices'     => Task::$status_choices,
-            'comment_form'            => $commentForm->createView(),
+            'task' => $task,
+            'comment_form' => $commentForm->createView(),
         );
     }
 
     /**
-     * Adds a Comment to the Task
-     *
+     * Comment
      * @Route("/{number}/comment", name="aguila_task_comment", requirements={"number" = "\d+"})
      * @Template("AguilaBundle:Task:show.html.twig")
      * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
