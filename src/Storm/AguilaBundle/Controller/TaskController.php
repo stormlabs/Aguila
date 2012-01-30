@@ -59,7 +59,7 @@ class TaskController extends Controller
             'task' => $task,
             'task_difficulty_choices' => Task::$difficulty_choices,
             'task_priority_choices' => Task::$priority_choices,
-            'task_status_choices' => Task::$status_choices,
+            'task_status_choices' => Task::getStatusChoices(),
             'comment_form' => $commentForm->createView(),
         );
     }
