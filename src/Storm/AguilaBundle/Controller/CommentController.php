@@ -2,7 +2,6 @@
 
 namespace Storm\AguilaBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -86,7 +85,7 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
         $task = $em->getRepository('AguilaBundle:Task')->find($task_id);
-        
+
         $comment  = new Comment();
         $request = $this->getRequest();
         $form    = $this->createForm(new CommentType(), $comment);
