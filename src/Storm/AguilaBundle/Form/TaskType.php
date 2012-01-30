@@ -4,6 +4,7 @@ namespace Storm\AguilaBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
+use Doctrine\ORM\EntityRepository;
 use Storm\AguilaBundle\Entity\Task;
 
 class TaskType extends AbstractType
@@ -27,7 +28,17 @@ class TaskType extends AbstractType
         );
         if ($options['data']->getId() !== null) {
             $builder
-                ->add('feature')
+                ->add('feature', 'entity', array(
+                    'class' => 'AguilaBundle:Feature',
+                    'query_builder' =>
+                    function(EntityRepository $er) use ($options)
+                    {
+                        return $er->createQueryBuilder('f')
+                            ->where('f.project = :project')
+                            ->setParameter('project', $options['data']->getFeature()->getProject());
+                    }
+                )
+            )
                 ->add('status', 'choice', array(
                     'choices' => Task::getStatusChoices(),
                 )
