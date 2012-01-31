@@ -47,7 +47,7 @@ class ProjectController extends Controller
                 $em->persist($project);
                 $em->flush();
 
-                $this->grantAccess('OWNER', $project, true);
+                $this->grantAccess(MaskBuilder::MASK_OWNER, $project, true);
 
                 return $this->redirect($this->generateUrl('aguila_project_show', array('slug' => $project->getSlug())));
             }
