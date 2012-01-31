@@ -50,4 +50,11 @@ class TaskType extends AbstractType
     {
         return 'task_form';
     }
+
+    public function getDefaultOptions(array $options)
+    {
+        return array(
+            'intention' => 'task',
+        );
+    }
 }

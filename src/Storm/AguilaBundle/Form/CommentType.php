@@ -18,4 +18,12 @@ class CommentType extends AbstractType
     {
         return 'comment_form';
     }
+
+    public function getDefaultOptions(array $options)
+    {
+        return array(
+            'intention' => 'comment',
+        );
+    }
+
 }

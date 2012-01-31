@@ -28,4 +28,11 @@ class ProjectAdminType extends AbstractType
     {
         return 'project_admin_form';
     }
+
+    public function getDefaultOptions(array $options)
+    {
+        return array(
+            'intention' => 'project_admin',
+        );
+    }
 }

@@ -18,4 +18,11 @@ class ProjectType extends AbstractType
     {
         return 'project_form';
     }
+
+    public function getDefaultOptions(array $options)
+    {
+        return array(
+            'intention' => 'project',
+        );
+    }
 }

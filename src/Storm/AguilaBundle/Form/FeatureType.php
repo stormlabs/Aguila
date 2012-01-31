@@ -19,4 +19,11 @@ class FeatureType extends AbstractType
     {
         return 'feature_form';
     }
+
+    public function getDefaultOptions(array $options)
+    {
+        return array(
+            'intention' => 'feature',
+        );
+    }
 }
