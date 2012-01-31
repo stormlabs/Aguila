@@ -3,6 +3,7 @@ namespace Storm\AguilaBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use FOS\UserBundle\Util\UserManipulator;
@@ -22,7 +23,7 @@ class UserFixture extends AbstractFixture implements ContainerAwareInterface, Or
      *
      * @param object $manager
      */
-    public function load($manager)
+    public function load(ObjectManager $manager)
     {
         /* @var $manipulator UserManipulator */
         $manipulator = $this->container->get('fos_user.util.user_manipulator');
