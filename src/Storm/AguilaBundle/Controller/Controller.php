@@ -58,7 +58,7 @@ class Controller extends BaseController
         $securityContext = $this->get('security.context');
         $user = (null !== $user)? $user : $securityContext->getToken()->getUser();
         $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
+        /** @var $acl \Symfony\Component\Security\Acl\Domain\Acl */
         $acl->insertObjectAce($securityIdentity, $mask);
         $aclProvider->updateAcl($acl);
     }

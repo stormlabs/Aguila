@@ -31,6 +31,8 @@ class ProjectController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
+        //$user = $this->get('security.context')->getToken()->getUser();
+        //$projects = $em->getRepository('AguilaBundle:Project')->findProjectsForUser($user);
         $projects = $em->getRepository('AguilaBundle:Project')->findBy(array('public' => true));
 
         $project = new Project();
