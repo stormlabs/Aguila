@@ -5,7 +5,9 @@ namespace Storm\AguilaBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Storm\AguilaBundle\Entity\Comment;
+use Storm\AguilaBundle\Entity\Task;
 use Storm\AguilaBundle\Form\CommentType;
 
 /**
@@ -34,22 +36,15 @@ class CommentController extends Controller
      * Finds and displays a comment.
      *
      * @Route("/{id}/show", name="aguila_comment_show")
+     * @ParamConverter("comment", class="AguilaBundle:Comment", options={"method"="find", "params" = {"id"}})
      * @Template()
      */
-    public function showAction($id)
+    public function showAction(Comment $comment)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $comment = $em->getRepository('AguilaBundle:Comment')->find($id);
-
-        if (!$comment) {
-            throw $this->createNotFoundException('Unable to find {{ comment }} comment.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->createDeleteForm($comment->getId());
 
         return array(
-            'comment'      => $comment,
+            'comment'     => $comment,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -79,19 +74,19 @@ class CommentController extends Controller
      *
      * @Route("/create/{task_id}", name="aguila_comment_create")
      * @Method("post")
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="find", "params" = {"task_id"}})
      * @Template("AguilaBundle:Comment:new.html.twig")
      */
-    public function createAction($task_id)
+    public function createAction(Task $task)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-        $task = $em->getRepository('AguilaBundle:Task')->find($task_id);
-
         $comment  = new Comment();
         $request = $this->getRequest();
         $form    = $this->createForm(new CommentType(), $comment);
         $form->bindRequest($request);
 
         if ($form->isValid()) {
+            $em = $this->getDoctrine()->getEntityManager();
+
             $comment->setTask($task);
             $comment->setType(Comment::POST);
             $comment->setUser($this->get('security.context')->getToken()->getUser());
@@ -102,8 +97,8 @@ class CommentController extends Controller
         }
 
         return $this->redirect($this->generateUrl('aguila_task_show', array(
-            'project_slug' => $task->getFeature()->getProject(),
-            'number' => $task->getNumber(),
+            'project_slug' => $task->getFeature()->getProject()->getSlug(),
+            'number'       => $task->getNumber(),
         )));
     }
 
@@ -111,23 +106,16 @@ class CommentController extends Controller
      * Displays a form to edit an existing comment.
      *
      * @Route("/{id}/edit", name="comment_edit")
+     * @ParamConverter("comment", class="AguilaBundle:Comment", options={"method"="find", "params" = {"id"}})
      * @Template()
      */
-    public function editAction($id)
+    public function editAction(Comment $comment)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $comment = $em->getRepository('AguilaBundle:Comment')->find($id);
-
-        if (!$comment) {
-            throw $this->createNotFoundException('Unable to find Comment comment.');
-        }
-
         $editForm = $this->createForm(new CommentType(), $comment);
 
         return array(
-            'comment'      => $comment,
-            'edit_form'   => $editForm->createView(),
+            'comment'   => $comment,
+            'edit_form' => $editForm->createView(),
         );
     }
 
@@ -136,18 +124,11 @@ class CommentController extends Controller
      *
      * @Route("/{id}/update", name="comment_update")
      * @Method("post")
+     * @ParamConverter("comment", class="AguilaBundle:Comment", options={"method"="find", "params" = {"id"}})
      * @Template("AguilaBundle:Comment:edit.html.twig")
      */
-    public function updateAction($id)
+    public function updateAction(Comment $comment)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $comment = $em->getRepository('AguilaBundle:Comment')->find($id);
-
-        if (!$comment) {
-            throw $this->createNotFoundException('Unable to find Comment comment.');
-        }
-
         $editForm   = $this->createForm(new CommentType(), $comment);
 
         $request = $this->getRequest();
@@ -155,15 +136,17 @@ class CommentController extends Controller
         $editForm->bindRequest($request);
 
         if ($editForm->isValid()) {
+            $em = $this->getDoctrine()->getEntityManager();
+
             $em->persist($comment);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('comment_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('comment_edit', array('id' => $comment->getId())));
         }
 
         return array(
-            'comment'      => $comment,
-            'edit_form'   => $editForm->createView(),
+            'comment'   => $comment,
+            'edit_form' => $editForm->createView(),
         );
     }
 
@@ -171,22 +154,18 @@ class CommentController extends Controller
      * Deletes a comment.
      *
      * @Route("/{id}/delete", name="aguila_comment_delete")
+     * @ParamConverter("comment", class="AguilaBundle:Comment", options={"method"="find", "params" = {"id"}})
      * @Method("post")
      */
-    public function deleteAction($id)
+    public function deleteAction(Comment $comment)
     {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($comment->getId());
         $request = $this->getRequest();
 
         $form->bindRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $comment = $em->getRepository('AguilaBundle:Comment')->find($id);
-
-            if (!$comment) {
-                throw $this->createNotFoundException();
-            }
 
             $task = $comment->getTask();
 
@@ -196,7 +175,7 @@ class CommentController extends Controller
 
         return $this->redirect($this->generateUrl('aguila_task_show', array(
             'project_slug' => $task->getFeature()->getProject(),
-            'number' => $task->getNumber(),
+            'number'       => $task->getNumber(),
         )));
     }
 
