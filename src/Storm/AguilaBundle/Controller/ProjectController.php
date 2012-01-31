@@ -47,7 +47,7 @@ class ProjectController extends Controller
                 $em->persist($project);
                 $em->flush();
 
-                $this->grantAccess(MaskBuilder::MASK_OWNER, $project, true);
+                $this->grantAccess('OWNER', $project, true);
 
                 return $this->redirect($this->generateUrl('aguila_project_show', array('slug' => $project->getSlug())));
             }
@@ -68,7 +68,7 @@ class ProjectController extends Controller
      */
     public function showAction(Project $project)
     {
-        //$this->checkAccess(MaskBuilder::MASK_VIEW, $project);
+        $this->checkAccess('VIEW', $project);
         $deleteForm = $this->createDeleteForm($project->getSlug());
 
         return array(
@@ -86,7 +86,7 @@ class ProjectController extends Controller
      */
     public function editAction(Project $project)
     {
-        $this->checkAccess(MaskBuilder::MASK_OWNER, $project);
+        $this->checkAccess('OWNER', $project);
 
         $editForm = $this->createForm(new ProjectType(), $project);
         $deleteForm = $this->createDeleteForm($project->getSlug());
@@ -108,7 +108,7 @@ class ProjectController extends Controller
      */
     public function updateAction(Project $project)
     {
-        $this->checkAccess(MaskBuilder::MASK_OWNER, $project);
+        $this->checkAccess('OWNER', $project);
 
         $editForm   = $this->createForm(new ProjectType(), $project);
         $deleteForm = $this->createDeleteForm($project->getSlug());
@@ -142,7 +142,7 @@ class ProjectController extends Controller
      */
     public function deleteAction(Project $project)
     {
-        $this->checkAccess(MaskBuilder::MASK_OWNER, $project);
+        $this->checkAccess('OWNER', $project);
 
         $form = $this->createDeleteForm($project->getSlug());
         $request = $this->getRequest();

@@ -44,7 +44,7 @@ class FeatureController extends Controller
      */
     public function showAction(Feature $feature)
     {
-        $this->checkAccess(MaskBuilder::MASK_VIEW, $feature->getProject());
+        $this->checkAccess('VIEW', $feature->getProject());
 
         return array(
             'feature' => $feature,
@@ -59,8 +59,6 @@ class FeatureController extends Controller
      */
     public function newAction(Project $project)
     {
-        //$this->checkAccess(MaskBuilder::MASK_EDIT, $project);
-
         $feature = new Feature();
         $form   = $this->createForm(new FeatureType(), $feature);
 
@@ -81,7 +79,7 @@ class FeatureController extends Controller
      */
     public function createAction(Project $project)
     {
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $project);
+        $this->checkAccess('EDIT', $project);
 
         $feature  = new Feature();
         $request = $this->getRequest();
@@ -97,8 +95,6 @@ class FeatureController extends Controller
 
             $em->persist($feature);
             $em->flush();
-
-            $this->grantAccess(MaskBuilder::MASK_OWNER, $feature);
 
             return $this->redirect($this->generateUrl('aguila_feature_show', array(
                 'project_slug' => $project->getSlug(),
@@ -122,7 +118,7 @@ class FeatureController extends Controller
      */
     public function editAction(Feature $feature)
     {
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $feature->getProject());
+        $this->checkAccess('EDIT', $feature->getProject());
 
         $editForm = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($feature->getSlug());
@@ -144,7 +140,7 @@ class FeatureController extends Controller
      */
     public function updateAction(Feature $feature)
     {
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $feature->getProject());
+        $this->checkAccess('EDIT', $feature->getProject());
 
         $editForm   = $this->createForm(new FeatureType(), $feature);
         $deleteForm = $this->createDeleteForm($feature->getSlug());
@@ -180,7 +176,7 @@ class FeatureController extends Controller
      */
     public function deleteAction(Feature $feature)
     {
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $feature->getProject());
+        $this->checkAccess('EDIT', $feature->getProject());
 
         $form = $this->createDeleteForm($feature->getSlug());
         $request = $this->getRequest();

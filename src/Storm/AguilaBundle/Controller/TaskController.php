@@ -43,12 +43,12 @@ class TaskController extends Controller
      *
      * @Route("/{number}", name="aguila_task_show", requirements={"number" = "\d+"})
      * @Template()
-     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProjectAndNumber", "params" = {"project_slug", "number"}})
      */
     public function showAction(Task $task)
     {
         $project = $task->getFeature()->getProject();
-        $this->checkAccess(MaskBuilder::MASK_VIEW, $project);
+        $this->checkAccess('VIEW', $project);
 
         $comment = new Comment();
         $commentForm = $this->createForm(new CommentType(), $comment);
@@ -63,12 +63,12 @@ class TaskController extends Controller
      * Comment
      * @Route("/{number}/comment", name="aguila_task_comment", requirements={"number" = "\d+"})
      * @Template("AguilaBundle:Task:show.html.twig")
-     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProjectAndNumber", "params" = {"project_slug", "number"}})
      */
     public function commentAction(Task $task)
     {
         $project = $task->getFeature()->getProject();
-        $this->checkAccess(MaskBuilder::MASK_VIEW, $project);
+        $this->checkAccess('VIEW', $project);
 
         $comment = new Comment();
         $form = $this->createForm(new CommentType(), $comment);
@@ -112,7 +112,7 @@ class TaskController extends Controller
     public function newAction(Feature $feature)
     {
         $project = $feature->getProject();
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $project);
+        $this->checkAccess('EDIT', $project);
 
         $task = new Task();
         $form = $this->createForm(new TaskType(), $task);
@@ -136,7 +136,7 @@ class TaskController extends Controller
     public function createAction(Feature $feature)
     {
         $project = $feature->getProject();
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $project);
+        $this->checkAccess('EDIT', $project);
 
         $task = new Task();
         $form = $this->createForm(new TaskType(), $task);
@@ -176,12 +176,12 @@ class TaskController extends Controller
      *
      * @Route("/{number}/edit", name="aguila_task_edit", requirements={"number" = "\d+"})
      * @Template()
-     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProjectAndNumber", "params" = {"project_slug", "number"}})
      */
     public function editAction(Task $task)
     {
         $project = $task->getFeature()->getProject();
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $project);
+        $this->checkAccess('EDIT', $project);
 
         $editForm = $this->createForm(new TaskType(), $task);
 
@@ -197,12 +197,12 @@ class TaskController extends Controller
      * @Route("/{number}/update", name="aguila_task_update", requirements={"number" = "\d+"})
      * @Method("post")
      * @Template("AguilaBundle:Task:edit.html.twig")
-     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProjectAndNumber", "params" = {"project_slug", "number"}})
      */
     public function updateAction(Task $task)
     {
         $project = $task->getFeature()->getProject();
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $project);
+        $this->checkAccess('EDIT', $project);
 
         $editForm = $this->createForm(new TaskType(), $task);
 
@@ -232,13 +232,13 @@ class TaskController extends Controller
      * Close an existing Task.
      *
      * @Route("/{number}/close", name="aguila_task_close", requirements={"number" = "\d+"})
-     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProject", "params" = {"project_slug", "number"}})
+     * @ParamConverter("task", class="AguilaBundle:Task", options={"method"="findOneByProjectAndNumber", "params" = {"project_slug", "number"}})
      * @Template()
      */
     public function closeAction(Task $task)
     {
         $project = $task->getFeature()->getProject();
-        $this->checkAccess(MaskBuilder::MASK_EDIT, $project);
+        $this->checkAccess('EDIT', $project);
 
         if ($task->getStatus() == Task::CLOSE) {
             $task->setStatus(Task::OPEN);
