@@ -79,6 +79,9 @@ install:
 deploy:
 	git pull
 	git reset --hard $(VERSION)
+	make prodcache
+
+prodcache:
 	ENV=prod make cc -e
 	ENV=prod make warmup -e
 	ENV=prod make assets -e
