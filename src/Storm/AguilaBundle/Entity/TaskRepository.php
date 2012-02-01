@@ -13,7 +13,7 @@ use Storm\AguilaBundle\Entity\Task;
  */
 class TaskRepository extends EntityRepository
 {
-    public function findOneByProject($project_slug, $number)
+    public function findOneByProjectAndNumber($project_slug, $number)
     {
         $qb = $this->createQueryBuilder('t')
             ->leftJoin('t.feature', 'f')

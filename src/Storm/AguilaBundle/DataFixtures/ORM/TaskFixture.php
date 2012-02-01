@@ -3,6 +3,7 @@ namespace Storm\AguilaBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Storm\AguilaBundle\Entity\Task;
 
 class TaskFixture extends AbstractFixture implements OrderedFixtureInterface
@@ -17,7 +18,7 @@ class TaskFixture extends AbstractFixture implements OrderedFixtureInterface
      *
      * @param object $manager
      */
-    function load($manager)
+    function load(ObjectManager $manager)
     {
         $fortune = true;
         exec($this->getDescCommand(), $output);

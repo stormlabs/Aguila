@@ -3,6 +3,7 @@ namespace Storm\AguilaBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Storm\AguilaBundle\Entity\Feature;
 
 class FeatureFixture extends AbstractFixture implements OrderedFixtureInterface
@@ -12,7 +13,7 @@ class FeatureFixture extends AbstractFixture implements OrderedFixtureInterface
      *
      * @param object $manager
      */
-    function load($manager)
+    function load(ObjectManager $manager)
     {
         foreach (range(0, 10) as $n) {
             $feature = new Feature();

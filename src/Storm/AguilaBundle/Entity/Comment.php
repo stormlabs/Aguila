@@ -64,10 +64,15 @@ class Comment
         $this->created_at = new \DateTime();
     }
 
+    public function __toString()
+    {
+        return $this->body;
+    }
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -87,7 +92,7 @@ class Comment
     /**
      * Get user
      *
-     * @return object 
+     * @return object
      */
     public function getUser()
     {
@@ -107,7 +112,7 @@ class Comment
     /**
      * Get task
      *
-     * @return object 
+     * @return object
      */
     public function getTask()
     {
@@ -127,7 +132,7 @@ class Comment
     /**
      * Get body
      *
-     * @return text 
+     * @return text
      */
     public function getBody()
     {
@@ -147,7 +152,7 @@ class Comment
     /**
      * Get type
      *
-     * @return integer 
+     * @return integer
      */
     public function getType()
     {

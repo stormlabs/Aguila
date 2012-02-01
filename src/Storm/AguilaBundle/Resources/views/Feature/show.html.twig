@@ -13,7 +13,7 @@
             <a class="new-task-button btn success" href="#">{{ 'feature.show.task.new'|trans([], 'AguilaBundle') }}</a>
         </small>
     </h3>
-    {% render 'AguilaBundle:Task:new' with {'project_slug': project.slug, 'feature_slug': feature.slug} %}
+    {% render 'AguilaBundle:Task:new' with {'project': feature.project, 'feature': feature} %}
 </div>
 <div class="row">
     <div class="span6">

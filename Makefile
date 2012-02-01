@@ -24,6 +24,10 @@ database:
 	php app/console doctrine:database:drop --force --env=$(ENV)
 	php app/console doctrine:database:create --env=$(ENV)
 	php app/console doctrine:schema:create --env=$(ENV)
+	make acl
+
+acl:
+	php app/console init:acl
 
 fixtures:
 	php app/console doctrine:fixtures:load --env=$(ENV)
@@ -75,6 +79,9 @@ install:
 deploy:
 	git pull
 	git reset --hard $(VERSION)
+	make prodcache
+
+prodcache:
 	ENV=prod make cc -e
 	ENV=prod make warmup -e
 	ENV=prod make assets -e
