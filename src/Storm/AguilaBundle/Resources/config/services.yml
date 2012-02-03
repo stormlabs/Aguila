@@ -1,0 +1,9 @@
+parameters:
+    storm.aguila.aclmanager.class: Storm\AguilaBundle\Acl\AclManager
+
+services:
+    storm.aguila.aclmanager:
+        class: %storm.aguila.aclmanager.class%
+        arguments:
+            - '@security.context'
+            - '@security.acl.provider'
