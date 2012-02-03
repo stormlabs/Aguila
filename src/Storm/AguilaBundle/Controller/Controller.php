@@ -10,7 +10,7 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
 
-/*
+/**
  * Base Controller class for AguilaBundle Controllers
  */
 class Controller extends BaseController
@@ -24,19 +24,7 @@ class Controller extends BaseController
      */
     protected function checkAccess($mask, $object)
     {
-        /** @var $securityContext \Symfony\Component\Security\Core\SecurityContext */
-        $securityContext = $this->get('security.context');
-        $objectIdentity = new ObjectIdentity($object->getId(), $this->getClassSansProxy($object));
-        if (false === $securityContext->isGranted($mask, $objectIdentity))
-        {
-            throw new AccessDeniedException(sprintf(
-                'Access Denied for user "%s" to object(%s): %s with mask "%s"',
-                (string)$securityContext->getToken()->getUserName(),
-                $this->getClassSansProxy($object),
-                (string)$object,
-                $mask
-            ));
-        }
+        $this->get('storm.aguila.aclmanager')->checkAccess($mask, $object);
     }
 
     /**
@@ -45,22 +33,11 @@ class Controller extends BaseController
      * @param $mask
      * @param $object
      * @param bool $newObject whether the $object is new (and doesn't have acl yet) or not
-     * @param null|\Symfony\Component\Security\Core\User\UserInterface $user
+     * @param null|\Symfony\Component\Security\Core\User\UserInterface|string $user
      */
-    protected function grantAccess($mask, $object, $newObject=false, UserInterface $user=null)
+    protected function grantAccess($mask, $object, $newObject=false, $user=null)
     {
-        /** @var $aclProvider \Symfony\Component\Security\Acl\Dbal\MutableAclProvider */
-        $aclProvider = $this->get('security.acl.provider');
-        $objectIdentity = new ObjectIdentity($object->getId(), $this->getClassSansProxy($object));
-        $method = $newObject ? 'createAcl' : 'findAcl';
-        $acl = $aclProvider->{$method}($objectIdentity);
-
-        $securityContext = $this->get('security.context');
-        $user = (null !== $user)? $user : $securityContext->getToken()->getUser();
-        $securityIdentity = UserSecurityIdentity::fromAccount($user);
-        /** @var $acl \Symfony\Component\Security\Acl\Domain\Acl */
-        $acl->insertObjectAce($securityIdentity, $mask);
-        $aclProvider->updateAcl($acl);
+        $this->get('storm.aguila.aclmanager')->grantAccess($mask, $object, $newObject, $user);
     }
 
     /**
