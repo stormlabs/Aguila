@@ -39,15 +39,4 @@ class Controller extends BaseController
     {
         $this->get('storm.aguila.aclmanager')->grantAccess($mask, $object, $newObject, $user);
     }
-
-    /**
-     * Returns the class name without proxies
-     *
-     * @param $object
-     * @return string
-     */
-    protected function getClassSansProxy($object)
-    {
-        return ($object instanceof \Doctrine\ORM\Proxy\Proxy) ? get_parent_class($object) : get_class($object);
-    }
 }
